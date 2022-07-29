@@ -1,8 +1,12 @@
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import type { NextPage } from "next";
 import Head from "next/head";
+import HomePageProtectedContent from "../components/homePageProtectedContent";
+import PublicStats from "../components/publicStats";
+import { useAccount} from "wagmi";
 
 const Home: NextPage = () => {
+  const { isConnected } = useAccount()
+
   return (
     <>
       <Head>
@@ -14,11 +18,18 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {/* <ConnectButton
-        chainStatus="none"
-        showBalance={false}
-        accountStatus="address"
-      /> */}
+      <p>
+        compounder.fi automatically compounds uniswap liquidity position
+        earnings.
+      </p>
+
+      <div className="mt-4">
+        <PublicStats />
+      </div>
+
+      <div className={`mt-4  ${isConnected ? "blur-none" : "blur-lg"}`}>
+        <HomePageProtectedContent />
+      </div>
     </>
   );
 };
