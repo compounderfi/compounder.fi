@@ -1,6 +1,7 @@
 import PositionCard from "./positionCard";
 import { useAccount } from "wagmi";
 import useSWR from 'swr'
+import { Key } from "react";
 
 const query = (address: string) => fetch("https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3", {
   "body": `{\"query\":\"{\\n  positions(where: {owner: \\\"${address}\\\"}) {\\n    id\\n  }\\n}\",\"variables\":null,\"extensions\":{\"headers\":null}}`,
@@ -11,18 +12,14 @@ export default function PositionGrid() {
   const { address } = useAccount();
 
   const { data, error } = useSWR(address, query)
-
-
-  console.log(data);
-  console.log(error);
-
+  const positions = data?.data?.positions.map((position: { id: string; }) => 
+    <PositionCard key={position.id} id={position.id}></PositionCard>
+    );
 
   return (
     <div className="flex flex-wrap gap-4">
-      <PositionCard add></PositionCard>
-      <PositionCard></PositionCard>
-      <PositionCard></PositionCard>
-      <PositionCard></PositionCard>
+      <PositionCard ></PositionCard>
+      {positions}
     </div>
   );
 }

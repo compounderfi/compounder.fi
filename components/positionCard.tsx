@@ -1,7 +1,12 @@
-export default function PositionCard({ add = false }) {
+export interface PositionCardProps {
+    id?: string
+}
+
+
+export default function PositionCard({ id }: PositionCardProps) {
   return (
     <div className="h-[550px] w-[330px] rounded-md border-2 border-black ">
-      {add && (
+      {!id && (
         <div className="flex h-full items-center justify-items-center">
           <div className="mx-auto">
             <div className="text-center text-8xl">+</div>
