@@ -3,19 +3,11 @@ import Head from "next/head";
 import PublicStats from "../components/publicStats";
 import { useAccount } from "wagmi";
 import PositionGrid from "../components/positionGrid";
-import { useState, useEffect } from "react";
+import { useIsMounted } from "../hooks/useIsMounted";
 
 const Home: NextPage = () => {
   const { isConnected } = useAccount();
-
-  const [hasMounted, setHasMounted] = useState(false);
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
-  if (!hasMounted) {
-    return null;
-  }
-
+  const isMounted = useIsMounted()
   return (
     <>
       <Head>
@@ -36,9 +28,11 @@ const Home: NextPage = () => {
         <PublicStats />
       </div>
 
-      <div className={`mt-4  ${isConnected ? "blur-none" : "blur-lg"}`}>
-        <PositionGrid />
-      </div>
+      {isMounted &&
+        <div className={`mt-4  ${isConnected ? "blur-none" : "blur-lg"}`}>
+          <PositionGrid />
+        </div>
+      }
     </>
   );
 };

@@ -23,7 +23,7 @@ export default function PositionCard({ id }: PositionCardProps) {
   console.log(error);
 
   return (
-    <div className="h-[550px] w-[330px] rounded-md border-2 border-black ">
+    <div className="h-[500px] w-[300px] rounded-md border-2 border-black ">
       {!id && (
         <Link href={"/add"}>
           <div className="flex h-full cursor-pointer items-center justify-items-center">
