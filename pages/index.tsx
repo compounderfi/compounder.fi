@@ -1,11 +1,20 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import HomePageProtectedContent from "../components/homePageProtectedContent";
 import PublicStats from "../components/publicStats";
-import { useAccount} from "wagmi";
+import { useAccount } from "wagmi";
+import PositionGrid from "../components/positionGrid";
+import { useState, useEffect } from "react";
 
 const Home: NextPage = () => {
-  const { isConnected } = useAccount()
+  const { isConnected } = useAccount();
+
+  const [hasMounted, setHasMounted] = useState(false);
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+  if (!hasMounted) {
+    return null;
+  }
 
   return (
     <>
@@ -28,7 +37,7 @@ const Home: NextPage = () => {
       </div>
 
       <div className={`mt-4  ${isConnected ? "blur-none" : "blur-lg"}`}>
-        <HomePageProtectedContent />
+        <PositionGrid />
       </div>
     </>
   );
