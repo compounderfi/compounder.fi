@@ -1,7 +1,6 @@
 import PositionCard from "./positionCard";
 import { useAccount } from "wagmi";
 import useSWR from "swr";
-import { Key } from "react";
 
 const query = (address: string) =>
   fetch("https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3", {
@@ -10,7 +9,8 @@ const query = (address: string) =>
   }).then((res) => res.json());
 
 export default function PositionGrid() {
-  const { address } = useAccount();
+  // const { address } = useAccount();
+  const address = "0x365f45298ae6039143c113eb4ad89c7227818aac";
 
   const { data, error } = useSWR(address, query);
   const positions = data?.data?.positions.map((position: { id: string }) => (

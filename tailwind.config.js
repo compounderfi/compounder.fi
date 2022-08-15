@@ -10,6 +10,7 @@ module.exports = {
     extend: {
       fontFamily: {
         serif: ["IM Fell English", ...defaultTheme.fontFamily.serif],
+        sans: ["Work Sans", ...defaultTheme.fontFamily.sans],
       },
     },
   },
