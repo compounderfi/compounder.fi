@@ -7,7 +7,7 @@ import { useIsMounted } from "../hooks/useIsMounted";
 
 const Home: NextPage = () => {
   const { isConnected } = useAccount();
-  const isMounted = useIsMounted()
+  const isMounted = useIsMounted();
   return (
     <>
       <Head>
@@ -19,7 +19,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <p>
+      <p className="text-xl">
         compounder.fi automatically compounds uniswap liquidity position
         earnings.
       </p>
@@ -28,11 +28,11 @@ const Home: NextPage = () => {
         <PublicStats />
       </div>
 
-      {isMounted &&
+      {isMounted && (
         <div className={`mt-4  ${isConnected ? "blur-none" : "blur-lg"}`}>
           <PositionGrid />
         </div>
-      }
+      )}
     </>
   );
 };

@@ -1,7 +1,10 @@
 import { Interface } from "ethers/lib/utils";
 import Link from "next/link";
-import { useContractRead } from "wagmi";
-import { useState, useEffect } from "react";
+import useSWR from "swr";
+import Image from "next/image";
+
+const fetcher = (id: string) =>
+  fetch("/api/tokenImage/" + id).then((res) => res.text());
 
 const iface = new Interface([
   "function tokenURI(uint256 tokenId) public view returns (string memory)",
@@ -12,24 +15,15 @@ export interface PositionCardProps {
 }
 
 export default function PositionCard({ id }: PositionCardProps) {
-  const { data, error, isError, isLoading } = useContractRead({
-    addressOrName: "0xc36442b4a4522e871399cd717abdd847ab11fe88",
-    contractInterface: iface,
-    functionName: "tokenURI",
-    args: id,
-  });
-
-  console.log(data);
-  console.log(error);
-
+  const { data, error } = useSWR(id, fetcher);
   return (
-    <div className="h-[500px] w-[300px] rounded-md border-2 border-black ">
+    <div className="h-[500px] w-[292px] rounded-[30px] border-2 border-gray-300 bg-gray-200 drop-shadow-lg">
       {!id && (
         <Link href={"/add"}>
           <div className="flex h-full cursor-pointer items-center justify-items-center">
             <div className="mx-auto">
-              <div className="text-center text-8xl">+</div>
-              <div className="text-center text-4xl">Add Position!</div>
+              <div className="text-center text-6xl">+</div>
+              <div className="text-center text-4xl">add position</div>
             </div>
           </div>
         </Link>
@@ -38,7 +32,9 @@ export default function PositionCard({ id }: PositionCardProps) {
       {id && (
         <div className="flex h-full items-center justify-items-center">
           <div className="mx-auto">
-            <div className="text-center text-4xl">{id}</div>
+            <Image height="700px" width="500px" src={data!}></Image>
+            <div className="pl-8 text-xl font-bold">apr: x.xx%</div>
+            <div className="pl-8 text-xl font-bold">apy: x.xx%</div>
           </div>
         </div>
       )}

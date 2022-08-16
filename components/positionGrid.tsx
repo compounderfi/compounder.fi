@@ -18,7 +18,7 @@ export default function PositionGrid() {
   ));
 
   return (
-    <div className="flex flex-wrap gap-4">
+    <div className="flex flex-wrap gap-8">
       <PositionCard></PositionCard>
       {positions}
     </div>
