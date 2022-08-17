@@ -9,8 +9,7 @@ const query = (address: string) =>
   }).then((res) => res.json());
 
 export default function PositionGrid() {
-  // const { address } = useAccount();
-  const address = "0x365f45298ae6039143c113eb4ad89c7227818aac";
+  const { isConnected, address } = useAccount();
 
   const { data, error } = useSWR(address, query);
   const positions = data?.data?.positions.map((position: { id: string }) => (
@@ -18,9 +17,18 @@ export default function PositionGrid() {
   ));
 
   return (
-    <div className="flex flex-wrap gap-8">
-      <PositionCard></PositionCard>
-      {positions}
+    <div className="grid">
+
+      <div style={{gridArea: "1/1"}} className="flex px-4 pt-4 py-8 flex-wrap gap-8">
+        <PositionCard></PositionCard>
+        {positions}
+      </div>
+
+      {!isConnected &&
+        <div className="z-50 flex place-items-center backdrop-blur-md" style={{gridArea: "1/1"}}>
+          <p className="mx-auto font-bold text-xl">🔒Connect wallet to continue</p>
+        </div>
+      }
     </div>
   );
 }

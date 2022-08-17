@@ -19,19 +19,17 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <p className="text-xl">
+      <p className="px-4 text-xl">
         compounder.fi automatically compounds uniswap liquidity position
         earnings.
       </p>
 
-      <div className="mt-4">
+      <div className="px-4 mt-4">
         <PublicStats />
       </div>
 
       {isMounted && (
-        <div className={`mt-4  ${isConnected ? "blur-none" : "blur-lg"}`}>
-          <PositionGrid />
-        </div>
+        <PositionGrid />
       )}
     </>
   );

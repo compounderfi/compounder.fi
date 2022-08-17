@@ -17,7 +17,7 @@ export interface PositionCardProps {
 export default function PositionCard({ id }: PositionCardProps) {
   const { data, error } = useSWR(id, fetcher);
   return (
-    <div className="h-[500px] w-[292px] rounded-[30px] border-2 border-gray-200 bg-[#f0f2f5] shadow-lg">
+    <div className="h-[500px] w-[280px] rounded-[30px] border-2 border-gray-200 bg-[#f0f2f5] shadow-lg">
       {!id && (
         <Link href={"/add"}>
           <div className="flex h-full cursor-pointer items-center justify-items-center">
