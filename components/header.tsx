@@ -1,4 +1,4 @@
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { ConnectKitButton } from "connectkit";
 import Link from "next/link";
 
 export default function Header() {
@@ -9,11 +9,7 @@ export default function Header() {
       </Link>
       <div className="flex-grow"></div>
 
-      <ConnectButton
-        chainStatus="none"
-        showBalance={false}
-        accountStatus="address"
-      />
+      <ConnectKitButton />
     </div>
   );
 }
