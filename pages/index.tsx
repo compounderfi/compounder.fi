@@ -24,13 +24,11 @@ const Home: NextPage = () => {
         earnings.
       </p>
 
-      <div className="px-4 mt-4">
+      <div className="mt-4 px-4">
         <PublicStats />
       </div>
 
-      {isMounted && (
-        <PositionGrid />
-      )}
+      {isMounted && <PositionGrid />}
     </>
   );
 };

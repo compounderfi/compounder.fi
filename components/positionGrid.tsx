@@ -18,17 +18,24 @@ export default function PositionGrid() {
 
   return (
     <div className="grid">
-
-      <div style={{gridArea: "1/1"}} className="flex px-4 pt-4 py-8 flex-wrap gap-8">
+      <div
+        style={{ gridArea: "1/1" }}
+        className="flex flex-wrap gap-8 px-4 py-8 pt-4"
+      >
         <PositionCard></PositionCard>
         {positions}
       </div>
 
-      {!isConnected &&
-        <div className="z-50 flex place-items-center backdrop-blur-md" style={{gridArea: "1/1"}}>
-          <p className="mx-auto font-bold text-xl">🔒Connect wallet to continue</p>
+      {!isConnected && (
+        <div
+          className="z-50 flex place-items-center backdrop-blur-md"
+          style={{ gridArea: "1/1" }}
+        >
+          <p className="mx-auto text-xl font-bold">
+            🔒 connect wallet to continue 🔒
+          </p>
         </div>
-      }
+      )}
     </div>
   );
 }
