@@ -1,6 +1,7 @@
 import PositionCard from "./positionCard";
 import { useAccount } from "wagmi";
 import useSWR from "swr";
+import { Dispatch, SetStateAction, useState } from "react";
 
 const query = (address: string) =>
   fetch("https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3", {
@@ -8,12 +9,34 @@ const query = (address: string) =>
     method: "POST",
   }).then((res) => res.json());
 
-export default function PositionGrid() {
-  const { isConnected, address } = useAccount();
+export interface PositionGridProps {
+  selection: string[];
+  setSelection: Dispatch<SetStateAction<string[]>>;
+}
+
+export default function PositionGrid({
+  selection,
+  setSelection,
+}: PositionGridProps) {
+  function selectPosition(id: string) {
+    if (selection.includes(id)) {
+      setSelection(selection.filter((_id) => _id !== id));
+    } else {
+      setSelection([...selection, id]);
+    }
+  }
+
+  const { isConnected } = useAccount();
+  const address = "0x365F45298Ae6039143C113Eb4ad89c7227818AAC";
 
   const { data, error } = useSWR(address, query);
   const positions = data?.data?.positions.map((position: { id: string }) => (
-    <PositionCard key={position.id} id={position.id}></PositionCard>
+    <PositionCard
+      selected={selection.includes(position.id)}
+      onClick={() => selectPosition(position.id)}
+      key={position.id}
+      id={position.id}
+    ></PositionCard>
   ));
 
   return (
@@ -22,7 +45,7 @@ export default function PositionGrid() {
         style={{ gridArea: "1/1" }}
         className="flex flex-wrap gap-8 px-4 py-8 pt-4"
       >
-        <PositionCard></PositionCard>
+        {/* <PositionCard></PositionCard> */}
         {positions}
       </div>
 

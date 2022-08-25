@@ -27,8 +27,6 @@ const Home: NextPage = () => {
       <div className="mt-4 px-4">
         <PublicStats />
       </div>
-
-      {isMounted && <PositionGrid />}
     </>
   );
 };
