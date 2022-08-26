@@ -52,7 +52,12 @@ export default function PositionCard({
           className="flex h-full items-center justify-items-center"
         >
           <div className="mx-auto">
-            <Image height="700px" width="500px" src={data!}></Image>
+            <Image
+              height="700px"
+              width="500px"
+              alt={"Token #" + id}
+              src={data!}
+            ></Image>
             <div className="pl-8 text-xl">apr: x.xx%</div>
             <div className="pl-8 text-xl">apy: x.xx%</div>
           </div>

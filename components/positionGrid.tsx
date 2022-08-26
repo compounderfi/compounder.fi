@@ -28,13 +28,10 @@ export default function PositionGrid({
 
   if (activePositions) {
     positions = ids.map((id) => (
-
-      <Link href={"/position/" + id}>
-
-        <PositionCard key={id} id={id}></PositionCard>
+      <Link key={id} href={"/position/" + id}>
+        <PositionCard id={id}></PositionCard>
       </Link>
-    )
-    );
+    ));
   } else {
     positions = ids.map((id) => (
       <PositionCard

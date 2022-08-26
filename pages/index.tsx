@@ -48,9 +48,7 @@ function Index() {
             <PublicStats />
           </div>
 
-          <p className="mt-4 px-4 text-xl">
-            connect wallet to continue
-          </p>
+          <p className="mt-4 px-4 text-xl">connect wallet to continue</p>
         </>
       )}
 
@@ -58,7 +56,7 @@ function Index() {
         <>
           <p className="px-4 text-xl">active positions</p>
           <div className="mt-2">
-          <PositionGrid ids={ids} activePositions={true}></PositionGrid>
+            <PositionGrid ids={ids} activePositions={true}></PositionGrid>
           </div>
         </>
       )}

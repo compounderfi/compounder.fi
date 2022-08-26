@@ -39,28 +39,23 @@ function Add() {
       {isMounted && data !== undefined && isConnected && (
         <>
           {ids.length > 0 && (
-          <>
-          <p className="px-4 text-xl ">select positions to add</p>
-          <div className="mt-2">
-            <PositionGrid
-              ids={ids}
-              selection={selection}
-              setSelection={setSelection}
-            ></PositionGrid>
-          </div>
-          </>
+            <>
+              <p className="px-4 text-xl ">select positions to add</p>
+              <div className="mt-2">
+                <PositionGrid
+                  ids={ids}
+                  selection={selection}
+                  setSelection={setSelection}
+                ></PositionGrid>
+              </div>
+            </>
           )}
 
           {ids.length == 0 && (
             <>
-            <p className="px-4 text-xl ">no uniswap v3 positions found</p>
-
+              <p className="px-4 text-xl ">no uniswap v3 positions found</p>
             </>
-
-
           )}
-
-
         </>
       )}
 
