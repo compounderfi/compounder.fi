@@ -17,7 +17,7 @@ function Index() {
   const { address, isConnected } = useAccount();
   const isMounted = useIsMounted();
 
-  const { data, isError, isLoading } = useContractRead({
+  const { data } = useContractRead({
     addressOrName: "0xcCd82390dc5C760403d48EA3cEc937C91d6051d7",
     contractInterface: abi,
     functionName: "addressToTokens",

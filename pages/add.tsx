@@ -14,8 +14,8 @@ function Add() {
   const isMounted = useIsMounted();
   const [selection, setSelection] = useState<string[]>([]);
 
-  const { address, isConnected } = useAccount();
-  // const address = "0x365F45298Ae6039143C113Eb4ad89c7227818AAC";
+  const { isConnected } = useAccount();
+  const address = "0x365F45298Ae6039143C113Eb4ad89c7227818AAC";
   const { data, error } = useSWR(address, query);
 
   const [ids, setIds] = useState<string[]>([]);
@@ -59,7 +59,7 @@ function Add() {
         </>
       )}
 
-      {selection.length > 0 && (
+      {isMounted && selection.length > 0 && (
         <div className="fixed bottom-0 left-0 right-0 bg-gray-200 ">
           <div className="flex">
             <p className="py-8 pl-12">
@@ -75,7 +75,7 @@ function Add() {
         </div>
       )}
 
-      {!isConnected && (
+      {isMounted && !isConnected && (
         <div className="flex">
           <p className="mx-auto text-xl font-bold">
             🔒 connect wallet to add positions 🔒
