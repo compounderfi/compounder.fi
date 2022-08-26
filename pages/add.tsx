@@ -14,8 +14,7 @@ function Add() {
   const isMounted = useIsMounted();
   const [selection, setSelection] = useState<string[]>([]);
 
-  const { isConnected } = useAccount();
-  const address = "0x365F45298Ae6039143C113Eb4ad89c7227818AAC";
+  const { address, isConnected } = useAccount();
   const { data, error } = useSWR(address, query);
 
   const [ids, setIds] = useState<string[]>([]);
