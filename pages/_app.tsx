@@ -5,7 +5,7 @@ import { ConnectKitProvider, getDefaultClient } from "connectkit";
 import Layout from "../components/layout";
 
 const alchemyId = "_gg7wSSi0KMBsdKnGVfHDueq6xMB9EkC";
-const chains = [chain.mainnet];
+const chains = [chain.mainnet, chain.goerli];
 
 const wagmiClient = createClient(
   getDefaultClient({

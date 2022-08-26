@@ -6,6 +6,7 @@ export default function Footer() {
       <p className="flex-grow"></p>
       <Link href="/about">about</Link>
       <Link href="/contact">contact</Link>
+      <Link href="/docs">docs</Link>
     </div>
   );
 }

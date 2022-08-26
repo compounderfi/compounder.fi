@@ -53,8 +53,8 @@ export default function PositionCard({
         >
           <div className="mx-auto">
             <Image height="700px" width="500px" src={data!}></Image>
-            <div className="pl-8 text-xl font-bold">apr: x.xx%</div>
-            <div className="pl-8 text-xl font-bold">apy: x.xx%</div>
+            <div className="pl-8 text-xl">apr: x.xx%</div>
+            <div className="pl-8 text-xl">apy: x.xx%</div>
           </div>
         </div>
       )}
