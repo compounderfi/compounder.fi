@@ -89,16 +89,6 @@ export default function Position() {
               </div>
             </div>
           </div>
-
-          {/* <div>principal in: XXX</div>
-
-          <div>unclaimed fees: XXX</div>
-
-          <div>apr: XXX</div>
-
-          <div>apy: XXX</div>
-
-          <div>estimated time until next compound: XXX</div> */}
         </div>
       </div>
 

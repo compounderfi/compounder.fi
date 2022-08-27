@@ -27,7 +27,7 @@ export default function PositionCard({
     contractInterface: abi,
     functionName: "tokenURI",
     args: id,
-    chainId: 1,
+    chainId: 5,
   });
 
   useEffect(() => {

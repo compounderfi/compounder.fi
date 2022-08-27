@@ -1,23 +1,85 @@
 import PositionGrid from "../components/positionGrid";
 import { useIsMounted } from "../hooks/useIsMounted";
 import { useState, useEffect } from "react";
-import { useAccount, useContractRead } from "wagmi";
+import { useAccount, useContractWrite, usePrepareContractWrite} from "wagmi";
 import useSWR from "swr";
+import { defaultAbiCoder, parseEther, Interface} from "ethers/lib/utils";
+
+const abi = new Interface([
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "safeTransferFrom",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+{
+    "inputs": [
+      {
+        "internalType": "bytes[]",
+        "name": "data",
+        "type": "bytes[]"
+      }
+    ],
+    "name": "multicall",
+    "outputs": [
+      {
+        "internalType": "bytes[]",
+        "name": "results",
+        "type": "bytes[]"
+      }
+    ],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+])
 
 const query = (address: string) =>
-  fetch("https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3", {
+  fetch("https://api.thegraph.com/subgraphs/name/liqwiz/uniswap-v3-goerli", {
     body: `{\"query\":\"{\\n  positions(where: {owner: \\\"${address}\\\"}) {\\n    id\\n  }\\n}\",\"variables\":null,\"extensions\":{\"headers\":null}}`,
     method: "POST",
   }).then((res) => res.json());
 
+
 function Add() {
+
   const isMounted = useIsMounted();
   const [selection, setSelection] = useState<string[]>([]);
+  const [functionName, setFunctionName] = useState("");
+  const [functionArgs, setFunctionArgs] = useState<any>([]);
 
   const { address, isConnected } = useAccount();
-  const { data, error } = useSWR(address, query);
+  const { data } = useSWR(address, query);
 
   const [ids, setIds] = useState<string[]>([]);
+
+  const { config, error } = usePrepareContractWrite({
+    addressOrName: "0xc36442b4a4522e871399cd717abdd847ab11fe88",
+    contractInterface: abi,
+    functionName: functionName,
+    args: functionArgs
+  })
+
+  console.log(error);
+  
+
+  const { write } = useContractWrite(config)
 
   useEffect(() => {
     const newIds: string[] = [];
@@ -32,6 +94,22 @@ function Add() {
 
     setIds(newIds);
   }, [data]);
+
+  useEffect(() => {
+    if (selection.length == 1) {
+      setFunctionName("safeTransferFrom")
+      setFunctionArgs([address!, "0x4800d5068a3e1e3b005e8c0000284f3c00b4f800", selection[0]])
+      return
+    }
+
+    setFunctionName("multicall")
+    let data : string[] = []
+    selection.map((i) => {
+      data.push(abi.encodeFunctionData("safeTransferFrom", [address, "0x4800d5068a3e1e3b005e8c0000284f3c00b4f800", i]))
+    })
+    
+    setFunctionArgs([data])
+  }, [selection])
 
   return (
     <>
@@ -67,7 +145,7 @@ function Add() {
             </p>
             <div className="grow"></div>
 
-            <button className="w-[232px] bg-gray-300 " tabIndex={-1}>
+            <button onClick={() => write?.()} className="w-[232px] bg-gray-300 " tabIndex={-1}>
               deposit {selection.length == 1 ? "position " : "positions"}
             </button>
           </div>
