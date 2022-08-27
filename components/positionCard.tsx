@@ -11,12 +11,14 @@ export interface PositionCardProps {
   id?: string;
   onClick?: MouseEventHandler;
   selected?: boolean;
+  showStats?: boolean;
 }
 
 export default function PositionCard({
   id,
   onClick,
   selected,
+  showStats = true,
 }: PositionCardProps) {
   const [tokenImage, setTokenImage] = useState("");
 
@@ -43,11 +45,14 @@ export default function PositionCard({
     ? " border-2 border-[#f0f2f5] outline outline-2 outline-blue-500"
     : " border-2 border-gray-200";
 
+  const hwClasses = showStats ? "h-[496px] w-[280px]" : "h-[496px] w-[320px]";
+
   return (
     <>
       <div
         className={
-          "h-[500px] w-[280px] cursor-pointer rounded-[30px] bg-[#f0f2f5] shadow-lg" +
+          hwClasses +
+          " cursor-pointer rounded-[30px] bg-[#f0f2f5] shadow-lg" +
           borderClasses
         }
       >
@@ -74,8 +79,12 @@ export default function PositionCard({
                 alt={"Token #" + id}
                 src={tokenImage}
               ></Image>
-              <div className="pl-8 text-xl">apr: x.xx%</div>
-              <div className="pl-8 text-xl">apy: x.xx%</div>
+              {showStats && (
+                <div>
+                  <div className="pl-8 text-xl">apr: x.xx%</div>
+                  <div className="pl-8 text-xl">apy: x.xx%</div>
+                </div>
+              )}
             </div>
           </div>
         )}
