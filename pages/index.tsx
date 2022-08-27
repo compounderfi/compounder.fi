@@ -1,16 +1,12 @@
-import type { NextPage } from "next";
-import Head from "next/head";
 import PublicStats from "../components/publicStats";
 import { useAccount, useContractRead } from "wagmi";
 import PositionGrid from "../components/positionGrid";
 import { useIsMounted } from "../hooks/useIsMounted";
-import PositionCard from "../components/positionCard";
 import abi from "../utils/abi.json";
 import { InfuraProvider } from "@ethersproject/providers";
 import { useEffect, useState } from "react";
-import { element } from "@rainbow-me/rainbowkit/dist/css/reset.css";
 
-const contractAddress = "0xcCd82390dc5C760403d48EA3cEc937C91d6051d7";
+const contractAddress = "0xBAbAA738840d0Ac22979e3fB87464e6ec13275c0";
 const provider = new InfuraProvider("goerli");
 
 function Index() {
@@ -18,7 +14,7 @@ function Index() {
   const isMounted = useIsMounted();
 
   const { data } = useContractRead({
-    addressOrName: "0xcCd82390dc5C760403d48EA3cEc937C91d6051d7",
+    addressOrName: contractAddress,
     contractInterface: abi,
     functionName: "addressToTokens",
     args: address,

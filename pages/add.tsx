@@ -1,54 +1,54 @@
 import PositionGrid from "../components/positionGrid";
 import { useIsMounted } from "../hooks/useIsMounted";
 import { useState, useEffect } from "react";
-import { useAccount, useContractWrite, usePrepareContractWrite} from "wagmi";
+import { useAccount, useContractWrite, usePrepareContractWrite } from "wagmi";
 import useSWR from "swr";
-import { defaultAbiCoder, parseEther, Interface} from "ethers/lib/utils";
+import { defaultAbiCoder, parseEther, Interface } from "ethers/lib/utils";
 
 const abi = new Interface([
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "address",
-        "name": "from",
-        "type": "address"
+        internalType: "address",
+        name: "from",
+        type: "address",
       },
       {
-        "internalType": "address",
-        "name": "to",
-        "type": "address"
+        internalType: "address",
+        name: "to",
+        type: "address",
       },
       {
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      }
+        internalType: "uint256",
+        name: "tokenId",
+        type: "uint256",
+      },
     ],
-    "name": "safeTransferFrom",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    name: "safeTransferFrom",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
   },
-{
-    "inputs": [
+  {
+    inputs: [
       {
-        "internalType": "bytes[]",
-        "name": "data",
-        "type": "bytes[]"
-      }
+        internalType: "bytes[]",
+        name: "data",
+        type: "bytes[]",
+      },
     ],
-    "name": "multicall",
-    "outputs": [
+    name: "multicall",
+    outputs: [
       {
-        "internalType": "bytes[]",
-        "name": "results",
-        "type": "bytes[]"
-      }
+        internalType: "bytes[]",
+        name: "results",
+        type: "bytes[]",
+      },
     ],
-    "stateMutability": "payable",
-    "type": "function"
+    stateMutability: "payable",
+    type: "function",
   },
-])
+]);
 
 const query = (address: string) =>
   fetch("https://api.thegraph.com/subgraphs/name/liqwiz/uniswap-v3-goerli", {
@@ -56,9 +56,7 @@ const query = (address: string) =>
     method: "POST",
   }).then((res) => res.json());
 
-
 function Add() {
-
   const isMounted = useIsMounted();
   const [selection, setSelection] = useState<string[]>([]);
   const [functionName, setFunctionName] = useState("");
@@ -73,13 +71,12 @@ function Add() {
     addressOrName: "0xc36442b4a4522e871399cd717abdd847ab11fe88",
     contractInterface: abi,
     functionName: functionName,
-    args: functionArgs
-  })
+    args: functionArgs,
+  });
 
   console.log(error);
-  
 
-  const { write } = useContractWrite(config)
+  const { write } = useContractWrite(config);
 
   useEffect(() => {
     const newIds: string[] = [];
@@ -97,19 +94,29 @@ function Add() {
 
   useEffect(() => {
     if (selection.length == 1) {
-      setFunctionName("safeTransferFrom")
-      setFunctionArgs([address!, "0x4800d5068a3e1e3b005e8c0000284f3c00b4f800", selection[0]])
-      return
+      setFunctionName("safeTransferFrom");
+      setFunctionArgs([
+        address!,
+        "0xBAbAA738840d0Ac22979e3fB87464e6ec13275c0",
+        selection[0],
+      ]);
+      return;
     }
 
-    setFunctionName("multicall")
-    let data : string[] = []
+    setFunctionName("multicall");
+    let data: string[] = [];
     selection.map((i) => {
-      data.push(abi.encodeFunctionData("safeTransferFrom", [address, "0x4800d5068a3e1e3b005e8c0000284f3c00b4f800", i]))
-    })
-    
-    setFunctionArgs([data])
-  }, [selection])
+      data.push(
+        abi.encodeFunctionData("safeTransferFrom", [
+          address,
+          "0xBAbAA738840d0Ac22979e3fB87464e6ec13275c0",
+          i,
+        ])
+      );
+    });
+
+    setFunctionArgs([data]);
+  }, [selection]);
 
   return (
     <>
@@ -145,7 +152,11 @@ function Add() {
             </p>
             <div className="grow"></div>
 
-            <button onClick={() => write?.()} className="w-[232px] bg-gray-300 " tabIndex={-1}>
+            <button
+              onClick={() => write?.()}
+              className="w-[232px] bg-gray-300 "
+              tabIndex={-1}
+            >
               deposit {selection.length == 1 ? "position " : "positions"}
             </button>
           </div>

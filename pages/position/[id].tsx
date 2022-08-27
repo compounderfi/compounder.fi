@@ -24,9 +24,7 @@ export default function Position() {
 
   return (
     <div className="px-4 text-xl">
-      <div>viewing position {tokenID}</div>
-
-      <div className="mt-2 flex gap-6 pt-4">
+      <div className="mt-2 flex gap-6 ">
         <PositionCard showStats={true} id={tokenID}></PositionCard>
         <div className="grid flex-grow gap-6">
           <div className="rounded-[30px] border-2 border-gray-200 bg-[#f0f2f5] p-6 shadow-lg">
@@ -102,9 +100,9 @@ export default function Position() {
         <table className="mt-2 w-full table-fixed text-base">
           <thead>
             <tr>
-              <th className="w-[120px] text-left font-normal">txn</th>
-              <th className="w-[200px] text-left font-normal">time</th>
-              <th className="text-left font-normal">amount compounded</th>
+              <th className="w-[120px] text-left ">txn</th>
+              <th className="w-[200px] text-left ">time</th>
+              <th className="text-left ">amount compounded</th>
             </tr>
           </thead>
           <tbody>
