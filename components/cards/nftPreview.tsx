@@ -11,6 +11,8 @@ function getSnapshot(
   canvas: HTMLCanvasElement,
   targetHeight: number
 ) {
+  console.log(src);
+  
   const context = canvas.getContext("2d");
 
   if (context) {
@@ -67,14 +69,14 @@ export default function NFTPreviewProps({ id }: NFTPreviewProps) {
       className="grid h-[386px] w-[224px]"
       style={{ gridTemplate: "overlap" }}
       onMouseEnter={() => {
-        setAnimate(true);
+        // setAnimate(true);
       }}
       onMouseLeave={() => {
         // snapshot the current frame so the transition to the canvas is smooth
         if (imageRef.current && canvasRef.current) {
           getSnapshot(
             // @ts-ignore
-            imageRef.current.firstChild.children,
+            imageRef.current.firstChild.children[1],
             canvasRef.current,
             386
           );

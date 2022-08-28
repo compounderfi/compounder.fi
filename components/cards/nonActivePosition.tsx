@@ -1,5 +1,5 @@
 import PositionCard from "./positionCard";
-import NFTCanvas from "./nftCanvas";
+import NFTPreview from "./nftPreview";
 
 export interface NonActivePositionProps {
   id: string;
@@ -12,9 +12,9 @@ export default function NonActivePositionCard({
 }: NonActivePositionProps) {
   return (
     <PositionCard selected={selected}>
-      <NFTCanvas id={id}></NFTCanvas>
+      <NFTPreview id={id}></NFTPreview>
 
-      <div className="px-8">
+      <div className="pt-2">
         <div>
           <div className="text-xl">apr: x.xx%</div>
           <div className="text-xl">apy: x.xx%</div>
