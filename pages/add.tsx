@@ -94,9 +94,8 @@ function Add() {
 
   useEffect(() => {
     console.log("running");
-    
-    
-        if (selection.length == 1) {
+
+    if (selection.length == 1) {
       setFunctionName("safeTransferFrom");
       setFunctionArgs([
         address!,
@@ -117,7 +116,7 @@ function Add() {
       });
       setFunctionArgs([data]);
     }
-  } , [debouncedSelection]);
+  }, [debouncedSelection]);
 
   return (
     <>

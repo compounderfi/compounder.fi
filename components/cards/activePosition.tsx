@@ -27,7 +27,7 @@ export default function ActivePositionCard({ id }: ActivePositionProps) {
     <PositionCard href={"/position/" + id}>
       <div>
         <NFTPreview id={id}></NFTPreview>
-        <div className="flex px-8">
+        <div className="flex pt-2">
           <div>
             <div className="text-xl">apr: x.xx%</div>
             <div className="text-xl">apy: x.xx%</div>
