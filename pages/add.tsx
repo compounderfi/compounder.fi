@@ -1,9 +1,9 @@
-import PositionGrid from "../components/positionGrid";
 import { useIsMounted } from "../hooks/useIsMounted";
 import { useState, useEffect } from "react";
 import { useAccount, useContractWrite, usePrepareContractWrite } from "wagmi";
 import useSWR from "swr";
-import { defaultAbiCoder, parseEther, Interface } from "ethers/lib/utils";
+import { Interface } from "ethers/lib/utils";
+import SelectableGrid from "../components/grids/selectableGrid";
 
 const abi = new Interface([
   {
@@ -67,14 +67,12 @@ function Add() {
 
   const [ids, setIds] = useState<string[]>([]);
 
-  const { config, error } = usePrepareContractWrite({
+  const { config } = usePrepareContractWrite({
     addressOrName: "0xc36442b4a4522e871399cd717abdd847ab11fe88",
     contractInterface: abi,
     functionName: functionName,
     args: functionArgs,
   });
-
-  console.log(error);
 
   const { write } = useContractWrite(config);
 
@@ -92,7 +90,7 @@ function Add() {
     setIds(newIds);
   }, [data]);
 
-  useEffect(() => {
+  function openWallet() {
     if (selection.length == 1) {
       setFunctionName("safeTransferFrom");
       setFunctionArgs([
@@ -100,23 +98,23 @@ function Add() {
         "0xBAbAA738840d0Ac22979e3fB87464e6ec13275c0",
         selection[0],
       ]);
-      return;
+    } else {
+      setFunctionName("multicall");
+      let data: string[] = [];
+      selection.map((i) => {
+        data.push(
+          abi.encodeFunctionData("safeTransferFrom", [
+            address,
+            "0xBAbAA738840d0Ac22979e3fB87464e6ec13275c0",
+            i,
+          ])
+        );
+      });
+      setFunctionArgs([data]);
     }
 
-    setFunctionName("multicall");
-    let data: string[] = [];
-    selection.map((i) => {
-      data.push(
-        abi.encodeFunctionData("safeTransferFrom", [
-          address,
-          "0xBAbAA738840d0Ac22979e3fB87464e6ec13275c0",
-          i,
-        ])
-      );
-    });
-
-    setFunctionArgs([data]);
-  }, [selection]);
+    write?.();
+  }
 
   return (
     <>
@@ -126,11 +124,11 @@ function Add() {
             <>
               <p className="px-4 text-xl ">select positions to add</p>
               <div className="mt-2">
-                <PositionGrid
+                <SelectableGrid
                   ids={ids}
                   selection={selection}
                   setSelection={setSelection}
-                ></PositionGrid>
+                ></SelectableGrid>
               </div>
             </>
           )}
@@ -153,7 +151,7 @@ function Add() {
             <div className="grow"></div>
 
             <button
-              onClick={() => write?.()}
+              onClick={openWallet}
               className="w-[232px] bg-gray-300 "
               tabIndex={-1}
             >

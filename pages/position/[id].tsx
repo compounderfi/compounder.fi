@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import PositionCard from "../../components/positionCard";
+import ActivePositionCard from "../../components/cards/activePosition";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
@@ -25,7 +25,7 @@ export default function Position() {
   return (
     <div className="px-4 text-xl">
       <div className="mt-2 flex gap-6 ">
-        <PositionCard showStats={true} id={tokenID}></PositionCard>
+        <ActivePositionCard id={tokenID}></ActivePositionCard>
         <div className="grid flex-grow gap-6">
           <div className="rounded-[30px] border-2 border-gray-200 bg-[#f0f2f5] p-6 shadow-lg">
             <div>liquidity</div>

@@ -1,6 +1,6 @@
 import PublicStats from "../components/publicStats";
 import { useAccount, useContractRead } from "wagmi";
-import PositionGrid from "../components/positionGrid";
+import HomePageGrid from "../components/grids/homePageGrid";
 import { useIsMounted } from "../hooks/useIsMounted";
 import abi from "../utils/abi.json";
 import { InfuraProvider } from "@ethersproject/providers";
@@ -52,7 +52,7 @@ function Index() {
         <>
           <p className="px-4 text-xl">active positions</p>
           <div className="mt-2">
-            <PositionGrid ids={ids} activePositions={true}></PositionGrid>
+            <HomePageGrid ids={ids}></HomePageGrid>
           </div>
         </>
       )}
