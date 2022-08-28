@@ -23,10 +23,9 @@ export default function SelectableGrid({
   let positions;
 
   positions = ids.map((id) => (
-    <div onClick={() => selectPosition(id)}>
+    <div key={id} onClick={() => selectPosition(id)}>
       <NonActivePositionCard
         selected={selection!.includes(id)}
-        key={id}
         id={id}
       ></NonActivePositionCard>
     </div>

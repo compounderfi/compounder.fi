@@ -4,6 +4,7 @@ import { useAccount, useContractWrite, usePrepareContractWrite } from "wagmi";
 import useSWR from "swr";
 import { Interface } from "ethers/lib/utils";
 import SelectableGrid from "../components/grids/selectableGrid";
+import { useDebounce } from "../hooks/useDebounce";
 
 const abi = new Interface([
   {
@@ -58,14 +59,15 @@ const query = (address: string) =>
 
 function Add() {
   const isMounted = useIsMounted();
+  const [ids, setIds] = useState<string[]>([]);
   const [selection, setSelection] = useState<string[]>([]);
   const [functionName, setFunctionName] = useState("");
   const [functionArgs, setFunctionArgs] = useState<any>([]);
 
+  const debouncedSelection = useDebounce(selection, 500);
+
   const { address, isConnected } = useAccount();
   const { data } = useSWR(address, query);
-
-  const [ids, setIds] = useState<string[]>([]);
 
   const { config } = usePrepareContractWrite({
     addressOrName: "0xc36442b4a4522e871399cd717abdd847ab11fe88",
@@ -90,8 +92,11 @@ function Add() {
     setIds(newIds);
   }, [data]);
 
-  function openWallet() {
-    if (selection.length == 1) {
+  useEffect(() => {
+    console.log("running");
+    
+    
+        if (selection.length == 1) {
       setFunctionName("safeTransferFrom");
       setFunctionArgs([
         address!,
@@ -112,9 +117,7 @@ function Add() {
       });
       setFunctionArgs([data]);
     }
-
-    write?.();
-  }
+  } , [debouncedSelection]);
 
   return (
     <>
@@ -151,7 +154,7 @@ function Add() {
             <div className="grow"></div>
 
             <button
-              onClick={openWallet}
+              onClick={() => write?.()}
               className="w-[232px] bg-gray-300 "
               tabIndex={-1}
             >
