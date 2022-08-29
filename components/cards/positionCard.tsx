@@ -8,12 +8,14 @@ export interface PositionCardProps {
 
 export default function PositionCard({
   children,
+  href,
   selected = false,
-  href = "",
 }: PositionCardProps) {
   const borderClasses = selected
     ? " border-2 border-[#f0f2f5] outline outline-2 outline-blue-500"
     : " border-2 border-gray-200";
+  if (href) {
+
   return (
     <>
       <Link href={href}>
@@ -30,4 +32,22 @@ export default function PositionCard({
       </Link>
     </>
   );
+
+  }
+
+  return (
+    <>
+        <div
+          className={
+            "h-[496px] w-[280px] cursor-pointer rounded-[30px] bg-[#f0f2f5] shadow-lg" +
+            borderClasses
+          }
+        >
+          <div className="flex h-full items-center justify-items-center">
+            <div className="mx-auto">{children}</div>
+          </div>
+        </div>
+    </>
+  );
+
 }

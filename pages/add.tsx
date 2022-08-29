@@ -79,22 +79,20 @@ function Add() {
   const { write } = useContractWrite(config);
 
   useEffect(() => {
-    const newIds: string[] = [];
+    const ids: string[] = [];
 
     if (data == undefined) {
       return;
     }
 
     data.data.positions.forEach((position: { id: string }) => {
-      newIds.push(position.id);
+      ids.push(position.id);
     });
 
-    setIds(newIds);
+    setIds(ids);
   }, [data]);
 
   useEffect(() => {
-    console.log("running");
-
     if (selection.length == 1) {
       setFunctionName("safeTransferFrom");
       setFunctionArgs([
