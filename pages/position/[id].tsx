@@ -1,8 +1,35 @@
-import Link from "next/link";
 import { useRouter } from "next/router";
 import ActivePositionCard from "../../components/cards/activePosition";
-import Image from "next/image";
 import { useEffect, useState } from "react";
+import PositionInformation from "../../components/cards/positionInformation";
+import Table, { Compound } from "../../components/table";
+
+const tableData: Compound[] = [
+  {
+    transactionHash:
+      "0xd99ac92a2a858367d2a7692a2f461db49ac10f9c6e0ed008f60598ec696b3e18",
+    time: "8/27/2022 9:15:23",
+    usdcCompounded: "321321",
+    ethCompounded: "321321",
+    callerReward: "3213210421",
+  },
+  {
+    transactionHash:
+      "0xd99ac92a2a858367d2a7692a2f461db49ac10f9c6e0ed008f60598ec696b3e18",
+    time: "8/27/2022 9:15:23",
+    usdcCompounded: "321321",
+    ethCompounded: "321321",
+    callerReward: "3213210421",
+  },
+  {
+    transactionHash:
+      "0xd99ac92a2a858367d2a7692a2f461db49ac10f9c6e0ed008f60598ec696b3e18",
+    time: "8/27/2022 9:15:23",
+    usdcCompounded: "321321",
+    ethCompounded: "321321",
+    callerReward: "3213210421",
+  },
+];
 
 export default function Position() {
   const router = useRouter();
@@ -30,66 +57,26 @@ export default function Position() {
           id={tokenID}
         ></ActivePositionCard>
         <div className="grid flex-grow gap-6">
-          <div className="rounded-[30px] border-2 border-gray-200 bg-[#f0f2f5] p-6 shadow-lg">
-            <div>liquidity</div>
-            <div className="mt-2 mb-4 text-3xl">$-</div>
-            <div className="rounded-[15px] bg-gray-200 py-4 px-4">
-              <div className="flex gap-4 pb-2">
-                <Image
-                  alt="UNI icon"
-                  src="https://cloudflare-ipfs.com/ipfs/QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg"
-                  width={28}
-                  layout={"fixed"}
-                  height={28}
-                ></Image>
-                <div className="">UNI</div>
-                <div className="flex-grow"></div>
-                <div className="">69.420</div>
-              </div>
-              <div className="flex gap-4">
-                <Image
-                  alt="UNI icon"
-                  src="https://cloudflare-ipfs.com/ipfs/QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg"
-                  width={28}
-                  layout={"fixed"}
-                  height={28}
-                ></Image>
-                <div className="">UNI</div>
-                <div className="flex-grow"></div>
-                <div className="">69.420</div>
-              </div>
-            </div>
-          </div>
-          <div className="rounded-[30px] border-2 border-gray-200 bg-[#f0f2f5] p-6 shadow-lg">
-            <div>unclaimed fees</div>
-            <div className="mt-2 mb-4 text-3xl">$-</div>
-            <div className="rounded-[15px] bg-gray-200 py-4 px-4">
-              <div className="flex gap-4 pb-2">
-                <Image
-                  alt="UNI icon"
-                  src="https://cloudflare-ipfs.com/ipfs/QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg"
-                  width={28}
-                  layout={"fixed"}
-                  height={28}
-                ></Image>
-                <div className="">UNI</div>
-                <div className="flex-grow"></div>
-                <div className="">69.420</div>
-              </div>
-              <div className="flex gap-4">
-                <Image
-                  alt="UNI icon"
-                  src="https://cloudflare-ipfs.com/ipfs/QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg"
-                  width={28}
-                  layout={"fixed"}
-                  height={28}
-                ></Image>
-                <div className="">UNI</div>
-                <div className="flex-grow"></div>
-                <div className="">69.420</div>
-              </div>
-            </div>
-          </div>
+          <PositionInformation
+            title="liquidity"
+            dollarValue="-"
+            token1Name="UNI"
+            token1Image="https://cloudflare-ipfs.com/ipfs/QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg"
+            token1Qt="69.420"
+            token2Name="UNI"
+            token2Image="https://cloudflare-ipfs.com/ipfs/QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg"
+            token2Qt="69.420"
+          ></PositionInformation>
+          <PositionInformation
+            title="unclaimed fees"
+            dollarValue="-"
+            token1Name="UNI"
+            token1Image="https://cloudflare-ipfs.com/ipfs/QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg"
+            token1Qt="69.420"
+            token2Name="UNI"
+            token2Image="https://cloudflare-ipfs.com/ipfs/QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg"
+            token2Qt="69.420"
+          ></PositionInformation>
         </div>
       </div>
 
@@ -100,37 +87,7 @@ export default function Position() {
             estimated time until next compound: 420:69
           </div>
         </div>
-        <table className="mt-2 w-full table-fixed text-base">
-          <thead>
-            <tr>
-              <th className="w-[120px] text-left ">txn</th>
-              <th className="w-[200px] text-left ">time</th>
-              <th className="text-left ">amount compounded</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="odd:bg-[#f0f2f5]">
-              <td>0x...4343</td>
-              <td>8/27/2022 9:15:23</td>
-              <td>dafsfdsafjalksdjflk</td>
-            </tr>
-            <tr className="odd:bg-[#f0f2f5]">
-              <td>0x...4343</td>
-              <td>8/27/2022 9:15:23</td>
-              <td>dafsfdsafjalksdjflk</td>
-            </tr>
-            <tr className="odd:bg-[#f0f2f5]">
-              <td>0x...4343</td>
-              <td>8/27/2022 9:15:23</td>
-              <td>dafsfdsafjalksdjflk</td>
-            </tr>
-            <tr className="odd:bg-[#f0f2f5]">
-              <td>0x...4343</td>
-              <td>8/27/2022 9:15:23</td>
-              <td>dafsfdsafjalksdjflk</td>
-            </tr>
-          </tbody>
-        </table>
+        <Table data={tableData}></Table>
       </div>
     </div>
   );

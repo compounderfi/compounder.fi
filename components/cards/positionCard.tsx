@@ -18,38 +18,24 @@ export default function PositionCard({
     : " border-2 border-gray-200";
 
   const cursorClasses = showPointer ? " cursor-pointer" : "";
+
+  const card = (
+    <div
+      className={
+        "h-[496px] w-[280px] rounded-[30px] bg-[#f0f2f5] shadow-lg" +
+        borderClasses +
+        cursorClasses
+      }
+    >
+      <div className="flex h-full items-center justify-items-center">
+        <div className="mx-auto">{children}</div>
+      </div>
+    </div>
+  );
+
   if (href) {
-    return (
-      <>
-        <Link href={href}>
-          <div
-            className={
-              "h-[496px] w-[280px] rounded-[30px] bg-[#f0f2f5] shadow-lg" +
-              borderClasses +
-              cursorClasses
-            }
-          >
-            <div className="flex h-full items-center justify-items-center">
-              <div className="mx-auto">{children}</div>
-            </div>
-          </div>
-        </Link>
-      </>
-    );
+    return <Link href={href}>{card}</Link>;
   }
 
-  return (
-    <>
-      <div
-        className={
-          "h-[496px] w-[280px] cursor-pointer rounded-[30px] bg-[#f0f2f5] shadow-lg" +
-          borderClasses
-        }
-      >
-        <div className="flex h-full items-center justify-items-center">
-          <div className="mx-auto">{children}</div>
-        </div>
-      </div>
-    </>
-  );
+  return <>{card}</>;
 }
