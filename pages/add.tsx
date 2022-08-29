@@ -1,10 +1,16 @@
 import { useIsMounted } from "../hooks/useIsMounted";
 import { useState, useEffect } from "react";
-import { useAccount, useContractWrite, usePrepareContractWrite } from "wagmi";
+import {
+  useAccount,
+  useContractWrite,
+  useNetwork,
+  usePrepareContractWrite,
+} from "wagmi";
 import useSWR from "swr";
 import { Interface } from "ethers/lib/utils";
 import SelectableGrid from "../components/grids/selectableGrid";
 import { useDebounce } from "../hooks/useDebounce";
+import { CONTRACT_ADDRESS } from "../utils/constants";
 
 const abi = new Interface([
   {
@@ -51,13 +57,24 @@ const abi = new Interface([
   },
 ]);
 
-const query = (address: string) =>
-  fetch("https://api.thegraph.com/subgraphs/name/liqwiz/uniswap-v3-goerli", {
-    body: `{\"query\":\"{\\n  positions(where: {owner: \\\"${address}\\\"}) {\\n    id\\n  }\\n}\",\"variables\":null,\"extensions\":{\"headers\":null}}`,
-    method: "POST",
-  }).then((res) => res.json());
-
 function Add() {
+  const { chain } = useNetwork();
+
+  let subgraphURL = "";
+
+  if (chain?.id == 5) {
+    subgraphURL =
+      "https://api.thegraph.com/subgraphs/name/liqwiz/uniswap-v3-goerli";
+  } else if (chain?.id == 1) {
+    subgraphURL = "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3";
+  }
+
+  const query = (address: string) =>
+    fetch(subgraphURL, {
+      body: `{\"query\":\"{\\n  positions(where: {owner: \\\"${address}\\\"}) {\\n    id\\n  }\\n}\",\"variables\":null,\"extensions\":{\"headers\":null}}`,
+      method: "POST",
+    }).then((res) => res.json());
+
   const isMounted = useIsMounted();
   const [ids, setIds] = useState<string[]>([]);
   const [selection, setSelection] = useState<string[]>([]);
@@ -95,11 +112,7 @@ function Add() {
   useEffect(() => {
     if (selection.length == 1) {
       setFunctionName("safeTransferFrom");
-      setFunctionArgs([
-        address!,
-        "0xBAbAA738840d0Ac22979e3fB87464e6ec13275c0",
-        selection[0],
-      ]);
+      setFunctionArgs([address!, CONTRACT_ADDRESS, selection[0]]);
     } else {
       setFunctionName("multicall");
       let data: string[] = [];
@@ -107,7 +120,7 @@ function Add() {
         data.push(
           abi.encodeFunctionData("safeTransferFrom", [
             address,
-            "0xBAbAA738840d0Ac22979e3fB87464e6ec13275c0",
+            CONTRACT_ADDRESS,
             i,
           ])
         );

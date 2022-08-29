@@ -11,8 +11,6 @@ function getSnapshot(
   canvas: HTMLCanvasElement,
   targetHeight: number
 ) {
-  console.log(src);
-  
   const context = canvas.getContext("2d");
 
   if (context) {
@@ -50,7 +48,6 @@ export default function NFTPreviewProps({ id }: NFTPreviewProps) {
     contractInterface: uniswapAbi,
     functionName: "tokenURI",
     args: id,
-    chainId: 5,
   });
 
   useEffect(() => {
@@ -68,21 +65,21 @@ export default function NFTPreviewProps({ id }: NFTPreviewProps) {
     <div
       className="grid h-[386px] w-[224px]"
       style={{ gridTemplate: "overlap" }}
-      onMouseEnter={() => {
-        // setAnimate(true);
-      }}
-      onMouseLeave={() => {
-        // snapshot the current frame so the transition to the canvas is smooth
-        if (imageRef.current && canvasRef.current) {
-          getSnapshot(
-            // @ts-ignore
-            imageRef.current.firstChild.children[1],
-            canvasRef.current,
-            386
-          );
-        }
-        setAnimate(false);
-      }}
+      // onMouseEnter={() => {
+      //   // setAnimate(true);
+      // }}
+      // onMouseLeave={() => {
+      //   // snapshot the current frame so the transition to the canvas is smooth
+      //   if (imageRef.current && canvasRef.current) {
+      //     getSnapshot(
+      //       // @ts-ignore
+      //       imageRef.current.firstChild.children[1],
+      //       canvasRef.current,
+      //       386
+      //     );
+      //   }
+      //   setAnimate(false);
+      // }}
     >
       <canvas
         ref={canvasRef}
@@ -96,10 +93,6 @@ export default function NFTPreviewProps({ id }: NFTPreviewProps) {
         hidden={!animate}
         onLoad={() => {
           // snapshot for the canvas
-
-          console.log(imageRef.current);
-          console.log(canvasRef.current);
-
           if (imageRef.current && canvasRef.current) {
             getSnapshot(
               // @ts-ignore

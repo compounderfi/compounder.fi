@@ -3,6 +3,7 @@ import NFTPreview from "./nftPreview";
 import abi from "../../utils/abi.json";
 import { useAccount, usePrepareContractWrite, useContractWrite } from "wagmi";
 import { MouseEvent } from "react";
+import { CONTRACT_ADDRESS } from "../../utils/constants";
 
 export interface ActivePositionProps {
   id: string;
@@ -12,7 +13,7 @@ export default function ActivePositionCard({ id }: ActivePositionProps) {
   const { address } = useAccount();
 
   const { config } = usePrepareContractWrite({
-    addressOrName: "0xBAbAA738840d0Ac22979e3fB87464e6ec13275c0",
+    addressOrName: CONTRACT_ADDRESS,
     contractInterface: abi,
     functionName: "withdrawToken",
     args: [id, address, true, 0],

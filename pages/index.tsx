@@ -6,15 +6,16 @@ import abi from "../utils/abi.json";
 import { InfuraProvider } from "@ethersproject/providers";
 import { useEffect, useState } from "react";
 
-const contractAddress = "0xBAbAA738840d0Ac22979e3fB87464e6ec13275c0";
-const provider = new InfuraProvider("goerli");
+import { CONTRACT_ADDRESS } from "../utils/constants";
+
+const provider = new InfuraProvider();
 
 function Index() {
   const { address, isConnected } = useAccount();
   const isMounted = useIsMounted();
 
   const { data } = useContractRead({
-    addressOrName: contractAddress,
+    addressOrName: CONTRACT_ADDRESS,
     contractInterface: abi,
     functionName: "addressToTokens",
     args: address,
