@@ -11,6 +11,7 @@ import { Interface } from "ethers/lib/utils";
 import SelectableGrid from "../components/grids/selectableGrid";
 import { useDebounce } from "../hooks/useDebounce";
 import { CONTRACT_ADDRESS } from "../utils/constants";
+import Footer from "../components/footer";
 
 const abi = new Interface([
   {
@@ -155,23 +156,27 @@ function Add() {
       )}
 
       {isMounted && selection.length > 0 && (
-        <div className="fixed bottom-0 left-0 right-0 bg-gray-200 ">
-          <div className="flex">
-            <p className="py-8 pl-12">
-              {selection.length}{" "}
-              {selection.length == 1 ? "position " : "positions "}selected
-            </p>
-            <div className="grow"></div>
+        <>
+          <Footer></Footer>
+          <div className="h-[32px]"></div>
+          <div className="fixed bottom-0 left-0 right-0 bg-gray-200 ">
+            <div className="flex">
+              <p className="py-8 pl-12">
+                {selection.length}{" "}
+                {selection.length == 1 ? "position " : "positions "}selected
+              </p>
+              <div className="grow"></div>
 
-            <button
-              onClick={() => write?.()}
-              className="w-[232px] bg-gray-300 "
-              tabIndex={-1}
-            >
-              deposit {selection.length == 1 ? "position " : "positions"}
-            </button>
+              <button
+                onClick={() => write?.()}
+                className="w-[232px] bg-gray-300 "
+                tabIndex={-1}
+              >
+                deposit {selection.length == 1 ? "position " : "positions"}
+              </button>
+            </div>
           </div>
-        </div>
+        </>
       )}
 
       {isMounted && !isConnected && (

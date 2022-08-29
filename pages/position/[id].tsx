@@ -25,7 +25,10 @@ export default function Position() {
   return (
     <div className="px-4 text-xl">
       <div className="mt-2 flex gap-6 ">
-        <ActivePositionCard id={tokenID}></ActivePositionCard>
+        <ActivePositionCard
+          showPointer={false}
+          id={tokenID}
+        ></ActivePositionCard>
         <div className="grid flex-grow gap-6">
           <div className="rounded-[30px] border-2 border-gray-200 bg-[#f0f2f5] p-6 shadow-lg">
             <div>liquidity</div>

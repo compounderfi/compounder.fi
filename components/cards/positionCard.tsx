@@ -4,24 +4,29 @@ export interface PositionCardProps {
   selected?: boolean;
   children?: React.ReactNode;
   href?: string;
+  showPointer?: boolean;
 }
 
 export default function PositionCard({
   children,
   href,
   selected = false,
+  showPointer = true,
 }: PositionCardProps) {
   const borderClasses = selected
     ? " border-2 border-[#f0f2f5] outline outline-2 outline-blue-500"
     : " border-2 border-gray-200";
+
+  const cursorClasses = showPointer ? " cursor-pointer" : "";
   if (href) {
     return (
       <>
         <Link href={href}>
           <div
             className={
-              "h-[496px] w-[280px] cursor-pointer rounded-[30px] bg-[#f0f2f5] shadow-lg" +
-              borderClasses
+              "h-[496px] w-[280px] rounded-[30px] bg-[#f0f2f5] shadow-lg" +
+              borderClasses +
+              cursorClasses
             }
           >
             <div className="flex h-full items-center justify-items-center">

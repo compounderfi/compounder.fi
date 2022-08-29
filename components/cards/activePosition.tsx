@@ -4,12 +4,17 @@ import abi from "../../utils/abi.json";
 import { useAccount, usePrepareContractWrite, useContractWrite } from "wagmi";
 import { MouseEvent } from "react";
 import { CONTRACT_ADDRESS } from "../../utils/constants";
+import { Tooltip } from "@mui/material";
 
 export interface ActivePositionProps {
   id: string;
+  showPointer?: boolean;
 }
 
-export default function ActivePositionCard({ id }: ActivePositionProps) {
+export default function ActivePositionCard({
+  id,
+  showPointer,
+}: ActivePositionProps) {
   const { address } = useAccount();
 
   const { config } = usePrepareContractWrite({
@@ -25,7 +30,7 @@ export default function ActivePositionCard({ id }: ActivePositionProps) {
     write?.();
   }
   return (
-    <PositionCard href={"/position/" + id}>
+    <PositionCard showPointer={showPointer} href={"/position/" + id}>
       <div>
         <NFTPreview id={id}></NFTPreview>
         <div className="flex pt-2">
@@ -36,26 +41,28 @@ export default function ActivePositionCard({ id }: ActivePositionProps) {
 
           <div className="flex-grow"> </div>
           <div>
-            <button
-              tabIndex={-1}
-              onClick={(e) => withdraw(e)}
-              className="mt-1 rounded-lg bg-gray-200 py-3 px-4"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-6 w-6"
+            <Tooltip arrow title="withdraw position">
+              <button
+                tabIndex={-1}
+                onClick={(e) => withdraw(e)}
+                className="mt-1 rounded-lg bg-gray-200 py-3 px-4 transition-colors duration-300 hover:bg-gray-300"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
-                />
-              </svg>
-            </button>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="h-6 w-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
+                  />
+                </svg>
+              </button>
+            </Tooltip>
           </div>
         </div>
       </div>
