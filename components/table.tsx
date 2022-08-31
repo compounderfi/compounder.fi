@@ -18,7 +18,10 @@ const columnHelper = createColumnHelper<Compound>();
 const columns = [
   columnHelper.accessor("transactionHash", {
     header: "txn",
-    cell: (val) => val.getValue().substring(0, 10) + "...",
+    cell: (val) =>
+      val.getValue().substring(0, 5) +
+      "..." +
+      val.getValue().substring(val.getValue().length - 5),
   }),
   columnHelper.accessor("time", {}),
   columnHelper.accessor("usdcCompounded", {
@@ -44,12 +47,12 @@ export default function Table({ data }: TableProps) {
   });
 
   return (
-    <table className="mt-2 w-full table-fixed text-base">
+    <table className="mt-2 w-full table-auto text-base">
       <thead>
         {table.getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id}>
             {headerGroup.headers.map((header) => (
-              <th key={header.id}>
+              <th className="text-left" key={header.id}>
                 {header.isPlaceholder
                   ? null
                   : flexRender(
