@@ -5,6 +5,7 @@ import {
   useContractWrite,
   useNetwork,
   usePrepareContractWrite,
+  useWaitForTransaction
 } from "wagmi";
 import useSWR from "swr";
 import { Interface } from "ethers/lib/utils";
@@ -12,6 +13,7 @@ import SelectableGrid from "../components/grids/selectableGrid";
 import { useDebounce } from "../hooks/useDebounce";
 import { CONTRACT_ADDRESS } from "../utils/constants";
 import Footer from "../components/footer";
+import Head from "next/head";
 
 const abi = new Interface([
   {
@@ -85,7 +87,10 @@ function Add() {
   const debouncedSelection = useDebounce(selection, 500);
 
   const { address, isConnected } = useAccount();
-  const { data } = useSWR(address, query);
+  const { data : addressPositions } = useSWR(address, query);
+
+  console.log(addressPositions);
+  
 
   const { config } = usePrepareContractWrite({
     addressOrName: "0xc36442b4a4522e871399cd717abdd847ab11fe88",
@@ -94,21 +99,63 @@ function Add() {
     args: functionArgs,
   });
 
-  const { write } = useContractWrite(config);
+  const { data, isLoading, isSuccess, write } = useContractWrite(config);
+
+
+  const txnStatus = useWaitForTransaction({
+    hash: data?.hash,
+    wait: data?.wait,
+  });
+
+  let depositButtonDisabled = false;
+
+  function deposit() {
+    if (data?.hash) {
+      const explorerURI =
+        chain?.id == 1
+          ? `https://etherscan.io/tx/${data.hash}`
+          : `https://${chain?.name}.etherscan.io/tx/${data.hash}`;
+      window.open(explorerURI, "_blank");
+      return;
+    }
+
+    if (
+      isLoading == true ||
+      isSuccess == true ||
+      txnStatus.data !== undefined
+    ) {
+      return;
+    }
+
+    write?.();
+  }
+
+  let buttonText = <p>deposit {selection.length == 1 ? " position " : " positions"}</p>
+
+  if (isLoading) {
+    buttonText = <p>confirm txn in wallet</p>;
+  }
+  if (isSuccess) {
+    buttonText = <><p>txn submitted</p><p>click to view txn in explorer</p></>;
+  }
+  if (txnStatus.isSuccess) {
+    buttonText = <><p>txn confirmed</p><p>click to view txn in explorer</p></>;
+  }
+
 
   useEffect(() => {
     const ids: string[] = [];
 
-    if (data == undefined) {
+    if (addressPositions == undefined) {
       return;
     }
 
-    data.data.positions.forEach((position: { id: string }) => {
+    addressPositions.data.positions.forEach((position: { id: string }) => {
       ids.push(position.id);
     });
 
     setIds(ids);
-  }, [data]);
+  }, [addressPositions]);
 
   useEffect(() => {
     if (selection.length == 1) {
@@ -132,7 +179,10 @@ function Add() {
 
   return (
     <>
-      {isMounted && data !== undefined && isConnected && (
+  <Head>
+        <title>add positions | compounder.fi</title>
+        </Head>
+      {isMounted && addressPositions !== undefined && isConnected && (
         <>
           {ids.length > 0 && (
             <>
@@ -157,8 +207,7 @@ function Add() {
 
       {isMounted && selection.length > 0 && (
         <>
-          <Footer></Footer>
-          <div className="h-[32px]"></div>
+          <div className="h-[64px]"></div>
           <div className="fixed bottom-0 left-0 right-0 bg-gray-200 ">
             <div className="flex">
               <p className="py-8 pl-12">
@@ -168,11 +217,11 @@ function Add() {
               <div className="grow"></div>
 
               <button
-                onClick={() => write?.()}
+                onClick={deposit}
                 className="w-[232px] bg-gray-300 "
                 tabIndex={-1}
               >
-                deposit {selection.length == 1 ? "position " : "positions"}
+                {buttonText}
               </button>
             </div>
           </div>

@@ -5,8 +5,8 @@ import { useIsMounted } from "../hooks/useIsMounted";
 import abi from "../utils/abi.json";
 import { InfuraProvider } from "@ethersproject/providers";
 import { useEffect, useState } from "react";
-
 import { CONTRACT_ADDRESS } from "../utils/constants";
+import Head from "next/head";
 
 const provider = new InfuraProvider();
 
@@ -34,6 +34,9 @@ function Index() {
 
   return (
     <>
+  <Head>
+        <title>active positions | compounder.fi</title>
+        </Head>
       {isMounted && !isConnected && (
         <>
           <p className="px-4 text-xl">

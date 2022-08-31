@@ -11,6 +11,12 @@ import {
 import { MouseEvent } from "react";
 import { CONTRACT_ADDRESS } from "../../utils/constants";
 import { Tooltip } from "@mui/material";
+import {
+  ArrowRightOnRectangleIcon,
+  PaperAirplaneIcon,
+  EllipsisHorizontalIcon,
+  CheckCircleIcon,
+} from "@heroicons/react/24/outline";
 
 export interface ActivePositionProps {
   id: string;
@@ -96,70 +102,19 @@ export default function ActivePositionCard({
                 className="mt-1 rounded-lg bg-gray-200 py-3 px-4 transition-colors duration-300 hover:bg-gray-300"
               >
                 {!isLoading && !isSuccess && !data && (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="h-6 w-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
-                    />
-                  </svg>
+                  <ArrowRightOnRectangleIcon className="h-6 w-6"></ArrowRightOnRectangleIcon>
                 )}
+
                 {isLoading && (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="h-6 w-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
-                    />
-                  </svg>
+                  <PaperAirplaneIcon className="h-6 w-6"></PaperAirplaneIcon>
                 )}
 
                 {isSuccess && !txnStatus.isSuccess && (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="h-6 w-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
-                    />
-                  </svg>
+                  <EllipsisHorizontalIcon className="h-6 w-6"></EllipsisHorizontalIcon>
                 )}
 
                 {txnStatus.isSuccess && (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="h-6 w-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
+                  <CheckCircleIcon className="h-6 w-6"></CheckCircleIcon>
                 )}
               </button>
             </Tooltip>
