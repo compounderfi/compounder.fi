@@ -5,7 +5,7 @@ import {
   useContractWrite,
   useNetwork,
   usePrepareContractWrite,
-  useWaitForTransaction
+  useWaitForTransaction,
 } from "wagmi";
 import useSWR from "swr";
 import { Interface } from "ethers/lib/utils";
@@ -87,10 +87,9 @@ function Add() {
   const debouncedSelection = useDebounce(selection, 500);
 
   const { address, isConnected } = useAccount();
-  const { data : addressPositions } = useSWR(address, query);
+  const { data: addressPositions } = useSWR(address, query);
 
   console.log(addressPositions);
-  
 
   const { config } = usePrepareContractWrite({
     addressOrName: "0xc36442b4a4522e871399cd717abdd847ab11fe88",
@@ -100,7 +99,6 @@ function Add() {
   });
 
   const { data, isLoading, isSuccess, write } = useContractWrite(config);
-
 
   const txnStatus = useWaitForTransaction({
     hash: data?.hash,
@@ -130,18 +128,29 @@ function Add() {
     write?.();
   }
 
-  let buttonText = <p>deposit {selection.length == 1 ? " position " : " positions"}</p>
+  let buttonText = (
+    <p>deposit {selection.length == 1 ? " position " : " positions"}</p>
+  );
 
   if (isLoading) {
     buttonText = <p>confirm txn in wallet</p>;
   }
   if (isSuccess) {
-    buttonText = <><p>txn submitted</p><p>click to view txn in explorer</p></>;
+    buttonText = (
+      <>
+        <p>txn submitted</p>
+        <p>click to view txn in explorer</p>
+      </>
+    );
   }
   if (txnStatus.isSuccess) {
-    buttonText = <><p>txn confirmed</p><p>click to view txn in explorer</p></>;
+    buttonText = (
+      <>
+        <p>txn confirmed</p>
+        <p>click to view txn in explorer</p>
+      </>
+    );
   }
-
 
   useEffect(() => {
     const ids: string[] = [];
@@ -179,9 +188,9 @@ function Add() {
 
   return (
     <>
-  <Head>
+      <Head>
         <title>add positions | compounder.fi</title>
-        </Head>
+      </Head>
       {isMounted && addressPositions !== undefined && isConnected && (
         <>
           {ids.length > 0 && (

@@ -34,9 +34,9 @@ function Index() {
 
   return (
     <>
-  <Head>
+      <Head>
         <title>active positions | compounder.fi</title>
-        </Head>
+      </Head>
       {isMounted && !isConnected && (
         <>
           <p className="px-4 text-xl">
