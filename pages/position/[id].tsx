@@ -4,7 +4,8 @@ import { useEffect, useState, Fragment } from "react";
 import PositionInformation from "../../components/cards/positionInformation";
 import Table, { Compound } from "../../components/table";
 import CompoundNowModal from "../../components/compoundNowModal";
-
+import useSWR from "swr";
+import { useNetwork } from "wagmi";
 
 const tableData: Compound[] = [
   {
@@ -33,20 +34,14 @@ const tableData: Compound[] = [
   },
 ];
 
-
-const poolImmutablesAbi = [
-  'function factory() external view returns (address)',
-  'function token0() external view returns (address)',
-  'function token1() external view returns (address)',
-  'function fee() external view returns (uint24)',
-  'function tickSpacing() external view returns (int24)',
-  'function maxLiquidityPerTick() external view returns (uint128)',
-]
-
 export default function Position() {
+  const fetcher = (url: RequestInfo | URL) => fetch(url).then(r => r.json())
+
   const router = useRouter();
   const { id } = router.query;
+  const {chain}  = useNetwork();
   const [tokenID, setTokenID] = useState("");
+  const { data } = useSWR("/api/" + chain + "/getPosition/" + id, fetcher);
 
   useEffect(() => {
     if (!id) {
@@ -75,22 +70,22 @@ export default function Position() {
             <PositionInformation
               title="liquidity"
               dollarValue="-"
-              token1Name="UNI"
+              token1Name={data?.token0}
               token1Image="https://cloudflare-ipfs.com/ipfs/QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg"
-              token1Qt="69.420"
-              token2Name="UNI"
+              token1Qt={data?.amount0}
+              token2Name={data?.token1}
               token2Image="https://cloudflare-ipfs.com/ipfs/QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg"
-              token2Qt="69.420"
+              token2Qt={data?.amount1}
             ></PositionInformation>
             <PositionInformation
               title="unclaimed fees"
               dollarValue="-"
-              token1Name="UNI"
+              token1Name={data?.token0}
               token1Image="https://cloudflare-ipfs.com/ipfs/QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg"
-              token1Qt="69.420"
-              token2Name="UNI"
+              token1Qt={data?.fees0}
+              token2Name={data?.token1}
               token2Image="https://cloudflare-ipfs.com/ipfs/QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg"
-              token2Qt="69.420"
+              token2Qt={data?.fees1}
             ></PositionInformation>
           </div>
         </div>
