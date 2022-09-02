@@ -3,27 +3,9 @@ import { Pool, Position } from '@uniswap/v3-sdk'
 import { Token } from '@uniswap/sdk-core'
 import axios from "axios";
 import abi from "../../../../utils/uniswapABI.json";
+import type { NextApiRequest, NextApiResponse } from 'next'
 
-
-/*
-async function main() {
-
-  const TokenA = new Token(1, immutables.token0, 6, 'USDC', 'USD Coin')
-
-  const TokenB = new Token(1, immutables.token1, 18, 'WETH', 'Wrapped Ether')
-
-  const poolExample = new Pool(
-    TokenA,
-    TokenB,
-    immutables.fee,
-    state.sqrtPriceX96.toString(),
-    state.liquidity.toString(),
-    state.tick
-  )
-  console.log(poolExample)
-}
-*/
-async function makeRequest(tokenID: Number, chain: String) {
+async function makeRequest(tokenID: String, chain: String) {
     const graphURL = chain == "mainnet" ? "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3" : "https://api.thegraph.com/subgraphs/name/compositelabs/uniswap-v3-goerli";
 
     const response = await axios.post(
@@ -67,9 +49,18 @@ async function makeRequest(tokenID: Number, chain: String) {
     return response.data
 }
 
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { tokenID, chain } = req.query;
 
+    if (typeof tokenID !== "string") {
+      res.status(400).json({ error: "tokenID must be string" });
+      return
+    }
+
+    if (typeof chain !== "string") {
+      res.status(400).json({ error: "chain must be string" });
+      return
+    }
 
     const json = await makeRequest(tokenID, chain);
     
@@ -138,7 +129,7 @@ export default async function handler(req, res) {
     })
 }
 
-async function getFees(tokenID: Number, token0decimals: String, token1decimals: String, owner: String, chain: String) {
+async function getFees(tokenID: String, token0decimals: String, token1decimals: String, owner: String, chain: String) {
     const rpcURL = chain == "mainnet" ? "https://eth-mainnet.g.alchemy.com/v2/jDYE9Sr-LXOSHwB9rqVRPoGd2OQSn7mK" : "https://eth-goerli.g.alchemy.com/v2/pRQeyvDG-HCuf5xLTV-N3ads5vnbkvgt";
 
     const provider = new ethers.providers.JsonRpcBatchProvider(rpcURL);
