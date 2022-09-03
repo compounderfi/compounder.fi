@@ -6,7 +6,7 @@ import abi from "../../../../utils/uniswapABI.json";
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 async function makeRequest(tokenID: String, chain: String) {
-    const graphURL = chain == "mainnet" ? "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3" : "https://api.thegraph.com/subgraphs/name/compositelabs/uniswap-v3-goerli";
+    const graphURL = chain == "1" ? "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3" : "https://api.thegraph.com/subgraphs/name/compositelabs/uniswap-v3-goerli";
 
     const response = await axios.post(
         graphURL,
@@ -130,7 +130,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 }
 
 async function getFees(tokenID: String, token0decimals: String, token1decimals: String, owner: String, chain: String) {
-    const rpcURL = chain == "mainnet" ? "https://eth-mainnet.g.alchemy.com/v2/jDYE9Sr-LXOSHwB9rqVRPoGd2OQSn7mK" : "https://eth-goerli.g.alchemy.com/v2/pRQeyvDG-HCuf5xLTV-N3ads5vnbkvgt";
+    const rpcURL = chain == "1" ? "https://eth-mainnet.g.alchemy.com/v2/jDYE9Sr-LXOSHwB9rqVRPoGd2OQSn7mK" : "https://eth-goerli.g.alchemy.com/v2/pRQeyvDG-HCuf5xLTV-N3ads5vnbkvgt";
 
     const provider = new ethers.providers.JsonRpcBatchProvider(rpcURL);
     const contract = new ethers.Contract(
