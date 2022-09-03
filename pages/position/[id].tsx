@@ -6,6 +6,7 @@ import Table, { Compound } from "../../components/table";
 import CompoundNowModal from "../../components/compoundNowModal";
 import useSWR from "swr";
 import { useNetwork } from "wagmi";
+import  Head from "next/head";
 
 const tableData: Compound[] = [
   {
@@ -37,9 +38,14 @@ const tableData: Compound[] = [
 function getImage(tokenAddress: string | undefined) {
   if (tokenAddress == undefined) return "";
 
-  if (tokenAddress == "0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6") return "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png"
+  if (tokenAddress == "0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6")
+    return "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png";
 
-  return "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/" + tokenAddress + "/logo.png";
+  return (
+    "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/" +
+    tokenAddress +
+    "/logo.png"
+  );
 }
 
 export default function Position() {
@@ -69,6 +75,10 @@ export default function Position() {
 
   return (
     <>
+      <Head>
+        <title>position {tokenID} | compounder.fi</title>
+      </Head>
+
       <div className="px-4 text-xl">
         <div className="mt-2 flex gap-6 ">
           <ActivePositionCard

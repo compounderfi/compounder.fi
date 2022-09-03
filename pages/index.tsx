@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { CONTRACT_ADDRESS } from "../utils/constants";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const provider = new InfuraProvider();
 
@@ -42,7 +43,7 @@ function Index() {
   return (
     <>
       <Head>
-        <title>active positions | compounder.fi</title>
+        <title>compounder.fi</title>
       </Head>
       {isMounted && !isConnected && (
         <>
@@ -55,7 +56,12 @@ function Index() {
             <PublicStats />
           </div>
 
-          <p className="mt-4 px-4 text-xl">connect wallet to continue</p>
+          <p className="mt-4 px-4 text-xl">
+            connect wallet to continue or{" "}
+            <Link href="/positions/all">
+              <span className="underline underline-offset-4	decoration-1 cursor-pointer">view all deposited positions</span>
+            </Link>
+          </p>
         </>
       )}
 

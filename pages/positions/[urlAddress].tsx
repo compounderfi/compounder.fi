@@ -33,25 +33,15 @@ function Index() {
     setIds(newIds);
   }, [data]);
 
+  if (!isConnected) {
+    router.push("/");
+  }
+
   return (
     <>
       <Head>
         <title>active positions | compounder.fi</title>
       </Head>
-      {isMounted && !isConnected && (
-        <>
-          <p className="px-4 text-xl">
-            compounder.fi automatically compounds uniswap liquidity position
-            earnings
-          </p>
-
-          <div className="my-4 px-4">
-            <PublicStats />
-          </div>
-
-          <p className="mt-4 px-4 text-xl">connect wallet to continue</p>
-        </>
-      )}
 
       {isMounted && isConnected && (
         <>

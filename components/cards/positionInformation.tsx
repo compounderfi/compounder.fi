@@ -24,13 +24,12 @@ const shimmer = (w: number, h: number) => `
   <rect width="${w}" height="${h}" fill="#333" />
   <rect id="r" width="${w}" height="${h}" fill="url(#g)" />
   <animate xlink:href="#r" attributeName="x" from="-${w}" to="${w}" dur="1s" repeatCount="indefinite"  />
-</svg>`
+</svg>`;
 
 const toBase64 = (str: string) =>
-  typeof window === 'undefined'
-    ? Buffer.from(str).toString('base64')
-    : window.btoa(str)
-
+  typeof window === "undefined"
+    ? Buffer.from(str).toString("base64")
+    : window.btoa(str);
 
 export default function PositionInformation({
   title,
@@ -44,63 +43,67 @@ export default function PositionInformation({
 }: PositionInformationProps) {
   return (
     <>
-    {token0Image !== "" && (
-    <div className="rounded-[30px] border-2 border-gray-200 bg-[#f0f2f5] p-6 shadow-lg">
-      <div>{title}</div>
-      <div className="mt-2 mb-4 text-3xl">${dollarValue}</div>
-      <div className="rounded-[15px] bg-gray-200 py-4 px-4">
-        <div className="flex gap-4 pb-2">
-          <Image
-            alt={token0Name + " icon"}
-            src={token0Image}
-            width={28}
-            layout={"fixed"}
-            height={28}
-            placeholder={"blur"}
-            blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(28, 28))}`}
-          ></Image>
-          <div className="">{token0Name}</div>
-          <div className="flex-grow"></div>
-          <div className="">{token0Qt}</div>
+      {token0Image !== "" && (
+        <div className="rounded-[30px] border-2 border-gray-200 bg-[#f0f2f5] p-6 shadow-lg">
+          <div>{title}</div>
+          <div className="mt-2 mb-4 text-3xl">${dollarValue}</div>
+          <div className="rounded-[15px] bg-gray-200 py-4 px-4">
+            <div className="flex gap-4 pb-2">
+              <Image
+                alt={token0Name + " icon"}
+                src={token0Image}
+                width={28}
+                layout={"fixed"}
+                height={28}
+                placeholder={"blur"}
+                blurDataURL={`data:image/svg+xml;base64,${toBase64(
+                  shimmer(28, 28)
+                )}`}
+              ></Image>
+              <div className="">{token0Name}</div>
+              <div className="flex-grow"></div>
+              <div className="">{token0Qt}</div>
+            </div>
+            <div className="flex gap-4">
+              <Image
+                alt={token1Name + " icon"}
+                src={token1Image}
+                width={28}
+                layout={"fixed"}
+                height={28}
+                placeholder={"blur"}
+                blurDataURL={`data:image/svg+xml;base64,${toBase64(
+                  shimmer(28, 28)
+                )}`}
+              ></Image>
+              <div className="">{token1Name}</div>
+              <div className="flex-grow"></div>
+              <div className="">{token1Qt}</div>
+            </div>
+          </div>
         </div>
-        <div className="flex gap-4">
-          <Image
-            alt={token1Name + " icon"}
-            src={token1Image}
-            width={28}
-            layout={"fixed"}
-            height={28}
-            placeholder={"blur"}
-            blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(28, 28))}`}
-          ></Image>
-          <div className="">{token1Name}</div>
-          <div className="flex-grow"></div>
-          <div className="">{token1Qt}</div>
-        </div>
-      </div>
-    </div>
-    )} 
+      )}
 
-    {token0Image == "" && (
-    <div className="rounded-[30px] border-2 border-gray-200 bg-[#f0f2f5] p-6 shadow-lg">
-      <div>{title}</div>
-      <div className="mt-2 mb-4 text-3xl">${dollarValue}</div>
-      <div className="rounded-[15px] bg-gray-200 py-4 px-4">
-        <div className="flex gap-4 pb-2 items-center">
-          <div className="w-[28px] h-[28px] bg-gray-300 rounded-full animate-pulse"></div>
-          <div className="w-[64px] bg-gray-300 rounded-lg animate-pulse h-[18px]"></div>
-          <div className="flex-grow"></div>
-          <div className="w-[250px] bg-gray-300 rounded-lg animate-pulse h-[18px]"></div>
+      {token0Image == "" && (
+        <div className="rounded-[30px] border-2 border-gray-200 bg-[#f0f2f5] p-6 shadow-lg">
+          <div>{title}</div>
+          <div className="mt-2 mb-4 text-3xl">${dollarValue}</div>
+          <div className="rounded-[15px] bg-gray-200 py-4 px-4">
+            <div className="flex items-center gap-4 pb-2">
+              <div className="h-[28px] w-[28px] animate-pulse rounded-full bg-gray-300"></div>
+              <div className="h-[18px] w-[96px] animate-pulse rounded-lg bg-gray-300"></div>
+              <div className="flex-grow"></div>
+              <div className="h-[18px] w-[250px] animate-pulse rounded-lg bg-gray-300"></div>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="h-[28px] w-[28px] animate-pulse rounded-full bg-gray-300"></div>
+              <div className="h-[18px] w-[96px] animate-pulse rounded-lg bg-gray-300"></div>
+              <div className="flex-grow"></div>
+              <div className="h-[18px] w-[250px] animate-pulse rounded-lg bg-gray-300"></div>
+            </div>
+          </div>
         </div>
-        <div className="flex gap-4 items-center">
-          <div className="w-[28px] h-[28px] bg-gray-300 rounded-full animate-pulse"></div>
-          <div className="w-[64px] bg-gray-300 rounded-lg animate-pulse h-[18px]"></div>
-          <div className="flex-grow"></div>
-          <div className="w-[250px] bg-gray-300 rounded-lg animate-pulse h-[18px]"></div>
-        </div>
-      </div>
-    </div>
-    )} 
+      )}
     </>
   );
 }
