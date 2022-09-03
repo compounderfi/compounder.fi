@@ -258,19 +258,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "MAX_REWARD_X64",
-    "outputs": [
-      {
-        "internalType": "uint64",
-        "name": "",
-        "type": "uint64"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "address",
@@ -323,9 +310,9 @@
             "type": "uint256"
           },
           {
-            "internalType": "enum ICompoundor.RewardConversion",
+            "internalType": "bool",
             "name": "rewardConversion",
-            "type": "uint8"
+            "type": "bool"
           },
           {
             "internalType": "bool",
@@ -333,7 +320,7 @@
             "type": "bool"
           }
         ],
-        "internalType": "struct ICompoundor.AutoCompoundParams",
+        "internalType": "struct ICompounder.AutoCompoundParams",
         "name": "params",
         "type": "tuple"
       }
@@ -362,25 +349,6 @@
       }
     ],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "balanceOf",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "balance",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -454,19 +422,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "compounderRewardX64",
-    "outputs": [
-      {
-        "internalType": "uint64",
-        "name": "",
-        "type": "uint64"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "components": [
@@ -501,7 +456,7 @@
             "type": "address"
           }
         ],
-        "internalType": "struct ICompoundor.DecreaseLiquidityAndCollectParams",
+        "internalType": "struct ICompounder.DecreaseLiquidityAndCollectParams",
         "name": "params",
         "type": "tuple"
       }
@@ -520,19 +475,6 @@
       }
     ],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "factory",
-    "outputs": [
-      {
-        "internalType": "contract IUniswapV3Factory",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -555,19 +497,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "nonfungiblePositionManager",
-    "outputs": [
-      {
-        "internalType": "contract INonfungiblePositionManager",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "address",
@@ -576,7 +505,7 @@
       },
       {
         "internalType": "address",
-        "name": "from",
+        "name": "",
         "type": "address"
       },
       {
@@ -659,53 +588,22 @@
   },
   {
     "inputs": [],
+    "name": "protocolReward",
+    "outputs": [
+      {
+        "internalType": "uint64",
+        "name": "",
+        "type": "uint64"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "renounceOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint64",
-        "name": "_totalRewardX64",
-        "type": "uint64"
-      },
-      {
-        "internalType": "uint64",
-        "name": "_compounderRewardX64",
-        "type": "uint64"
-      }
-    ],
-    "name": "setReward",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "swapRouter",
-    "outputs": [
-      {
-        "internalType": "contract ISwapRouter",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "totalRewardX64",
-    "outputs": [
-      {
-        "internalType": "uint64",
-        "name": "",
-        "type": "uint64"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -725,18 +623,13 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "token",
+        "name": "tokenAddress",
         "type": "address"
       },
       {
         "internalType": "address",
         "name": "to",
         "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
       }
     ],
     "name": "withdrawBalanceCaller",
@@ -748,18 +641,13 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "token",
+        "name": "tokenAddress",
         "type": "address"
       },
       {
         "internalType": "address",
         "name": "to",
         "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
       }
     ],
     "name": "withdrawBalanceOwner",

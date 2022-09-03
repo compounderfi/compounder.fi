@@ -1,4 +1,4 @@
-import { useIsMounted } from "../hooks/useIsMounted";
+import { useIsMounted } from "../../hooks/useIsMounted";
 import { useState, useEffect } from "react";
 import {
   useAccount,
@@ -9,10 +9,10 @@ import {
 } from "wagmi";
 import useSWR from "swr";
 import { Interface } from "ethers/lib/utils";
-import SelectableGrid from "../components/grids/selectableGrid";
-import { useDebounce } from "../hooks/useDebounce";
-import { CONTRACT_ADDRESS } from "../utils/constants";
-import Footer from "../components/footer";
+import SelectableGrid from "../../components/grids/selectableGrid";
+import { useDebounce } from "../../hooks/useDebounce";
+import { CONTRACT_ADDRESS } from "../../utils/constants";
+import Footer from "../../components/footer";
 import Head from "next/head";
 
 const abi = new Interface([
@@ -88,8 +88,6 @@ function Add() {
 
   const { address, isConnected } = useAccount();
   const { data: addressPositions } = useSWR(address, query);
-
-  console.log(addressPositions);
 
   const { config } = usePrepareContractWrite({
     addressOrName: "0xc36442b4a4522e871399cd717abdd847ab11fe88",

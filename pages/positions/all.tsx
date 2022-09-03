@@ -1,6 +1,6 @@
 import Head from "next/head";
 
-function Positions() {
+function AllPositions() {
   return (
     <>
       <Head>
@@ -10,4 +10,4 @@ function Positions() {
   );
 }
 
-export default Positions;
+export default AllPositions;

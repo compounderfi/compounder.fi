@@ -7,7 +7,7 @@ export default function Footer() {
       <Link href="/about">about</Link>
       <Link href="/contact">contact</Link>
       <Link href="/docs">docs</Link>
-      <Link href="/positions">view all positions</Link>
+      <Link href="/positions/all">view all positions</Link>
     </div>
   );
 }

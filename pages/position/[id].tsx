@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import ActivePositionCard from "../../components/cards/activePosition";
-import { useEffect, useState, Fragment } from "react";
+import { useEffect, useState } from "react";
 import PositionInformation from "../../components/cards/positionInformation";
 import Table, { Compound } from "../../components/table";
 import CompoundNowModal from "../../components/compoundNowModal";
@@ -35,14 +35,12 @@ const tableData: Compound[] = [
 ];
 
 export default function Position() {
-  const fetcher = (url: RequestInfo | URL) => fetch(url).then(r => r.json())
+  const fetcher = (url: RequestInfo | URL) => fetch(url).then((r) => r.json());
 
   const router = useRouter();
   const { id } = router.query;
-  const {chain}  = useNetwork();
+  const { chain } = useNetwork();
 
-  console.log(chain);
-  
   const [tokenID, setTokenID] = useState("");
   const { data } = useSWR("/api/" + chain?.id + "/getPosition/" + id, fetcher);
 
@@ -73,22 +71,22 @@ export default function Position() {
             <PositionInformation
               title="liquidity"
               dollarValue="-"
-              token1Name={data?.token0}
+              token0Name={data?.token0 || "loading..."}
+              token0Image="https://cloudflare-ipfs.com/ipfs/QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg"
+              token0Qt={data?.amount0}
+              token1Name={data?.token1 || "loading..."}
               token1Image="https://cloudflare-ipfs.com/ipfs/QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg"
-              token1Qt={data?.amount0}
-              token2Name={data?.token1}
-              token2Image="https://cloudflare-ipfs.com/ipfs/QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg"
-              token2Qt={data?.amount1}
+              token1Qt={data?.amount1}
             ></PositionInformation>
             <PositionInformation
               title="unclaimed fees"
               dollarValue="-"
-              token1Name={data?.token0}
+              token0Name={data?.token0 || "loading..."}
+              token0Image="https://cloudflare-ipfs.com/ipfs/QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg"
+              token0Qt={data?.fees0}
+              token1Name={data?.token1 || "loading..."}
               token1Image="https://cloudflare-ipfs.com/ipfs/QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg"
-              token1Qt={data?.fees0}
-              token2Name={data?.token1}
-              token2Image="https://cloudflare-ipfs.com/ipfs/QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg"
-              token2Qt={data?.fees1}
+              token1Qt={data?.fees1}
             ></PositionInformation>
           </div>
         </div>
@@ -112,7 +110,13 @@ export default function Position() {
         </div>
       </div>
 
-      <CompoundNowModal setIsOpen={setDialogIsOpen} isOpen={dialogIsOpen}></CompoundNowModal>
+      <CompoundNowModal
+        token0={data?.token0}
+        token1={data?.token1}
+        positionId={tokenID}
+        setIsOpen={setDialogIsOpen}
+        isOpen={dialogIsOpen}
+      ></CompoundNowModal>
     </>
   );
 }

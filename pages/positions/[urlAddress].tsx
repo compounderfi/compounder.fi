@@ -1,17 +1,17 @@
-import PublicStats from "../components/publicStats";
+import PublicStats from "../../components/publicStats";
 import { useAccount, useContractRead } from "wagmi";
-import HomePageGrid from "../components/grids/homePageGrid";
-import { useIsMounted } from "../hooks/useIsMounted";
-import abi from "../utils/abi.json";
-import { InfuraProvider } from "@ethersproject/providers";
+import HomePageGrid from "../../components/grids/homePageGrid";
+import { useIsMounted } from "../../hooks/useIsMounted";
+import abi from "../../utils/abi.json";
 import { useEffect, useState } from "react";
-import { CONTRACT_ADDRESS } from "../utils/constants";
+import { CONTRACT_ADDRESS } from "../../utils/constants";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
-const provider = new InfuraProvider();
-
 function Index() {
+  const router = useRouter();
+  const { urlAddress } = router.query;
+
   const { address, isConnected } = useAccount();
   const isMounted = useIsMounted();
 
@@ -19,7 +19,7 @@ function Index() {
     addressOrName: CONTRACT_ADDRESS,
     contractInterface: abi,
     functionName: "addressToTokens",
-    args: address,
+    args: urlAddress,
   });
 
   const [ids, setIds] = useState<string[]>([]);
@@ -32,11 +32,6 @@ function Index() {
 
     setIds(newIds);
   }, [data]);
-
-  if (address) {
-    const router = useRouter();
-    router.push(`/positions/${address}`);
-  }
 
   return (
     <>
@@ -60,9 +55,17 @@ function Index() {
 
       {isMounted && isConnected && (
         <>
-          <p className="px-4 text-xl">active positions</p>
+          {address == urlAddress && (
+            <p className="px-4 text-xl">your active positions</p>
+          )}
+          {address !== urlAddress && (
+            <p className="px-4 text-xl">{urlAddress}'s active positions</p>
+          )}
           <div className="mt-2">
-            <HomePageGrid ids={ids}></HomePageGrid>
+            <HomePageGrid
+              showAddPositionCard={address == urlAddress}
+              ids={ids}
+            ></HomePageGrid>
           </div>
         </>
       )}

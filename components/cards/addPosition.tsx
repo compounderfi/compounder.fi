@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function AddPositionCard() {
   return (
-    <PositionCard href="/add">
+    <PositionCard href="/positions/add">
       <div>
         <div className="text-center text-6xl">+</div>
         <div className="text-center text-4xl">add position</div>
