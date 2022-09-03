@@ -59,7 +59,9 @@ function Index() {
           <p className="mt-4 px-4 text-xl">
             connect wallet to continue or{" "}
             <Link href="/positions/all">
-              <span className="underline underline-offset-4	decoration-1 cursor-pointer">view all deposited positions</span>
+              <span className="cursor-pointer underline	decoration-1 underline-offset-4">
+                view all deposited positions
+              </span>
             </Link>
           </p>
         </>

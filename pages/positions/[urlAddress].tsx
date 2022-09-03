@@ -33,7 +33,7 @@ function Index() {
     setIds(newIds);
   }, [data]);
 
-  if (!isConnected) {
+  if (!isConnected && isMounted) {
     router.push("/");
   }
 

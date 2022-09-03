@@ -6,7 +6,7 @@ import Table, { Compound } from "../../components/table";
 import CompoundNowModal from "../../components/compoundNowModal";
 import useSWR from "swr";
 import { useNetwork } from "wagmi";
-import  Head from "next/head";
+import Head from "next/head";
 
 const tableData: Compound[] = [
   {
