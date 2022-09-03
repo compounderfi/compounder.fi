@@ -1,8 +1,14 @@
 import { Transition, Dialog } from "@headlessui/react";
 import { Dispatch, Fragment, SetStateAction, useState } from "react";
-import { useContractWrite, usePrepareContractWrite } from "wagmi";
+import {
+  useContractWrite,
+  useNetwork,
+  usePrepareContractWrite,
+  useWaitForTransaction,
+} from "wagmi";
 import { CONTRACT_ADDRESS } from "../utils/constants";
 import abi from "../utils/abi.json";
+import { Tooltip } from "@mui/material";
 
 export interface CompoundNowModalProps {
   isOpen: boolean;
@@ -19,6 +25,8 @@ export default function CompoundNowModal({
   token1,
   positionId,
 }: CompoundNowModalProps) {
+  const { chain } = useNetwork();
+
   const [form, setForm] = useState({
     rewardConversion: false,
     doSwap: false,
@@ -28,10 +36,60 @@ export default function CompoundNowModal({
     addressOrName: CONTRACT_ADDRESS,
     contractInterface: abi,
     functionName: "autoCompound",
-    args: [parseInt(positionId), form.rewardConversion, form.doSwap],
+    args: [[parseInt(positionId), form.rewardConversion, form.doSwap]],
   });
 
   const { data, isLoading, isSuccess, write } = useContractWrite(config);
+
+  const txnStatus = useWaitForTransaction({
+    hash: data?.hash,
+    wait: data?.wait,
+  });
+
+  function openWallet() {
+    if (data?.hash) {
+      const explorerURI =
+        chain?.id == 1
+          ? `https://etherscan.io/tx/${data.hash}`
+          : `https://${chain?.name}.etherscan.io/tx/${data.hash}`;
+      window.open(explorerURI, "_blank");
+      return;
+    }
+
+    if (
+      isLoading == true ||
+      isSuccess == true ||
+      txnStatus.data !== undefined
+    ) {
+      return;
+    }
+
+    write?.();
+  }
+
+  let buttonText = <p>compound now</p>;
+
+  if (isLoading) {
+    buttonText = <p>confirm txn in wallet</p>;
+  }
+  if (isSuccess) {
+    buttonText = (
+      <>
+        <Tooltip arrow title={"click to view txn in explorer"}>
+          <p>txn submitted</p>
+        </Tooltip>
+      </>
+    );
+  }
+  if (txnStatus.isSuccess) {
+    buttonText = (
+      <>
+        <Tooltip arrow title={"click to view txn in explorer"}>
+          <p>txn confirmed</p>
+        </Tooltip>
+      </>
+    );
+  }
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -115,9 +173,9 @@ export default function CompoundNowModal({
                       <button
                         type="button"
                         className="inline-flex justify-center rounded-md border border-transparent bg-gray-200 px-4 py-2 text-sm font-medium transition-colors duration-300 hover:bg-gray-300 "
-                        onClick={() => write?.()}
+                        onClick={openWallet}
                       >
-                        compound now
+                        {buttonText}
                       </button>
                     </div>
                   </div>
