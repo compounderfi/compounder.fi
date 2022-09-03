@@ -59,7 +59,7 @@ function Index() {
             <p className="px-4 text-xl">your active positions</p>
           )}
           {address !== urlAddress && (
-            <p className="px-4 text-xl">{urlAddress}'s active positions</p>
+            <p className="px-4 text-xl">{urlAddress}&apos;s active positions</p>
           )}
           <div className="mt-2">
             <HomePageGrid

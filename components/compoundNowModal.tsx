@@ -31,9 +31,6 @@ export default function CompoundNowModal({
     args: [parseInt(positionId), form.rewardConversion, form.doSwap],
   });
 
-  console.log(config);
-  console.log(error);
-
   const { data, isLoading, isSuccess, write } = useContractWrite(config);
 
   return (

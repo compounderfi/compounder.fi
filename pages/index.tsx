@@ -33,8 +33,9 @@ function Index() {
     setIds(newIds);
   }, [data]);
 
+  const router = useRouter();
+
   if (address) {
-    const router = useRouter();
     router.push(`/positions/${address}`);
   }
 
@@ -60,9 +61,9 @@ function Index() {
 
       {isMounted && isConnected && (
         <>
-          <p className="px-4 text-xl">active positions</p>
+          <p className="px-4 text-xl">your active positions</p>
           <div className="mt-2">
-            <HomePageGrid ids={ids}></HomePageGrid>
+            <HomePageGrid showAddPositionCard={true} ids={ids}></HomePageGrid>
           </div>
         </>
       )}
