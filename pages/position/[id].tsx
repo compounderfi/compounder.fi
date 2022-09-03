@@ -41,7 +41,7 @@ export default function Position() {
   const { id } = router.query;
   const {chain}  = useNetwork();
   const [tokenID, setTokenID] = useState("");
-  const { data } = useSWR("/api/" + chain + "/getPosition/" + id, fetcher);
+  const { data } = useSWR("/api/" + chain?.name + "/getPosition/" + id, fetcher);
 
   useEffect(() => {
     if (!id) {
