@@ -143,6 +143,8 @@ export default async function handler(
     fees1: fees1,
     token0: token0symbol,
     token1: token1symbol,
+    token0Address: t0.address,
+    token1Address: t1.address,
   });
 }
 

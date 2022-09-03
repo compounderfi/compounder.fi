@@ -32,11 +32,11 @@ export default function CompoundNowModal({
     doSwap: false,
   });
 
-  const { error, config } = usePrepareContractWrite({
+  const { config } = usePrepareContractWrite({
     addressOrName: CONTRACT_ADDRESS,
     contractInterface: abi,
     functionName: "autoCompound",
-    args: [[parseInt(positionId), form.rewardConversion, form.doSwap]],
+    args: [[parseInt(positionId), !form.rewardConversion, form.doSwap]],
   });
 
   const { data, isLoading, isSuccess, write } = useContractWrite(config);

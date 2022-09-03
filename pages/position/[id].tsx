@@ -34,6 +34,14 @@ const tableData: Compound[] = [
   },
 ];
 
+function getImage(tokenAddress: string | undefined) {
+  if (tokenAddress == undefined) return "";
+
+  if (tokenAddress == "0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6") return "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png"
+
+  return "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/" + tokenAddress + "/logo.png";
+}
+
 export default function Position() {
   const fetcher = (url: RequestInfo | URL) => fetch(url).then((r) => r.json());
 
@@ -72,20 +80,20 @@ export default function Position() {
               title="liquidity"
               dollarValue="-"
               token0Name={data?.token0 || "loading..."}
-              token0Image="https://cloudflare-ipfs.com/ipfs/QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg"
+              token0Image={getImage(data?.token0Address)}
               token0Qt={data?.amount0}
               token1Name={data?.token1 || "loading..."}
-              token1Image="https://cloudflare-ipfs.com/ipfs/QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg"
+              token1Image={getImage(data?.token1Address)}
               token1Qt={data?.amount1}
             ></PositionInformation>
             <PositionInformation
               title="unclaimed fees"
               dollarValue="-"
               token0Name={data?.token0 || "loading..."}
-              token0Image="https://cloudflare-ipfs.com/ipfs/QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg"
+              token0Image={getImage(data?.token0Address)}
               token0Qt={data?.fees0}
               token1Name={data?.token1 || "loading..."}
-              token1Image="https://cloudflare-ipfs.com/ipfs/QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg"
+              token1Image={getImage(data?.token1Address)}
               token1Qt={data?.fees1}
             ></PositionInformation>
           </div>
