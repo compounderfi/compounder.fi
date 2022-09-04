@@ -14,6 +14,8 @@ export interface CompoundNowModalProps {
   isOpen: boolean;
   token0: string;
   token1: string;
+  token0Fees: number;
+  token1Fees: number;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   positionId: string;
 }
@@ -21,6 +23,8 @@ export interface CompoundNowModalProps {
 export default function CompoundNowModal({
   isOpen,
   setIsOpen,
+  token0Fees,
+  token1Fees,
   token0,
   token1,
   positionId,
@@ -181,10 +185,20 @@ export default function CompoundNowModal({
                   </div>
 
                   <div className="grow" />
-                  <div className="flex flex-col content-center justify-center rounded-md bg-gray-200 p-4 text-center">
+                  <div className="flex w-[170px] flex-col content-center justify-center rounded-md bg-gray-200 p-4 text-center">
                     estimated reward
                     <div>
-                      <span className="text-2xl"> 69 UNI </span>
+                      <span className="text-2xl">
+                        {" "}
+                        {form.doSwap
+                          ? form.rewardConversion
+                            ? token1Fees * 0.02
+                            : token0Fees * 0.02
+                          : form.rewardConversion
+                          ? token1Fees * 0.016
+                          : token0Fees * 0.016}{" "}
+                        {form.rewardConversion ? token1 : token0}{" "}
+                      </span>
                     </div>
                   </div>
                 </div>

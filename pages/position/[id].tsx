@@ -25,7 +25,13 @@ function getImage(tokenAddress: string | undefined) {
 }
 
 const query = gql`
-  query GetCompounds($tokenId: BigInt!) {
+  query GetHistory($tokenId: BigInt!) {
+    positions(where: { id: $tokenId }) {
+      tokenDeposit {
+        timestamp
+        id
+      }
+    }
     autoCompoundeds(where: { tokenId: $tokenId }) {
       transaction {
         timestamp
@@ -34,10 +40,12 @@ const query = gql`
       token0 {
         decimals
         id
+        symbol
       }
       token1 {
         decimals
         id
+        symbol
       }
       amountAdded0
       amountAdded1
@@ -58,6 +66,8 @@ export default function Position() {
   const { data } = useSWR("/api/" + chain?.id + "/getPosition/" + id, fetcher);
 
   const [tableData, setTableData] = useState<Compound[]>([]);
+  const [token0, setToken0] = useState("???");
+  const [token1, setToken1] = useState("???");
 
   const graphFetcher = (variables: { tokenId: string }) =>
     request(
@@ -78,13 +88,38 @@ export default function Position() {
       tableData.push({
         transactionHash: compound.transaction.id,
         time: new Date(compound.transaction.timestamp * 1000).toLocaleString(),
-        usdcCompounded: compound.amountAdded0,
-        ethCompounded: compound.amountAdded1,
-        callerReward: compound.fee0,
+        token0Compounded:
+          compound.amountAdded0 / Math.pow(10, compound.token0.decimals) + "",
+        token1Compounded:
+          compound.amountAdded1 / Math.pow(10, compound.token1.decimals) + "",
+        callerReward:
+          compound.fee0 == "0"
+            ? compound.fee1 / Math.pow(10, compound.token1.decimals) +
+              " " +
+              compound.token1.symbol
+            : compound.fee0 / Math.pow(10, compound.token0.decimals) +
+              " " +
+              compound.token0.symbol,
       });
     });
 
     setTableData(tableData);
+    if (compoundHistory.autoCompoundeds.length > 0) {
+      setToken0(compoundHistory.autoCompoundeds[0].token0.symbol);
+      setToken1(compoundHistory.autoCompoundeds[0].token1.symbol);
+    }
+
+    if (compoundHistory.positions.length > 0) {
+      tableData.push({
+        transactionHash: compoundHistory.positions[0].tokenDeposit.id,
+        time: new Date(
+          compoundHistory.positions[0].tokenDeposit.timestamp * 1000
+        ).toLocaleString(),
+        token0Compounded: "inital deposit",
+        token1Compounded: "",
+        callerReward: "",
+      });
+    }
   }, [compoundHistory]);
 
   useEffect(() => {
@@ -99,6 +134,19 @@ export default function Position() {
 
     setTokenID(id);
   }, [id]);
+
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+
+    if (token0 == "???") {
+      setToken0(data?.token0);
+    }
+    if (token1 == "???") {
+      setToken1(data?.token1);
+    }
+  }, [data]);
 
   let [dialogIsOpen, setDialogIsOpen] = useState(false);
 
@@ -156,13 +204,19 @@ export default function Position() {
               </button>
             </div>
           </div>
-          <CompoundHistoryTable data={tableData}></CompoundHistoryTable>
+          <CompoundHistoryTable
+            token0={token0}
+            token1={token1}
+            data={tableData}
+          ></CompoundHistoryTable>
         </div>
       </div>
 
       <CompoundNowModal
         token0={data?.token0}
         token1={data?.token1}
+        token0Fees={Number(data?.fees0)}
+        token1Fees={Number(data?.fees1)}
         positionId={tokenID}
         setIsOpen={setDialogIsOpen}
         isOpen={dialogIsOpen}
