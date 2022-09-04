@@ -113,9 +113,12 @@ export default function Position() {
           <div className="flex">
             <div className="mt-4 flex-grow font-bold">compound history</div>
             <div className="flex gap-4">
-              <div className="mt-4 rounded-lg bg-gray-200 px-2 text-base">
+              <button
+                disabled={true}
+                className="mt-4 rounded-lg bg-gray-200 px-2 text-base"
+              >
                 next compound: ~420:69
-              </div>
+              </button>
               <button
                 onClick={() => setDialogIsOpen(true)}
                 className="mt-4 rounded-lg bg-gray-200 px-2 text-base transition-colors duration-300 hover:bg-gray-300"

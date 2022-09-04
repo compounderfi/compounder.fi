@@ -1,5 +1,6 @@
 import { HomeIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
+import ImageWithFallback from "../ImageWithFallback";
 
 export interface PositionInformationProps {
   title: string;
@@ -11,25 +12,6 @@ export interface PositionInformationProps {
   token1Image: string;
   token1Qt: string;
 }
-
-const shimmer = (w: number, h: number) => `
-<svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <defs>
-    <linearGradient id="g">
-      <stop stop-color="#333" offset="20%" />
-      <stop stop-color="#222" offset="50%" />
-      <stop stop-color="#333" offset="70%" />
-    </linearGradient>
-  </defs>
-  <rect width="${w}" height="${h}" fill="#333" />
-  <rect id="r" width="${w}" height="${h}" fill="url(#g)" />
-  <animate xlink:href="#r" attributeName="x" from="-${w}" to="${w}" dur="1s" repeatCount="indefinite"  />
-</svg>`;
-
-const toBase64 = (str: string) =>
-  typeof window === "undefined"
-    ? Buffer.from(str).toString("base64")
-    : window.btoa(str);
 
 export default function PositionInformation({
   title,
@@ -49,17 +31,14 @@ export default function PositionInformation({
           <div className="mt-2 mb-4 text-3xl">${dollarValue}</div>
           <div className="rounded-[15px] bg-gray-200 py-4 px-4">
             <div className="flex gap-4 pb-2">
-              <Image
+              <ImageWithFallback
                 alt={token0Name + " icon"}
                 src={token0Image}
                 width={28}
                 layout={"fixed"}
                 height={28}
-                placeholder={"blur"}
-                blurDataURL={`data:image/svg+xml;base64,${toBase64(
-                  shimmer(28, 28)
-                )}`}
-              ></Image>
+                fallbackSrc={"https://upload.wikimedia.org/wikipedia/commons/5/55/Question_Mark.svg"}
+              ></ImageWithFallback>
               <div className="">{token0Name}</div>
               <div className="flex-grow"></div>
               <div className="">{token0Qt}</div>
@@ -71,10 +50,6 @@ export default function PositionInformation({
                 width={28}
                 layout={"fixed"}
                 height={28}
-                placeholder={"blur"}
-                blurDataURL={`data:image/svg+xml;base64,${toBase64(
-                  shimmer(28, 28)
-                )}`}
               ></Image>
               <div className="">{token1Name}</div>
               <div className="flex-grow"></div>
