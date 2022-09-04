@@ -1,5 +1,3 @@
-import { HomeIcon } from "@heroicons/react/24/outline";
-import Image from "next/image";
 import ImageWithFallback from "../ImageWithFallback";
 
 export interface PositionInformationProps {
@@ -37,20 +35,25 @@ export default function PositionInformation({
                 width={28}
                 layout={"fixed"}
                 height={28}
-                fallbackSrc={"https://upload.wikimedia.org/wikipedia/commons/5/55/Question_Mark.svg"}
+                fallbackSrc={
+                  "https://upload.wikimedia.org/wikipedia/commons/5/55/Question_Mark.svg"
+                }
               ></ImageWithFallback>
               <div className="">{token0Name}</div>
               <div className="flex-grow"></div>
               <div className="">{token0Qt}</div>
             </div>
             <div className="flex gap-4">
-              <Image
+              <ImageWithFallback
                 alt={token1Name + " icon"}
                 src={token1Image}
                 width={28}
                 layout={"fixed"}
                 height={28}
-              ></Image>
+                fallbackSrc={
+                  "https://upload.wikimedia.org/wikipedia/commons/5/55/Question_Mark.svg"
+                }
+              ></ImageWithFallback>
               <div className="">{token1Name}</div>
               <div className="flex-grow"></div>
               <div className="">{token1Qt}</div>

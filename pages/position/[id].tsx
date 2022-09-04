@@ -2,11 +2,13 @@ import { useRouter } from "next/router";
 import ActivePositionCard from "../../components/cards/activePosition";
 import { useEffect, useState } from "react";
 import PositionInformation from "../../components/cards/positionInformation";
-import Table, { Compound } from "../../components/table";
 import CompoundNowModal from "../../components/compoundNowModal";
 import useSWR from "swr";
 import { useNetwork } from "wagmi";
 import Head from "next/head";
+import CompoundHistoryTable, {
+  Compound,
+} from "../../components/tables/compoundHistory";
 
 const tableData: Compound[] = [
   {
@@ -127,7 +129,7 @@ export default function Position() {
               </button>
             </div>
           </div>
-          <Table data={tableData}></Table>
+          <CompoundHistoryTable data={tableData}></CompoundHistoryTable>
         </div>
       </div>
 

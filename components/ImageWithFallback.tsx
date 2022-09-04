@@ -3,15 +3,22 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export interface ImageWithFallbackProps {
-    src: string,
-    fallbackSrc: string,
-    alt: string,
-    width: number,
-    height: number,
-    layout: "fixed",
-    }
+  src: string;
+  fallbackSrc: string;
+  alt: string;
+  width: number;
+  height: number;
+  layout: "fixed";
+}
 
-export default function ImageWithFallback({ src, fallbackSrc, alt, width, height, layout}: ImageWithFallbackProps) {
+export default function ImageWithFallback({
+  src,
+  fallbackSrc,
+  alt,
+  width,
+  height,
+  layout,
+}: ImageWithFallbackProps) {
   const [imgSrc, set_imgSrc] = useState(src);
 
   useEffect(() => {
@@ -36,4 +43,4 @@ export default function ImageWithFallback({ src, fallbackSrc, alt, width, height
       }}
     />
   );
-    }
+}

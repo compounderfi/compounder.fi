@@ -39,7 +39,7 @@ export interface TableProps {
   data: Compound[];
 }
 
-export default function Table({ data }: TableProps) {
+export default function CompoundHistoryTable({ data }: TableProps) {
   const table = useReactTable({
     data,
     columns,
