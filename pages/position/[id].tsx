@@ -10,32 +10,32 @@ import CompoundHistoryTable, {
   Compound,
 } from "../../components/tables/compoundHistory";
 
-const tableData: Compound[] = [
-  {
-    transactionHash:
-      "0xd99ac92a2a858367d2a7692a2f461db49ac10f9c6e0ed008f60598ec696b3e18",
-    time: "8/27/2022 9:15:23",
-    usdcCompounded: "321321",
-    ethCompounded: "321321",
-    callerReward: "3213210421",
-  },
-  {
-    transactionHash:
-      "0xd99ac92a2a858367d2a7692a2f461db49ac10f9c6e0ed008f60598ec696b3e18",
-    time: "8/27/2022 9:15:23",
-    usdcCompounded: "321321",
-    ethCompounded: "321321",
-    callerReward: "3213210421",
-  },
-  {
-    transactionHash:
-      "0xd99ac92a2a858367d2a7692a2f461db49ac10f9c6e0ed008f60598ec696b3e18",
-    time: "8/27/2022 9:15:23",
-    usdcCompounded: "321321",
-    ethCompounded: "321321",
-    callerReward: "3213210421",
-  },
-];
+// const tableData: Compound[] = [
+//   {
+//     transactionHash:
+//       "0xd99ac92a2a858367d2a7692a2f461db49ac10f9c6e0ed008f60598ec696b3e18",
+//     time: "8/27/2022 9:15:23",
+//     usdcCompounded: "321321",
+//     ethCompounded: "321321",
+//     callerReward: "3213210421",
+//   },
+//   {
+//     transactionHash:
+//       "0xd99ac92a2a858367d2a7692a2f461db49ac10f9c6e0ed008f60598ec696b3e18",
+//     time: "8/27/2022 9:15:23",
+//     usdcCompounded: "321321",
+//     ethCompounded: "321321",
+//     callerReward: "3213210421",
+//   },
+//   {
+//     transactionHash:
+//       "0xd99ac92a2a858367d2a7692a2f461db49ac10f9c6e0ed008f60598ec696b3e18",
+//     time: "8/27/2022 9:15:23",
+//     usdcCompounded: "321321",
+//     ethCompounded: "321321",
+//     callerReward: "3213210421",
+//   },
+// ];
 
 function getImage(tokenAddress: string | undefined) {
   if (tokenAddress == undefined) return "";
@@ -59,6 +59,35 @@ export default function Position() {
 
   const [tokenID, setTokenID] = useState("");
   const { data } = useSWR("/api/" + chain?.id + "/getPosition/" + id, fetcher);
+
+  const [tableData, setTableData] = useState<Compound[]>([]);
+
+  const query = (tokenID: string) =>
+    fetch("https://api.thegraph.com/subgraphs/name/compounderfi/test1", {
+      body: `{\"query\":\"{\\n  autoCompoundeds(where: {tokenId: ${tokenID}}) {\\n    id\\n    tokenId\\n    swap\\n    caller\\n    amountAdded0\\n    amountAdded1\\n    fees\\n    feeToken\\n    transaction {\\n      gasUsed\\n      gasPrice\\n      timestamp\\n    }\\n  }\\n}\",\"variables\":null,\"extensions\":{\"headers\":null}}`,
+      method: "POST",
+    }).then((res) => res.json());
+  const { data: compoundHistory } = useSWR(tokenID, query);
+
+  useEffect(() => {
+    if (!compoundHistory) {
+      return;
+    }
+
+    const tableData: Compound[] = [];
+
+    compoundHistory.data?.autoCompoundeds?.forEach((element: any) => {
+      tableData.push({
+        transactionHash: element.id,
+        time: new Date(element.transaction.timestamp * 1000).toLocaleString(),
+        usdcCompounded: element.amountAdded0,
+        ethCompounded: element.amountAdded1,
+        callerReward: element.fees,
+      });
+    });
+
+    setTableData(tableData);
+  }, [compoundHistory]);
 
   useEffect(() => {
     if (!id) {

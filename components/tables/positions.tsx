@@ -46,12 +46,12 @@ export default function PositionsTable({ data }: PositionsTableProps) {
   });
 
   return (
-    <table className="mx-4 mt-2 w-full table-auto">
+    <table className="mx-4 mt-4 w-full table-fixed">
       <thead>
         {table.getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id}>
             {headerGroup.headers.map((header) => (
-              <th className="text-left first:pl-2" key={header.id}>
+              <th className="text-left" key={header.id}>
                 {header.isPlaceholder
                   ? null
                   : flexRender(
@@ -67,7 +67,7 @@ export default function PositionsTable({ data }: PositionsTableProps) {
         {table.getRowModel().rows.map((row) => (
           <tr className="odd:bg-[#f0f2f5]" key={row.id}>
             {row.getVisibleCells().map((cell) => (
-              <td key={cell.id} className="first:pl-2">
+              <td key={cell.id}>
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
               </td>
             ))}

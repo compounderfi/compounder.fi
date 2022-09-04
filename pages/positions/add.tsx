@@ -12,7 +12,6 @@ import { Interface } from "ethers/lib/utils";
 import SelectableGrid from "../../components/grids/selectableGrid";
 import { useDebounce } from "../../hooks/useDebounce";
 import { CONTRACT_ADDRESS } from "../../utils/constants";
-import Footer from "../../components/footer";
 import Head from "next/head";
 
 const abi = new Interface([
