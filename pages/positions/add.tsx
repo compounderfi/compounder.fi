@@ -13,6 +13,7 @@ import SelectableGrid from "../../components/grids/selectableGrid";
 import { useDebounce } from "../../hooks/useDebounce";
 import { CONTRACT_ADDRESS } from "../../utils/constants";
 import Head from "next/head";
+import { request, gql } from "graphql-request";
 
 const abi = new Interface([
   {
@@ -59,23 +60,22 @@ const abi = new Interface([
   },
 ]);
 
+const query = gql`
+  query GetPositions($address: Bytes!) {
+    positions(where: { owner: $address }) {
+      id
+    }
+  }
+`;
+
 function Add() {
   const { chain } = useNetwork();
-
-  let subgraphURL = "";
-
-  if (chain?.id == 5) {
-    subgraphURL =
-      "https://api.thegraph.com/subgraphs/name/compositelabs/uniswap-v3-goerli";
-  } else if (chain?.id == 1) {
-    subgraphURL = "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3";
-  }
-
-  const query = (address: string) =>
-    fetch(subgraphURL, {
-      body: `{\"query\":\"{\\n  positions(where: {owner: \\\"${address}\\\"}) {\\n    id\\n  }\\n}\",\"variables\":null,\"extensions\":{\"headers\":null}}`,
-      method: "POST",
-    }).then((res) => res.json());
+  const subgraphURL =
+    chain?.id == 5
+      ? "https://api.thegraph.com/subgraphs/name/compositelabs/uniswap-v3-goerli"
+      : "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3";
+  const fetcher = (variables: { address: string }) =>
+    request(subgraphURL, query, variables);
 
   const isMounted = useIsMounted();
   const [ids, setIds] = useState<string[]>([]);
@@ -86,7 +86,7 @@ function Add() {
   const debouncedSelection = useDebounce(selection, 500);
 
   const { address, isConnected } = useAccount();
-  const { data: addressPositions } = useSWR(address, query);
+  const { data: addressPositions } = useSWR({ address: address }, fetcher);
 
   const { config } = usePrepareContractWrite({
     addressOrName: "0xc36442b4a4522e871399cd717abdd847ab11fe88",
@@ -101,8 +101,6 @@ function Add() {
     hash: data?.hash,
     wait: data?.wait,
   });
-
-  let depositButtonDisabled = false;
 
   function deposit() {
     if (data?.hash) {
@@ -156,7 +154,7 @@ function Add() {
       return;
     }
 
-    addressPositions.data.positions.forEach((position: { id: string }) => {
+    addressPositions.positions.forEach((position: { id: string }) => {
       ids.push(position.id);
     });
 
