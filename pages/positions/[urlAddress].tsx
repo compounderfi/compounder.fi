@@ -1,4 +1,3 @@
-import PublicStats from "../../components/publicStats";
 import { useAccount, useContractRead } from "wagmi";
 import HomePageGrid from "../../components/grids/homePageGrid";
 import { useIsMounted } from "../../hooks/useIsMounted";
