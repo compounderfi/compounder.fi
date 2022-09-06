@@ -91,23 +91,23 @@ export default function NFTPreviewProps({ id }: NFTPreviewProps) {
         style={{ gridArea: "overlap" }}
         ref={imageRef}
         hidden={!animate}
-        onLoad={() => {
-          // snapshot for the canvas
-          if (imageRef.current && canvasRef.current) {
-            getSnapshot(
-              // @ts-ignore
-              imageRef.current.firstChild.children[1],
-              canvasRef.current,
-              386
-            );
-          }
-        }}
       >
         <Image
           height="386px"
           width="224px"
           alt={"Token #" + id}
           src={tokenImage}
+          onLoad={() => {
+            // snapshot for the canvas
+            if (imageRef.current && canvasRef.current) {
+              getSnapshot(
+                // @ts-ignore
+                imageRef.current.firstChild.children[1],
+                canvasRef.current,
+                386
+              );
+            }
+          }}
         ></Image>
       </div>
     </div>

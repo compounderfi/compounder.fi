@@ -1,5 +1,6 @@
 import PositionCard from "./positionCard";
 import NFTPreview from "./nftPreview";
+import APStats from "./APStats";
 
 export interface NonActivePositionProps {
   id: string;
@@ -15,10 +16,7 @@ export default function NonActivePositionCard({
       <NFTPreview id={id}></NFTPreview>
 
       <div className="pt-2">
-        <div>
-          <div className="text-xl">apr: x.xx%</div>
-          <div className="text-xl">apy: x.xx%</div>
-        </div>
+        <APStats tokenID={id}></APStats>
       </div>
     </PositionCard>
   );

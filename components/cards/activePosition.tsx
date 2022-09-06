@@ -17,6 +17,7 @@ import {
   EllipsisHorizontalIcon,
   CheckCircleIcon,
 } from "@heroicons/react/24/outline";
+import APStats from "./APStats";
 
 export interface ActivePositionProps {
   id: string;
@@ -87,11 +88,7 @@ export default function ActivePositionCard({
       <div>
         <NFTPreview id={id}></NFTPreview>
         <div className="flex pt-2">
-          <div>
-            <div className="text-xl">apr: x.xx%</div>
-            <div className="text-xl">apy: x.xx%</div>
-          </div>
-
+          <APStats tokenID={id}></APStats>
           <div className="flex-grow"> </div>
           <div>
             <Tooltip arrow title={tooltipMessage}>
