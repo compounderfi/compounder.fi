@@ -67,7 +67,8 @@ export default async function handler(
 
   const json = await makeRequest(tokenID, chain);
 
-  const data = json["data"]["position"];
+  const data = json.data.position;
+  console.log("ajfaoldfsjlawetjoraw")
   const owner = data["owner"];
   const token0 = data["token0"];
 
