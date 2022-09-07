@@ -1,5 +1,5 @@
 import { tickMath, getAmountsForLiquidityRange } from "@thanpolas/univ3prices";
-import { tokenToSignificant } from "../../../../utils/crypto-utils";
+import { tokenToSignificant } from "../../../../utils/crypto-utils/src/";
 import axios from "axios";
 
 async function makeRequest(tokenID, chain) {
