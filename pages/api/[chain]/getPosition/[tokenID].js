@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import abi from "../../../../utils/uniswapABI.json";
 import { tickMath, getAmountsForLiquidityRange } from "@thanpolas/univ3prices";
-import { tokenToSignificant } from "../../../../utils/crypto-utils/src/";
+import { tokenToSignificant } from "@thanpolas/crypto-utils";
 import { request, gql } from "graphql-request";
 import { getAddress } from "ethers/lib/utils";
 
@@ -130,8 +130,8 @@ async function getFees(tokenID, token0decimals, token1decimals, owner, chain) {
 }
 
 async function calculateAmount0Amount1(resp) {
-  const tickLower = resp["tickLower"]["tickIdx"];
-  const tickUpper = resp["tickUpper"]["tickIdx"];
+  const tickLower = Number(resp["tickLower"]["tickIdx"]);
+  const tickUpper = Number(resp["tickUpper"]["tickIdx"]);
 
   const sqrtPrice = resp["pool"]["sqrtPrice"];
   const sqrtRatioAX96 = tickMath.getSqrtRatioAtTick(tickLower);

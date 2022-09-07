@@ -1,5 +1,5 @@
 import { tickMath, getAmountsForLiquidityRange } from "@thanpolas/univ3prices";
-import { tokenToSignificant } from "../../../../utils/crypto-utils/src/";
+import { tokenToSignificant } from "@thanpolas/crypto-utils";
 import axios from "axios";
 
 async function makeRequest(tokenID, chain) {
@@ -66,8 +66,8 @@ async function calculateAvgFees(resp) {
 }
 
 async function calculateAmount0Amount1(resp) {
-  const tickLower = resp["tickLower"]["tickIdx"];
-  const tickUpper = resp["tickUpper"]["tickIdx"];
+  const tickLower = Number(resp["tickLower"]["tickIdx"]);
+  const tickUpper = Number(resp["tickUpper"]["tickIdx"]);
 
   const sqrtPrice = resp["pool"]["sqrtPrice"];
   const sqrtRatioAX96 = tickMath.getSqrtRatioAtTick(tickLower);
