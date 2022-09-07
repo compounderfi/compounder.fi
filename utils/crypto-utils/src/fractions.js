@@ -2,8 +2,8 @@
  * @fileoverview Converts Big Integers to human readable format.
  */
 
-const invariant = require('invariant');
-const Decimal = require('decimal.js');
+const invariant = require("invariant");
+const Decimal = require("decimal.js");
 
 const fractions = (module.exports = {});
 
@@ -44,7 +44,7 @@ fractions.toSignificant = (fraction, optOptions = {}) => {
     .toSignificantDigits(significantDigits, rounding)
     .toString();
 
-  return fractions._checkformat(res, 'significant', significantDigits, format);
+  return fractions._checkformat(res, "significant", significantDigits, format);
 };
 
 /**
@@ -83,7 +83,7 @@ fractions.toFixed = (fraction, optOptions = {}) => {
     .div(denominator.toString())
     .toFixed(decimalPlaces, rounding);
 
-  return fractions._checkformat(res, 'fixed', decimalPlaces, format);
+  return fractions._checkformat(res, "fixed", decimalPlaces, format);
 };
 
 /**
@@ -112,7 +112,7 @@ fractions.toAuto = (fraction, optOptions = {}) => {
 
   const tempRes = Decimal.div(
     numerator.toString(),
-    denominator.toString(),
+    denominator.toString()
   ).toNumber();
 
   if (tempRes > 1) {
@@ -140,18 +140,18 @@ fractions._checkformat = (res, callee, decimalPlaces, optFormat) => {
 
   if (optFormat === true) {
     const options = {};
-    if (callee === 'significant') {
+    if (callee === "significant") {
       options.maximumSignificantDigits = decimalPlaces;
     }
-    if (callee === 'fixed') {
+    if (callee === "fixed") {
       options.maximumFractionDigits = decimalPlaces;
     }
-    return Intl.NumberFormat('en-US', options).format(res);
+    return Intl.NumberFormat("en-US", options).format(res);
   }
 
   if (Array.isArray(optFormat)) {
     return Intl.NumberFormat.apply(null, optFormat).format(res);
   }
 
-  invariant(false, 'format argument can be either a boolean or an Array');
+  invariant(false, "format argument can be either a boolean or an Array");
 };

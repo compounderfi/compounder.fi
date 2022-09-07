@@ -9,8 +9,6 @@ export default function APStats({ tokenID }: { tokenID: string }) {
   const { chain } = useNetwork();
   const { data } = useSWR("/api/" + "1" + "/getAPR/" + tokenID, fetcher);
 
-  console.log(data);
-
   return (
     <div>
       <div className="text-xl">apr: {data?.apr || "?.??"}%</div>

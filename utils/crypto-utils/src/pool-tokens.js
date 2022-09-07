@@ -2,10 +2,10 @@
  * @fileoverview Calculates rate between two liquidity pool tokens.
  */
 
-const JSBI = require('jsbi');
+const JSBI = require("jsbi");
 
-const { expDecs, biConv } = require('./utils');
-const { toAuto } = require('./fractions');
+const { expDecs, biConv } = require("./utils");
+const { toAuto } = require("./fractions");
 
 const token = (module.exports = {});
 
@@ -31,10 +31,10 @@ token.poolTokensToAuto = (poolFraction, decimalFraction, optOptions = {}) => {
   const scalarDenominator = expDecs(biConv(token1Decimals));
 
   const adjustedForDecimalsNumerator = JSBI.BigInt(
-    JSBI.multiply(scalarDenominator, biConv(token0Reserves)),
+    JSBI.multiply(scalarDenominator, biConv(token0Reserves))
   );
   const adjustedForDecimalsDenominator = JSBI.BigInt(
-    JSBI.multiply(scalarNumerator, biConv(token1Reserves)),
+    JSBI.multiply(scalarNumerator, biConv(token1Reserves))
   );
 
   const numerator = adjustedForDecimalsNumerator;

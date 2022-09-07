@@ -146,6 +146,8 @@ export default function Position() {
     if (token1 == "???") {
       setToken1(data?.token1);
     }
+
+    console.log(data);
   }, [data]);
 
   let [dialogIsOpen, setDialogIsOpen] = useState(false);

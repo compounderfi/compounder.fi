@@ -1,7 +1,7 @@
 /**
  * @fileoverview Utilities and helpers.
  */
-const JSBI = require('jsbi');
+const JSBI = require("jsbi");
 
 const utils = (module.exports = {});
 
@@ -23,7 +23,7 @@ utils.expDecs = (decs) => {
  */
 utils.biConv = (numstr) => {
   let bi = numstr;
-  if (typeof sqrtRatio !== 'bigint') {
+  if (typeof sqrtRatio !== "bigint") {
     bi = JSBI.BigInt(numstr);
   }
   return bi;

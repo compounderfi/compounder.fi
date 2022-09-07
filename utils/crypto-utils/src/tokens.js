@@ -2,8 +2,8 @@
  * @fileoverview Token related utilities.
  */
 
-const { expDecs } = require('./utils');
-const { toSignificant, toFixed, toAuto } = require('./fractions');
+const { expDecs } = require("./utils");
+const { toSignificant, toFixed, toAuto } = require("./fractions");
 
 const token = (module.exports = {});
 

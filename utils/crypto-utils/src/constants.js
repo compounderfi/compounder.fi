@@ -2,7 +2,7 @@
  * @fileoverview Constants needed.
  */
 
-const Decimal = require('decimal.js');
+const Decimal = require("decimal.js");
 
 const consts = (module.exports = {});
 

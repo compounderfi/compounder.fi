@@ -4,31 +4,28 @@ import { request, gql } from "graphql-request";
 import useSWR from "swr";
 import { useEffect, useState } from "react";
 
-
 const query = gql`
   query GetAllPositions {
-    positions(where: {tokenWithdraw: null}) {
+    positions(where: { tokenWithdraw: null }) {
       id
     }
   }
-`
+`;
 
 function AllPositions() {
-  const subgraphURL = "https://api.thegraph.com/subgraphs/name/compounderfi/test1";
+  const subgraphURL =
+    "https://api.thegraph.com/subgraphs/name/compounderfi/test1";
   // @ts-ignore
-  const fetcher = query => request(subgraphURL, query);
+  const fetcher = (query) => request(subgraphURL, query);
 
   const { data } = useSWR(query, fetcher);
 
   const [positions, setPositions] = useState<Position[]>([]);
 
-
-
   useEffect(() => {
     if (!data) {
-      return
+      return;
     }
-
 
     const newPositions: Position[] = [];
 
@@ -36,11 +33,11 @@ function AllPositions() {
       newPositions.push({
         tokenID: position.id,
         estimatedFees: "0.000000000000000000",
-      })
-    })
+      });
+    });
 
     setPositions(newPositions);
-  }, [data])
+  }, [data]);
 
   return (
     <>
