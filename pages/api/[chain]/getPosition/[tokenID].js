@@ -105,26 +105,8 @@ async function getFees(tokenID, token0decimals, token1decimals, owner, chain) {
     { from: owner }
   );
 
-  const amount0fees =
-    results["amount0"]
-      .toString()
-      .padStart(token0decimals, "0")
-      .slice(0, -token0decimals) +
-    "." +
-    results["amount0"]
-      .toString()
-      .padStart(token0decimals, "0")
-      .slice(-token0decimals);
-  const amount1fees =
-    results["amount1"]
-      .toString()
-      .padStart(token1decimals, "0")
-      .slice(0, -token1decimals) +
-    "." +
-    results["amount1"]
-      .toString()
-      .padStart(token1decimals, "0")
-      .slice(-token1decimals);
+  const amount0fees = +tokenToSignificant(results["amount0"], token0decimals)
+  const amount1fees = +tokenToSignificant(results["amount1"], token1decimals)
 
   return [amount0fees, amount1fees];
 }
