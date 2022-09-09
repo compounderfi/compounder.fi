@@ -105,8 +105,8 @@ async function getFees(tokenID, token0decimals, token1decimals, owner, chain) {
     { from: owner }
   );
 
-  const amount0fees = +tokenToSignificant(results["amount0"], token0decimals)
-  const amount1fees = +tokenToSignificant(results["amount1"], token1decimals)
+  const amount0fees = +tokenToSignificant(results["amount0"], token0decimals, {decimalPlaces: 3})
+  const amount1fees = +tokenToSignificant(results["amount1"], token1decimals, {decimalPlaces: 3})
 
   return [amount0fees, amount1fees];
 }
@@ -131,7 +131,7 @@ async function calculateAmount0Amount1(resp) {
   );
 
   return [
-    +tokenToSignificant(amount0, decimals0),
-    +tokenToSignificant(amount1, decimals1),
+    +tokenToSignificant(amount0, decimals0, {decimalPlaces: 3}),
+    +tokenToSignificant(amount1, decimals1, {decimalPlaces: 3}),
   ];
 }
