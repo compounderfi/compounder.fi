@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@types/node": "^18.7.16",
-    "@types/react": "^18.0.9",
+    "@types/react": "^18.0.19",
     "@uniswap/sdk-core": "^3.0.2",
     "@uniswap/v3-sdk": "^3.9.0",
     "autoprefixer": "^10.4.7",
