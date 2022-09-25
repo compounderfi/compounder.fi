@@ -35,7 +35,7 @@
     "@uniswap/v3-sdk": "^3.9.0",
     "autoprefixer": "^10.4.7",
     "eslint": "^8.24.0",
-    "eslint-config-next": "^12.3.0",
+    "eslint-config-next": "^12.3.1",
     "postcss": "^8.4.14",
     "prettier": "^2.7.1",
     "prettier-plugin-tailwindcss": "^0.1.13",
