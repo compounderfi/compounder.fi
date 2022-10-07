@@ -9,6 +9,7 @@ import {
 import { CONTRACT_ADDRESS } from "../utils/constants";
 import abi from "../utils/abi.json";
 import { Tooltip } from "@mui/material";
+// @ts-ignore
 import { tokenToSignificant } from "@thanpolas/crypto-utils";
 
 export interface CompoundNowModalProps {

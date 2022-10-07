@@ -32,7 +32,7 @@ const query = gql`
         id
       }
     }
-    autoCompoundeds(where: { tokenId: $tokenId }) {
+    autoCompoundeds(orderBy: timestamp,  orderDirection: desc, where: { tokenId: $tokenId }) {
       transaction {
         timestamp
         id
