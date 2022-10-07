@@ -33,7 +33,7 @@
     "@types/react": "^18.0.21",
     "@uniswap/sdk-core": "^3.0.2",
     "@uniswap/v3-sdk": "^3.9.0",
-    "autoprefixer": "^10.4.7",
+    "autoprefixer": "^10.4.12",
     "eslint": "^8.24.0",
     "eslint-config-next": "^12.3.0",
     "postcss": "^8.4.14",
