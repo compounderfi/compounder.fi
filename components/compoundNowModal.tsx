@@ -9,6 +9,7 @@ import {
 import { CONTRACT_ADDRESS } from "../utils/constants";
 import abi from "../utils/abi.json";
 import { Tooltip } from "@mui/material";
+import { tokenToSignificant } from "@thanpolas/crypto-utils";
 
 export interface CompoundNowModalProps {
   isOpen: boolean;
@@ -192,11 +193,11 @@ export default function CompoundNowModal({
                         {" "}
                         {form.doSwap
                           ? form.rewardConversion
-                            ? token1Fees * 0.02
-                            : token0Fees * 0.02
+                            ? tokenToSignificant(token1Fees * 0.02, 5)
+                            : tokenToSignificant(token0Fees * 0.02, 5)
                           : form.rewardConversion
-                          ? token1Fees * 0.016
-                          : token0Fees * 0.016}{" "}
+                          ? tokenToSignificant(token1Fees * 0.016, 5)
+                          : tokenToSignificant(token0Fees * 0.016, 5)}{" "}
                         {form.rewardConversion ? token1 : token0}{" "}
                       </span>
                     </div>
