@@ -31,7 +31,7 @@
   "devDependencies": {
     "@types/node": "^18.11.3",
     "@types/react": "^18.0.21",
-    "@uniswap/sdk-core": "^3.0.2",
+    "@uniswap/sdk-core": "^3.1.0",
     "@uniswap/v3-sdk": "^3.9.0",
     "autoprefixer": "^10.4.12",
     "eslint": "^8.24.0",
