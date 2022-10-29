@@ -5,8 +5,8 @@ import { ConnectKitProvider, getDefaultClient } from "connectkit";
 import Layout from "../components/layout";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-const alchemyId = "_gg7wSSi0KMBsdKnGVfHDueq6xMB9EkC";
-const chains = [chain.mainnet, chain.goerli];
+const alchemyId = "IoryLeAYX67s6RH1qGGtPidVIMf_PILG";
+const chains = [chain.goerli];
 
 const wagmiClient = createClient(
   getDefaultClient({
