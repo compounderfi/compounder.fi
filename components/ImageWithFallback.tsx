@@ -8,7 +8,6 @@ export interface ImageWithFallbackProps {
   alt: string;
   width: number;
   height: number;
-  layout: "fixed";
 }
 
 export default function ImageWithFallback({
@@ -17,7 +16,6 @@ export default function ImageWithFallback({
   alt,
   width,
   height,
-  layout,
 }: ImageWithFallbackProps) {
   const [imgSrc, set_imgSrc] = useState(src);
 
@@ -30,7 +28,6 @@ export default function ImageWithFallback({
       alt={alt}
       width={width}
       height={height}
-      layout={layout}
       src={imgSrc}
       onLoadingComplete={(result) => {
         if (result.naturalWidth === 0) {
