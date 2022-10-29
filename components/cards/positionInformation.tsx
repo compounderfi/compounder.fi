@@ -33,7 +33,6 @@ export default function PositionInformation({
                 alt={token0Name + " icon"}
                 src={token0Image}
                 width={28}
-                layout={"fixed"}
                 height={28}
                 fallbackSrc={
                   "https://upload.wikimedia.org/wikipedia/commons/5/55/Question_Mark.svg"
@@ -48,7 +47,6 @@ export default function PositionInformation({
                 alt={token1Name + " icon"}
                 src={token1Image}
                 width={28}
-                layout={"fixed"}
                 height={28}
                 fallbackSrc={
                   "https://upload.wikimedia.org/wikipedia/commons/5/55/Question_Mark.svg"

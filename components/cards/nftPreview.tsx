@@ -93,8 +93,8 @@ export default function NFTPreviewProps({ id }: NFTPreviewProps) {
         hidden={!animate}
       >
         <Image
-          height="386px"
-          width="224px"
+          height="386"
+          width="224"
           alt={"Token #" + id}
           src={tokenImage}
           onLoad={() => {
@@ -102,7 +102,7 @@ export default function NFTPreviewProps({ id }: NFTPreviewProps) {
             if (imageRef.current && canvasRef.current) {
               getSnapshot(
                 // @ts-ignore
-                imageRef.current.firstChild.children[1],
+                imageRef.current.firstChild,
                 canvasRef.current,
                 386
               );
