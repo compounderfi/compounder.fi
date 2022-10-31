@@ -49,7 +49,7 @@ export default function ActivePositionCard({
   const { chain } = useNetwork();
 
   function withdraw(e: MouseEvent) {
-    e.stopPropagation();
+    e.preventDefault();
 
     if (data?.hash) {
       const explorerURI =
