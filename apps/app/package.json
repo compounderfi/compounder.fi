@@ -29,7 +29,7 @@
     "wagmi": "^0.6.8"
   },
   "devDependencies": {
-    "@types/node": "^18.11.5",
+    "@types/node": "^18.11.9",
     "@types/react": "^18.0.23",
     "@uniswap/sdk-core": "^3.1.0",
     "@uniswap/v3-sdk": "^3.9.0",
