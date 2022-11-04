@@ -10,6 +10,8 @@ import CompoundHistoryTable, {
   Compound,
 } from "../../components/tables/compoundHistory";
 import { request, gql } from "graphql-request";
+// @ts-ignore
+import { tokenToSignificant } from "@thanpolas/crypto-utils";
 
 function getImage(tokenAddress: string | undefined) {
   if (tokenAddress == undefined) return "";
@@ -89,16 +91,14 @@ export default function Position() {
         transactionHash: compound.transaction.id,
         time: new Date(compound.transaction.timestamp * 1000).toLocaleString(),
         token0Compounded:
-          compound.amountAdded0 / Math.pow(10, compound.token0.decimals) + "",
+        tokenToSignificant(compound.amountAdded0, compound.token0.decimals, {decimalPlaces: 3}),
         token1Compounded:
-          compound.amountAdded1 / Math.pow(10, compound.token1.decimals) + "",
+        tokenToSignificant(compound.amountAdded1, compound.token1.decimals, {decimalPlaces: 3}),
         callerReward:
           compound.fee0 == "0"
-            ? compound.fee1 / Math.pow(10, compound.token1.decimals) +
-              " " +
+            ? tokenToSignificant(compound.fee1, compound.token1.decimals, {decimalPlaces: 3}) + " " +
               compound.token1.symbol
-            : compound.fee0 / Math.pow(10, compound.token0.decimals) +
-              " " +
+            : tokenToSignificant(compound.fee0, compound.token0.decimals, {decimalPlaces: 3}) + " " +
               compound.token0.symbol,
       });
     });
