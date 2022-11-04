@@ -14,8 +14,7 @@ export default function NonActivePositionCard({
   id,
   selected,
 }: NonActivePositionProps) {
-
-  const router = useRouter()
+  const router = useRouter();
 
   return (
     <PositionCard selected={selected}>
@@ -26,16 +25,17 @@ export default function NonActivePositionCard({
         <div className="flex-grow"> </div>
 
         <div>
-          <Tooltip arrow title="preview position"> 
+          <Tooltip arrow title="preview position">
             <button
               tabIndex={-1}
               onClick={(e) => {
-                e.stopPropagation();  
-                router.push("/position/" + id)
-                }}
-              className="mt-1 rounded-lg bg-gray-200 py-3 px-4 transition-colors duration-300 hover:bg-gray-300">
-                <EyeIcon className="h-6 w-6"></EyeIcon>
-              </button>
+                e.stopPropagation();
+                router.push("/position/" + id);
+              }}
+              className="mt-1 rounded-lg bg-gray-200 py-3 px-4 transition-colors duration-300 hover:bg-gray-300"
+            >
+              <EyeIcon className="h-6 w-6"></EyeIcon>
+            </button>
           </Tooltip>
         </div>
       </div>

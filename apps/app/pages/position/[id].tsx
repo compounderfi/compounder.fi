@@ -34,7 +34,11 @@ const query = gql`
         id
       }
     }
-    autoCompoundeds(orderBy: timestamp,  orderDirection: desc, where: { tokenId: $tokenId }) {
+    autoCompoundeds(
+      orderBy: timestamp
+      orderDirection: desc
+      where: { tokenId: $tokenId }
+    ) {
       transaction {
         timestamp
         id
@@ -90,15 +94,27 @@ export default function Position() {
       tableData.push({
         transactionHash: compound.transaction.id,
         time: new Date(compound.transaction.timestamp * 1000).toLocaleString(),
-        token0Compounded:
-        tokenToSignificant(compound.amountAdded0, compound.token0.decimals, {decimalPlaces: 3}),
-        token1Compounded:
-        tokenToSignificant(compound.amountAdded1, compound.token1.decimals, {decimalPlaces: 3}),
+        token0Compounded: tokenToSignificant(
+          compound.amountAdded0,
+          compound.token0.decimals,
+          { decimalPlaces: 3 }
+        ),
+        token1Compounded: tokenToSignificant(
+          compound.amountAdded1,
+          compound.token1.decimals,
+          { decimalPlaces: 3 }
+        ),
         callerReward:
           compound.fee0 == "0"
-            ? tokenToSignificant(compound.fee1, compound.token1.decimals, {decimalPlaces: 3}) + " " +
+            ? tokenToSignificant(compound.fee1, compound.token1.decimals, {
+                decimalPlaces: 3,
+              }) +
+              " " +
               compound.token1.symbol
-            : tokenToSignificant(compound.fee0, compound.token0.decimals, {decimalPlaces: 3}) + " " +
+            : tokenToSignificant(compound.fee0, compound.token0.decimals, {
+                decimalPlaces: 3,
+              }) +
+              " " +
               compound.token0.symbol,
       });
     });

@@ -1,14 +1,10 @@
-import { ConnectKitButton } from "connectkit";
 import Link from "next/link";
-import { useAccount } from "wagmi";
 import Image from "next/image";
 
 export default function Header() {
-  const { address } = useAccount();
-
   return (
-    <div className="flex px-4 py-4">
-      <Link href={address ? "/positions/" + address : "/"}>
+    <header className="flex px-4 py-4">
+      <Link href={"/"}>
         <div className="flex gap-2 ">
           <Image
             alt="compounder.fi logo"
@@ -20,8 +16,11 @@ export default function Header() {
         </div>
       </Link>
       <div className="flex-grow"></div>
-
-      <ConnectKitButton />
-    </div>
+      <div className="hidden sm:block">
+        <Link href={"https://app.compounder.fi"}>
+          <div className="rounded-full bg-gray-400 py-2 px-4">launch app</div>
+        </Link>
+      </div>
+    </header>
   );
 }
