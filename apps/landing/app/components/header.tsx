@@ -12,13 +12,13 @@ export default function Header() {
             height={40}
             src="/logo.svg"
           ></Image>
-          <div className="cursor-pointer text-4xl font-bold">compounder.fi</div>
+          <div className="cursor-pointer text-4xl font-medium">compounder.fi</div>
         </div>
       </Link>
       <div className="flex-grow"></div>
       <div className="hidden sm:block">
         <Link href={"https://app.compounder.fi"}>
-          <div className="rounded-full bg-gray-400 py-2 px-4">launch app</div>
+          <div className="rounded-full bg-gray-200 py-2 px-4">launch app</div>
         </Link>
       </div>
     </header>
