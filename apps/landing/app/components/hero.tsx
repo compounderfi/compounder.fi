@@ -2,7 +2,8 @@ import Link from "next/link";
 
 export default function Hero() {
     return (
-    <div className="h-[75vh] px-4 grid-flow-col-dense grid items-center grid-cols-12 gap-2 ">
+    <div className="max-w-[1024px] mx-auto">
+    <div className="h-[75vh] px-16 grid-flow-col-dense grid items-center grid-cols-12 gap-2 ">
       <div className="col-start-1 col-end-8">
         <div className="grid gap-4">
           <div className="text-5xl sm:text-7xl font-bold">Automatically reinvest Uniswap v3 fees</div>
@@ -28,6 +29,7 @@ export default function Hero() {
         </div>
       </div>
       {/* <div className="col-start-9 col-end-13 bg-black"> </div> */}
+    </div>
     </div>
     )
 }

@@ -1,10 +1,15 @@
+import Header from "./components/header";
 import Hero from "./components/hero";
 
 export default function Index() {
   return (
     <>
+      <div style={{ background: "linear-gradient(to bottom right, #bbd2c5, #536976, #292e49)", /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ }} >
+      <Header></Header>
       <Hero></Hero>
-      <div className="pt-24 px-4 grid grid-cols-12">
+      </div>
+      
+      <div className="mx-auto max-w-[1024px] pt-24 px-16 grid grid-cols-12">
         <div className="col-start-1 col-end-8">
           <div className="font-semibold text-4xl pb-4">
             Save gas
@@ -17,7 +22,7 @@ export default function Index() {
         {/* <div className="bg-black col-start-9 col-end-13"> </div> */}
 
       </div>
-      <div className="pt-24 px-4 grid grid-cols-12">
+      <div className="mx-auto max-w-[1024px] pt-24 px-16 grid grid-cols-12">
         <div className="col-start-1 col-end-8">
           <div className="font-semibold text-4xl pb-4">
             More fees
@@ -30,7 +35,7 @@ export default function Index() {
         {/* <div className="bg-black col-start-9 col-end-13"> </div> */}
 
       </div>
-      <div className="pt-24 px-4 grid grid-cols-12">
+      <div className="mx-auto max-w-[1024px] pt-24 px-16 grid grid-cols-12">
         <div className="col-start-1 col-end-8">
           <div className="font-semibold text-4xl pb-4">
             Less hassle

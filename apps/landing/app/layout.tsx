@@ -18,9 +18,7 @@ export default function RootLayout({
         head.tsx. Find out more at https://beta.nextjs.org/docs/api-reference/file-conventions/head
       */}
       <head />
-      <body className="max-w-[1024px] mx-auto px-6 sm:px-10">
-        <Header></Header>
-
+      <body>
         {children}
       </body>
     </html>

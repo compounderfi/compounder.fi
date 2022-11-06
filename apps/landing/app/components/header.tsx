@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function Header() {
   return (
-    <header className="flex px-4 py-4">
+    <header className="mx-auto max-w-[1024px] flex px-16 py-4">
       <Link href={"/"}>
         <div className="flex gap-2 ">
           <Image
