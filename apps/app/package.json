@@ -14,7 +14,7 @@
     "@emotion/styled": "^11.10.5",
     "@headlessui/react": "^1.7.4",
     "@heroicons/react": "^2.0.11",
-    "@mui/material": "^5.10.12",
+    "@mui/material": "^5.10.15",
     "@tanstack/react-table": "^8.5.22",
     "@thanpolas/univ3prices": "^3.0.2",
     "connectkit": "^1.0.0",
