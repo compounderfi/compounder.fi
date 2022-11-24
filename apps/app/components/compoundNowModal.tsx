@@ -35,14 +35,13 @@ export default function CompoundNowModal({
 
   const [form, setForm] = useState({
     rewardConversion: false,
-    doSwap: false,
   });
 
   const { config } = usePrepareContractWrite({
     addressOrName: CONTRACT_ADDRESS,
     contractInterface: abi,
     functionName: "AutoCompound25a502142c1769f58abaabfe4f9f4e8b89d24513",
-    args: [[parseInt(positionId), !form.rewardConversion]],
+    args: [parseInt(positionId), form.rewardConversion],
   });
 
   const { data, isLoading, isSuccess, write } = useContractWrite(config);
@@ -143,34 +142,17 @@ export default function CompoundNowModal({
                           <select
                             className="ml-2  outline-none"
                             name="rewardToken"
-                            value={form.rewardConversion ? token1 : token0}
+                            value={form.rewardConversion ? token0 : token1}
                             onChange={(e) => {
                               setForm({
                                 ...form,
-                                rewardConversion: e.target.value === token1,
+                                rewardConversion: e.target.value === token0,
                               });
                             }}
                           >
                             <option value={token0}>{token0}</option>
                             <option value={token1}>{token1}</option>
                           </select>
-                        </label>
-                      </div>
-
-                      <div>
-                        <label className="flex items-center">
-                          swap tokens:
-                          <input
-                            className="ml-2 h-[14px] w-[14px] "
-                            type="checkbox"
-                            value={+form.doSwap}
-                            onChange={(e) => {
-                              setForm({
-                                ...form,
-                                doSwap: e.target.checked,
-                              });
-                            }}
-                          ></input>
                         </label>
                       </div>
                     </div>
@@ -192,14 +174,15 @@ export default function CompoundNowModal({
                     <div>
                       <span className="text-2xl">
                         {" "}
-                        {form.doSwap
-                          ? form.rewardConversion
+                          {/* ? form.rewardConversion
                             ? tokenToSignificant(token1Fees * 0.02, 5)
                             : tokenToSignificant(token0Fees * 0.02, 5)
                           : form.rewardConversion
                           ? tokenToSignificant(token1Fees * 0.016, 5)
-                          : tokenToSignificant(token0Fees * 0.016, 5)}{" "}
-                        {form.rewardConversion ? token1 : token0}{" "}
+                          : tokenToSignificant(token0Fees * 0.016, 5)}{" "} */}
+
+                        {form.rewardConversion ? tokenToSignificant(token0Fees * 0.02, 5) : tokenToSignificant(token1Fees * 0.02, 5)}{" "}
+                        {form.rewardConversion ? token0 : token1}{" "}
                       </span>
                     </div>
                   </div>
