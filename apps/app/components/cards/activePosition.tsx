@@ -31,8 +31,8 @@ export default function ActivePositionCard({
   const { address } = useAccount();
 
   const { config } = usePrepareContractWrite({
-    addressOrName: CONTRACT_ADDRESS,
-    contractInterface: abi,
+    address: CONTRACT_ADDRESS,
+    abi: abi,
     functionName: "withdrawToken",
     args: [id, address, true, 0],
   });
