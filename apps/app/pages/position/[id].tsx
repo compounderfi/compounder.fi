@@ -70,6 +70,7 @@ export default function Position() {
 
   const [tokenID, setTokenID] = useState("");
   const { data } = useSWR("/api/" + chain?.id + "/getPosition/" + id, fetcher);
+  const datas = useSWR("/api/" + chain?.id + "/getAllPositionDetails/" + id, fetcher);
 
   const [tableData, setTableData] = useState<Compound[]>([]);
   const [token0, setToken0] = useState("???");
