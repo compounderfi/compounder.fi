@@ -6,7 +6,7 @@ export default function Hero() {
     <div className="h-[75vh] px-16 grid-flow-col-dense grid items-center grid-cols-12 gap-2 ">
       <div className="col-start-1 col-end-8">
         <div className="grid gap-4">
-          <div className="text-5xl sm:text-7xl font-bold">Uniswap v3 fees reinvested with 50% less gas & 25% more interest</div>
+          <div className="text-5xl sm:text-7xl font-bold">Automatically reinvest Uniswap v3 fees</div>
           <div className="flex flex-wrap pt-4">
             <div className="text-2xl">
               <ul className="list-disc list-inside">
