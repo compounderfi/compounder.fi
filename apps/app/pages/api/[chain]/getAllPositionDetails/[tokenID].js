@@ -152,11 +152,9 @@ async function getTimestampInSeconds () {
 async function calculateAPRPercentage(transactionTimestamp, principalInUSD, unclaimedInUSD, claimedInUSD) {
   const totalFeesUSD = unclaimedInUSD + claimedInUSD
   const now = await getTimestampInSeconds();
-  console.log(now, transactionTimestamp)
+
   const secondsPassed = now - transactionTimestamp
   const yearsPassed = secondsPassed / 31536000
-
-  console.log(totalFeesUSD, principalInUSD)
 
   if (principalInUSD == 0) {
     return 0
@@ -165,6 +163,41 @@ async function calculateAPRPercentage(transactionTimestamp, principalInUSD, uncl
   const feesPercentage = totalFeesUSD / principalInUSD
   
   return (feesPercentage / yearsPassed) * 100;
+}
+
+const aprToApy = (interest, frequency) => ((1 + (interest / 100) / frequency) ** frequency - 1) * 100;
+
+async function calculateAPYPercentage(chainId, APR, principalInUSD) {
+  let gasFee;
+  switch(chainId) {
+    case 1: //ethereum
+      gasFee = 5
+      break;
+    case 42161: //arbitrium
+      gasFee = 0.1
+      break;
+    case 10: //optimism
+      gasFee = 0.1
+      break;
+    case 5: //goerli
+      gasFee = 5
+      break
+    case 137: //polygon
+      gasFee = 0.1
+      break
+    default:
+      // code block
+      gasFee = 5
+  }
+
+  const requiredToCompoundUSD = gasFee * 50; //2% fee
+  const percentageNeeded = requiredToCompoundUSD / principalInUSD
+  const yearsToGetPercentageNeeded = percentageNeeded / APR;
+  const numberOfCompoundsPerYear = 1 / yearsToGetPercentageNeeded
+
+  const apy = aprToApy(APR, numberOfCompoundsPerYear)
+
+  return apy
 }
 
 
@@ -192,7 +225,7 @@ export default async function handler(req, res) {
   const owner = resp["owner"]
   const ethPriceUSD = +data["data"]["bundle"]["ethPriceUSD"];
   
-
+  console.log(owner)
   const claimed0 = resp["collectedFeesToken0"]
   const claimed1 = resp["collectedFeesToken1"]
 
@@ -207,10 +240,12 @@ export default async function handler(req, res) {
   const claimedInUSD = await calculateClaimedFeesUSD(claimed0, claimed1, ethPriceUSD, token0ETH, token1ETH)
 
   const APRpercentage = await calculateAPRPercentage(timestamp, principalInUSD, unclaimedInUSD, claimedInUSD)
-  
+  const APYpercentage = await calculateAPYPercentage(chain, APRpercentage, principalInUSD)
+
 
   res.status(200).json({
     apr: APRpercentage,
+    apy: APYpercentage,
     amount0: amount0,
     amount1: amount1,
     unclaimed0: unclaimed0,
