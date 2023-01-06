@@ -14,6 +14,7 @@ import { request, gql } from "graphql-request";
 import { tokenToSignificant } from "@thanpolas/crypto-utils";
 
 function getImage(tokenAddress: string | undefined) {
+  //wont work on goerli
   if (tokenAddress == undefined) return "";
 
   if (tokenAddress == "0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6")
@@ -69,8 +70,7 @@ export default function Position() {
   const { chain } = useNetwork();
 
   const [tokenID, setTokenID] = useState("");
-  const { data } = useSWR("/api/" + chain?.id + "/getPosition/" + id, fetcher);
-  const datas = useSWR("/api/" + chain?.id + "/getAllPositionDetails/" + id, fetcher);
+  const { data } = useSWR("/api/" + chain?.id + "/getAllPositionDetails/" + id, fetcher);
 
   const [tableData, setTableData] = useState<Compound[]>([]);
   const [token0, setToken0] = useState("???");
@@ -185,22 +185,22 @@ export default function Position() {
             <PositionInformation
               title="liquidity"
               dollarValue="-"
-              token0Name={data?.token0 || "loading..."}
-              token0Image={getImage(data?.token0Address)}
+              token0Name={data?.symbol0 || "loading..."}
+              token0Image={getImage(data?.tokenAddress0)}
               token0Qt={data?.amount0}
-              token1Name={data?.token1 || "loading..."}
-              token1Image={getImage(data?.token1Address)}
+              token1Name={data?.symbol1 || "loading..."}
+              token1Image={getImage(data?.tokenAddress1)}
               token1Qt={data?.amount1}
             ></PositionInformation>
             <PositionInformation
               title="unclaimed fees"
               dollarValue="-"
-              token0Name={data?.token0 || "loading..."}
-              token0Image={getImage(data?.token0Address)}
-              token0Qt={data?.fees0}
-              token1Name={data?.token1 || "loading..."}
-              token1Image={getImage(data?.token1Address)}
-              token1Qt={data?.fees1}
+              token0Name={data?.symbol0 || "loading..."}
+              token0Image={getImage(data?.tokenAddress0)}
+              token0Qt={data?.unclaimed0}
+              token1Name={data?.symbol1 || "loading..."}
+              token1Image={getImage(data?.tokenAddress1)}
+              token1Qt={data?.unclaimed1}
             ></PositionInformation>
           </div>
         </div>
@@ -232,10 +232,10 @@ export default function Position() {
       </div>
 
       <CompoundNowModal
-        token0={data?.token0}
-        token1={data?.token1}
-        token0Fees={Number(data?.fees0)}
-        token1Fees={Number(data?.fees1)}
+        token0={data?.symbol0}
+        token1={data?.symbol1}
+        token0Fees={Number(data?.unclaimed0)}
+        token1Fees={Number(data?.unclaimed1)}
         positionId={tokenID}
         setIsOpen={setDialogIsOpen}
         isOpen={dialogIsOpen}
