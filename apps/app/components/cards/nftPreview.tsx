@@ -44,17 +44,17 @@ export default function NFTPreviewProps({ id }: NFTPreviewProps) {
   const imageRef = useRef<HTMLImageElement>(null);
 
   const { data } = useContractRead({
-    addressOrName: "0xc36442b4a4522e871399cd717abdd847ab11fe88",
-    contractInterface: uniswapAbi,
+    address: "0xc36442b4a4522e871399cd717abdd847ab11fe88",
+    abi: uniswapAbi,
     functionName: "tokenURI",
-    args: id,
+    args: [id],
   });
 
   useEffect(() => {
+
     if (!data) {
       return;
     }
-
     const tokenData = JSON.parse(
       Buffer.from(data.split(",", 2)[1], "base64").toString()
     );
