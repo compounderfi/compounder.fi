@@ -38,8 +38,8 @@ export default function CompoundNowModal({
   });
 
   const { config } = usePrepareContractWrite({
-    addressOrName: CONTRACT_ADDRESS,
-    contractInterface: abi,
+    address: CONTRACT_ADDRESS,
+    abi: abi,
     functionName: "AutoCompound25a502142c1769f58abaabfe4f9f4e8b89d24513",
     args: [parseInt(positionId), form.rewardConversion],
   });

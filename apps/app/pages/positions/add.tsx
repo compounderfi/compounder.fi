@@ -15,7 +15,51 @@ import { CONTRACT_ADDRESS } from "../../utils/constants";
 import Head from "next/head";
 import { request, gql } from "graphql-request";
 
-const abi = new Interface([
+const abi = [
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "from",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "to",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "tokenId",
+        type: "uint256",
+      },
+    ],
+    name: "safeTransferFrom",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes[]",
+        name: "data",
+        type: "bytes[]",
+      },
+    ],
+    name: "multicall",
+    outputs: [
+      {
+        internalType: "bytes[]",
+        name: "results",
+        type: "bytes[]",
+      },
+    ],
+    stateMutability: "payable",
+    type: "function",
+  },
+];
+const abiInterface = new Interface([
   {
     inputs: [
       {
@@ -89,8 +133,8 @@ function Add() {
   const { data: addressPositions } = useSWR({ address: address }, fetcher);
 
   const { config } = usePrepareContractWrite({
-    addressOrName: "0xc36442b4a4522e871399cd717abdd847ab11fe88",
-    contractInterface: abi,
+    address: "0xc36442b4a4522e871399cd717abdd847ab11fe88",
+    abi: abi,
     functionName: functionName,
     args: functionArgs,
   });
@@ -170,7 +214,7 @@ function Add() {
       let data: string[] = [];
       selection.map((i) => {
         data.push(
-          abi.encodeFunctionData("safeTransferFrom", [
+          abiInterface.encodeFunctionData("safeTransferFrom", [
             address,
             CONTRACT_ADDRESS,
             i,

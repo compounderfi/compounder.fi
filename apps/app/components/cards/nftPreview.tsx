@@ -51,14 +51,12 @@ export default function NFTPreviewProps({ id }: NFTPreviewProps) {
   });
 
   useEffect(() => {
-
-    if (!data) {
-      return;
+    if (data) {
+      const tokenData = JSON.parse(
+        Buffer.from((data as String).split(",", 2)[1], "base64").toString()
+      );
+      setTokenImage(tokenData["image"]);
     }
-    const tokenData = JSON.parse(
-      Buffer.from(data.split(",", 2)[1], "base64").toString()
-    );
-    setTokenImage(tokenData["image"]);
   }, [data]);
 
   return (

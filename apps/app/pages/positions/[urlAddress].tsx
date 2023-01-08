@@ -15,17 +15,19 @@ function Index() {
   const isMounted = useIsMounted();
 
   const { data } = useContractRead({
-    addressOrName: CONTRACT_ADDRESS,
-    contractInterface: abi,
+    address: CONTRACT_ADDRESS,
+    abi: abi,
     functionName: "addressToTokens",
-    args: urlAddress,
+    args: [urlAddress],
   });
 
   const [ids, setIds] = useState<string[]>([]);
 
   useEffect(() => {
+    if (!data)
+      return
     const newIds: string[] = [];
-    data?.forEach((element) => {
+    (data as Array<number>).forEach((element) => {
       newIds.push(element.toString());
     });
 
