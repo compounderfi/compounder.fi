@@ -12,6 +12,7 @@ import CompoundHistoryTable, {
 import { request, gql } from "graphql-request";
 // @ts-ignore
 import { tokenToSignificant } from "@thanpolas/crypto-utils";
+import next from "next";
 
 function getImage(tokenAddress: string | undefined) {
   //wont work on goerli
@@ -75,6 +76,9 @@ export default function Position() {
   const [tableData, setTableData] = useState<Compound[]>([]);
   const [token0, setToken0] = useState("???");
   const [token1, setToken1] = useState("???");
+  const [nextCompound, setNextCompound] = useState("???");
+  const [liquidityUSD, setliquidityUSD] = useState("???");
+  const [unclaimedUSD, setunclaimedUSD] = useState("???");
 
   const graphFetcher = (variables: { tokenId: string }) =>
     request(
@@ -163,6 +167,16 @@ export default function Position() {
     if (token1 == "???") {
       setToken1(data?.token1);
     }
+    if (nextCompound == "???") {
+      setNextCompound(data?.daysUntilNextCompound);
+    }
+    if (liquidityUSD == "???") {
+      setliquidityUSD(data?.principalInUSD);
+    }
+    if (unclaimedUSD == "???") {
+      setunclaimedUSD(data?.unclaimedInUSD);
+    }
+
 
     console.log(data);
   }, [data]);
@@ -184,7 +198,7 @@ export default function Position() {
           <div className="grid flex-grow gap-6">
             <PositionInformation
               title="liquidity"
-              dollarValue="-"
+              dollarValue={liquidityUSD == "???" ? "-" : liquidityUSD}
               token0Name={data?.symbol0 || "loading..."}
               token0Image={getImage(data?.tokenAddress0)}
               token0Qt={data?.amount0}
@@ -194,7 +208,7 @@ export default function Position() {
             ></PositionInformation>
             <PositionInformation
               title="unclaimed fees"
-              dollarValue="-"
+              dollarValue={unclaimedUSD == "???" ? "-" : unclaimedUSD}
               token0Name={data?.symbol0 || "loading..."}
               token0Image={getImage(data?.tokenAddress0)}
               token0Qt={data?.unclaimed0}
@@ -213,7 +227,7 @@ export default function Position() {
                 disabled={true}
                 className="mt-4 rounded-lg bg-gray-200 px-2 text-base"
               >
-                next compound: ~420:69
+                next compound: {nextCompound ? nextCompound + " days" : "???"}
               </button>
               <button
                 onClick={() => setDialogIsOpen(true)}

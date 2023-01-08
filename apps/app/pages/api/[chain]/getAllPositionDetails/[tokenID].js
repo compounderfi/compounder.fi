@@ -193,11 +193,12 @@ async function calculateAPYPercentage(chainId, APR, principalInUSD) {
   const requiredToCompoundUSD = gasFee * 50; //2% fee
   const percentageNeeded = requiredToCompoundUSD / principalInUSD
   const yearsToGetPercentageNeeded = percentageNeeded / APR;
+  const daysUntilNextCompound = yearsToGetPercentageNeeded * 365;
   const numberOfCompoundsPerYear = 1 / yearsToGetPercentageNeeded
 
   const apy = aprToApy(APR, numberOfCompoundsPerYear)
-
-  return apy
+  console.log(daysUntilNextCompound)
+  return [apy, daysUntilNextCompound]
 }
 
 
@@ -205,6 +206,7 @@ export default async function handler(req, res) {
   const { tokenID, chain } = req.query;
 
   const data = await makeRequest(tokenID, chain); //creates the request and retrieves the response
+
   const resp = data["data"]["position"]; //resp
 
   const decimals0 = resp["token0"]["decimals"];
@@ -225,7 +227,7 @@ export default async function handler(req, res) {
   const owner = resp["owner"]
   const ethPriceUSD = +data["data"]["bundle"]["ethPriceUSD"];
   
-  console.log(owner)
+
   const claimed0 = resp["collectedFeesToken0"]
   const claimed1 = resp["collectedFeesToken1"]
 
@@ -240,12 +242,13 @@ export default async function handler(req, res) {
   const claimedInUSD = await calculateClaimedFeesUSD(claimed0, claimed1, ethPriceUSD, token0ETH, token1ETH)
 
   const APRpercentage = await calculateAPRPercentage(timestamp, principalInUSD, unclaimedInUSD, claimedInUSD)
-  const APYpercentage = await calculateAPYPercentage(chain, APRpercentage, principalInUSD)
+  const [APYpercentage, daysUntilNextCompound] = await calculateAPYPercentage(chain, APRpercentage, principalInUSD)
 
 
   res.status(200).json({
     apr: APRpercentage,
     apy: APYpercentage,
+    daysUntilNextCompound: daysUntilNextCompound,
     amount0: amount0,
     amount1: amount1,
     unclaimed0: unclaimed0,
@@ -262,6 +265,5 @@ export default async function handler(req, res) {
     token0USD: token0ETH * ethPriceUSD,
     token1USD: token1ETH * ethPriceUSD,
     ethPriceUSD: ethPriceUSD
-
   });
 }
