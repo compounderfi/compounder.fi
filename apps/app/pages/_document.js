@@ -8,7 +8,18 @@ export default function Document() {
           name="description"
           content="compounder.fi automatically compounds uniswap liquidity position earnings."
         />
-        <link rel="icon" href="/favicon.ico" />
+        <link
+        rel="icon"
+        type="image/svg+xml"
+        href="/favicondarkmode.ico"
+        media="(prefers-color-scheme: dark"
+        />
+        <link
+        rel="icon"
+        type="image/svg+xml"
+        href="/faviconlightmode.ico"
+        media="(prefers-color-scheme: light"
+        />
       </Head>
       <body
         style={{ paddingLeft: "calc(100vw - 100%)" }}

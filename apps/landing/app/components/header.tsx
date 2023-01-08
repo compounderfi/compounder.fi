@@ -10,7 +10,7 @@ export default function Header() {
             alt="compounder.fi logo"
             width={40}
             height={40}
-            src="/logo.svg"
+            src="/faviconlightmode.ico"
           ></Image>
           <div className="cursor-pointer text-4xl font-medium">compounder.fi</div>
         </div>

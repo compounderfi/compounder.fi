@@ -7,7 +7,18 @@ export default function Head() {
         name="description"
         content="compounder.fi automatically compounds uniswap liquidity position earnings."
       />
-      <link rel="icon" href="/logo.svg" />
+      <link
+        rel="icon"
+        type="image/svg+xml"
+        href="/favicondarkmode.ico"
+        media="(prefers-color-scheme: dark"
+        />
+        <link
+        rel="icon"
+        type="image/svg+xml"
+        href="/faviconlightmode.ico"
+        media="(prefers-color-scheme: light"
+        />
     </>
   );
 }

@@ -36,6 +36,19 @@ const muiTheme = createTheme({
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
+    <>
+    <link
+        rel="icon"
+        type="image/svg+xml"
+        href="/favicondarkmode.ico"
+        media="(prefers-color-scheme: dark"
+        />
+        <link
+        rel="icon"
+        type="image/svg+xml"
+        href="/faviconlightmode.ico"
+        media="(prefers-color-scheme: light"
+        />
     <ThemeProvider theme={muiTheme}>
       <WagmiConfig client={wagmiClient}>
         <ConnectKitProvider
@@ -52,6 +65,8 @@ function MyApp({ Component, pageProps }: AppProps) {
         </ConnectKitProvider>
       </WagmiConfig>
     </ThemeProvider>
+    </>
+    
   );
 }
 
