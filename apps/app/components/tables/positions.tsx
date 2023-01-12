@@ -6,10 +6,11 @@ import {
 } from "@tanstack/react-table";
 import Link from "next/link";
 import CompoundButton from "../compoundButton";
+import PositionRow from "./positionRow"
+import PositionFees from "./positionFees"
 
 export type Position = {
-  tokenID: string;
-  estimatedFees: string;
+  tokenID: string
 };
 
 const columnHelper = createColumnHelper<Position>();
@@ -25,8 +26,11 @@ const columns = [
       </Link>
     ),
   }),
-  columnHelper.accessor("estimatedFees", {
+  columnHelper.accessor("tokenID", {
     header: "estimated fees",
+    cell: (info) => (
+      <PositionFees tokenID={"" + info.getValue()}></PositionFees>
+    ),
   }),
   columnHelper.display({
     header: "compound",
@@ -65,13 +69,7 @@ export default function PositionsTable({ data }: PositionsTableProps) {
       </thead>
       <tbody>
         {table.getRowModel().rows.map((row) => (
-          <tr className="odd:bg-[#f0f2f5]" key={row.id}>
-            {row.getVisibleCells().map((cell) => (
-              <td key={cell.id}>
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </td>
-            ))}
-          </tr>
+          <PositionRow row={row} key={row.id}></PositionRow>
         ))}
       </tbody>
     </table>

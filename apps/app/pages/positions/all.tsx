@@ -22,6 +22,7 @@ function AllPositions() {
 
   const [positions, setPositions] = useState<Position[]>([]);
 
+  
   useEffect(() => {
     if (!data) {
       return;
@@ -31,8 +32,7 @@ function AllPositions() {
 
     data.positions.forEach((position: any) => {
       newPositions.push({
-        tokenID: position.id,
-        estimatedFees: "0.000000000000000000",
+        tokenID: position.id
       });
     });
 
