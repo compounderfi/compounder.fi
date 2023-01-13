@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState} from "react";
 import useSWR from "swr";
 import { useNetwork } from "wagmi";
 
 export interface PositionFeesProps {
     tokenID: string;
+    updater: any;
 }
   
 
-export default function PositionFees({tokenID}: PositionFeesProps) {
+export default function PositionFees({tokenID, updater}: PositionFeesProps) {
     const fetcher = (url: RequestInfo | URL) => fetch(url).then((r) => r.json());
     const { chain } = useNetwork();
     const { data } = useSWR("/api/" + chain?.id + "/getAllPositionDetails/" + tokenID, fetcher);
@@ -18,6 +19,7 @@ export default function PositionFees({tokenID}: PositionFeesProps) {
 
     useEffect(() => {
         if (data) {
+            updater(tokenID, data)
             setUnclaimed0Value(data["unclaimed0"] * data["token0USD"])
             setUnclaimed1Value(data["unclaimed1"] * data["token1USD"])
             setSymbol0(data["symbol0"])

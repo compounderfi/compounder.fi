@@ -181,7 +181,7 @@ export default function Position() {
     console.log(data);
   }, [data]);
 
-  let [dialogIsOpen, setDialogIsOpen] = useState(false);
+  const [dialogIsOpen, setDialogIsOpen] = useState(false);
 
   return (
     <>
@@ -231,7 +231,7 @@ export default function Position() {
               </button>
               <button
                 onClick={() => setDialogIsOpen(true)}
-                className="mt-4 rounded-lg bg-gray-200 px-2 text-base transition-colors duration-300 hover:bg-gray-300"
+                className="mt-4 rounded-lg bg-[#81e291] px-2 text-base transition-colors duration-300 hover:bg-[#92D5E6]"
               >
                 compound now
               </button>
