@@ -33,7 +33,8 @@ function AllPositions() {
     data.positions.forEach((position: any) => {
       newPositions.push({
         tokenID: position.id,
-        compound: position.id
+        feesID: position.id,
+        compoundID: position.id
       });
     });
 

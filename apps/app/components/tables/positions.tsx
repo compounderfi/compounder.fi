@@ -15,7 +15,8 @@ import { useState, useEffect } from "react";
 
 export type Position = {
   tokenID: string;
-  compound: string;
+  feesID: string;
+  compoundID: string;
 };
 
 const columnHelper = createColumnHelper<Position>();
@@ -47,7 +48,7 @@ export default function PositionsTable({ data }: PositionsTableProps) {
           </Link>
         ),
       }),
-      columnHelper.accessor("tokenID", {
+      columnHelper.accessor("feesID", {
         header: "estimated fees",
         cell: (info) => (
           <PositionFees tokenID={info.getValue()} updater={UpdatePosition}></PositionFees>
@@ -60,7 +61,7 @@ export default function PositionsTable({ data }: PositionsTableProps) {
   useEffect(() => {
     if (positionToData) {
       let shouldDisplay = true
-      const newValue = columnHelper.accessor("tokenID", {
+      const newValue = columnHelper.accessor("compoundID", {
         header: "compound",
         cell: (info) => (positionToData[info.getValue()] 
           ? <CompoundButton tokenID={info.getValue()} row={info.row} apiRequest={positionToData[info.getValue()]}></CompoundButton>
