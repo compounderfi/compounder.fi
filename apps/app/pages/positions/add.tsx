@@ -64,11 +64,6 @@ const abiInterface = new Interface([
     inputs: [
       {
         internalType: "address",
-        name: "from",
-        type: "address",
-      },
-      {
-        internalType: "address",
         name: "to",
         type: "address",
       },
@@ -78,7 +73,7 @@ const abiInterface = new Interface([
         type: "uint256",
       },
     ],
-    name: "safeTransferFrom",
+    name: "approve",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -207,15 +202,14 @@ function Add() {
 
   useEffect(() => {
     if (selection.length == 1) {
-      setFunctionName("safeTransferFrom");
-      setFunctionArgs([address!, CONTRACT_ADDRESS, selection[0]]);
+      setFunctionName("approve");
+      setFunctionArgs([CONTRACT_ADDRESS, selection[0]]);
     } else {
       setFunctionName("multicall");
       let data: string[] = [];
       selection.map((i) => {
         data.push(
-          abiInterface.encodeFunctionData("safeTransferFrom", [
-            address,
+          abiInterface.encodeFunctionData("approve", [
             CONTRACT_ADDRESS,
             i,
           ])
