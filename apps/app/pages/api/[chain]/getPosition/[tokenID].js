@@ -4,6 +4,7 @@ import { tickMath, getAmountsForLiquidityRange } from "@thanpolas/univ3prices";
 import { tokenToSignificant } from "@thanpolas/crypto-utils";
 import { request, gql } from "graphql-request";
 import { getAddress } from "ethers/lib/utils";
+import { NFPM_ADDRESS } from "../../utils/constants";
 
 const GetPositionQuery = gql`
   query getPosition($id: String!) {
@@ -90,7 +91,7 @@ async function getFees(tokenID, token0decimals, token1decimals, owner, chain) {
 
   const provider = new ethers.providers.JsonRpcBatchProvider(rpcURL);
   const contract = new ethers.Contract(
-    "0xC36442b4a4522E871399CD717aBDD847Ab11FE88",
+    NFPM_ADDRESS,
     abi,
     provider
   );

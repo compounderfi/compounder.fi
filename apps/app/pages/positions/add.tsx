@@ -11,7 +11,7 @@ import useSWR from "swr";
 import { Interface } from "ethers/lib/utils";
 import SelectableGrid from "../../components/grids/selectableGrid";
 import { useDebounce } from "../../hooks/useDebounce";
-import { CONTRACT_ADDRESS } from "../../utils/constants";
+import { CONTRACT_ADDRESS, NFPM_ADDRESS } from "../../utils/constants";
 import Head from "next/head";
 import { request, gql } from "graphql-request";
 
@@ -68,9 +68,6 @@ const grabNotDepoedAlreadyQuery = gql`
   query GetPositions($address: Bytes!) {
     positions(where: { owner: $address, tokenWithdraw_not: null }) {
       id
-      tokenWithdraw {
-        id
-      }
     }
   }
 `;
@@ -102,7 +99,7 @@ function Add() {
   const { data: compPositions } = useSWR({ address: address?.toLowerCase() }, fetcherComp);
 
   const { config } = usePrepareContractWrite({
-    address: "0xc36442b4a4522e871399cd717abdd847ab11fe88",
+    address: NFPM_ADDRESS,
     abi: abi,
     functionName: functionName,
     args: functionArgs,

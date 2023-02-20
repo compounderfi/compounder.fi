@@ -3,7 +3,7 @@ import { tokenToSignificant } from "@thanpolas/crypto-utils";
 import axios from "axios";
 import { ethers } from "ethers";
 import abi from "../../../../utils/uniswapABI.json";
-
+import { NFPM_ADDRESS } from "../../../../utils/constants";
 async function makeRequest(tokenID, chain) {
   const graphURL =
     chain == "1"
@@ -123,7 +123,7 @@ async function calculateUnclaimedFees(chain, tokenID, owner, decimals0, decimals
 
   const provider = new ethers.providers.JsonRpcBatchProvider(rpcURL);
   const contract = new ethers.Contract(
-    "0xC36442b4a4522E871399CD717aBDD847Ab11FE88",
+    NFPM_ADDRESS,
     abi,
     provider
   );

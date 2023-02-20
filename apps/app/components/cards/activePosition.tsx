@@ -1,6 +1,6 @@
 import PositionCard from "./positionCard";
 import NFTPreview from "./nftPreview";
-import abi from "../../utils/abi.json";
+import abi from "../../utils/uniswapABI.json";
 import {
   useAccount,
   usePrepareContractWrite,
@@ -9,7 +9,7 @@ import {
   useNetwork,
 } from "wagmi";
 import { MouseEvent } from "react";
-import { CONTRACT_ADDRESS } from "../../utils/constants";
+import { CONTRACT_ADDRESS, NFPM_ADDRESS } from "../../utils/constants";
 import { Tooltip } from "@mui/material";
 import {
   ArrowRightOnRectangleIcon,
@@ -31,10 +31,10 @@ export default function ActivePositionCard({
   const { address } = useAccount();
 
   const { config } = usePrepareContractWrite({
-    address: CONTRACT_ADDRESS,
+    address: NFPM_ADDRESS,
     abi: abi,
-    functionName: "withdrawToken",
-    args: [id, address, true, 0],
+    functionName: "approve",
+    args: ["0x0000000000000000000000000000000000000000", id],
   });
 
   const { data, isLoading, isSuccess, write } = useContractWrite(config);
