@@ -6,6 +6,19 @@ import { useEffect, useState } from "react";
 import { CONTRACT_ADDRESS } from "../../utils/constants";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import useSWR from "swr";
+import { request, gql } from "graphql-request";
+
+const grabAlreadyDepoedQuery = gql`
+  query GetPositions($address: Bytes!) {
+    positions(where: { owner: $address, tokenWithdraw: null }) {
+      id
+      tokenWithdraw {
+        id
+      }
+    }
+  }
+`;
 
 function Index() {
   const router = useRouter();
@@ -14,16 +27,28 @@ function Index() {
   const { address, isConnected } = useAccount();
   const isMounted = useIsMounted();
 
-  const { data } = useContractRead({
-    address: CONTRACT_ADDRESS,
-    abi: abi,
-    functionName: "addressToTokens",
-    args: [urlAddress],
-  });
+  const compounderSubgraphUrlGoerli = "https://api.thegraph.com/subgraphs/name/compounderfi/compounderfi"
+  const fetcherComp = (variables: { address: string }) =>
+    request(compounderSubgraphUrlGoerli, grabAlreadyDepoedQuery, variables);
+
+  const { data: compPositions } = useSWR({ address: address?.toLowerCase() }, fetcherComp);
 
   const [ids, setIds] = useState<string[]>([]);
-
   useEffect(() => {
+    if (compPositions == undefined) {
+      return;
+    }
+    const newIds: string[] = [];
+
+    compPositions.positions.forEach((position: { id: string }) => {
+      console.log(position.id)
+      newIds.push(position.id);
+    });
+
+    setIds(newIds);
+  }, [compPositions]);
+
+/*   useEffect(() => {
     if (!data)
       return
     const newIds: string[] = [];
@@ -32,7 +57,7 @@ function Index() {
     });
 
     setIds(newIds);
-  }, [data]);
+  }, [data]); */
 
   if (!isConnected && isMounted) {
     router.push("/");

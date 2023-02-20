@@ -64,9 +64,9 @@ const grabAllPosQuery = gql`
   }
 `;
 
-const grabAlreadyDepoedQuery = gql`
+const grabNotDepoedAlreadyQuery = gql`
   query GetPositions($address: Bytes!) {
-    positions(where: { owner: $address, tokenWithdraw: null }) {
+    positions(where: { owner: $address, tokenWithdraw_not: null }) {
       id
       tokenWithdraw {
         id
@@ -86,7 +86,7 @@ function Add() {
 
   const compounderSubgraphUrlGoerli = "https://api.thegraph.com/subgraphs/name/compounderfi/compounderfi"
   const fetcherComp = (variables: { address: string }) =>
-    request(compounderSubgraphUrlGoerli, grabAlreadyDepoedQuery, variables);
+    request(compounderSubgraphUrlGoerli, grabNotDepoedAlreadyQuery, variables);
 
   const isMounted = useIsMounted();
   const [ids, setIds] = useState<string[]>([]);
@@ -166,7 +166,7 @@ function Add() {
     if (addressPositions == undefined || compPositions == undefined) {
       return;
     }
-    console.log(compPositions)
+
     addressPositions.positions.forEach((position: { id: string }) => {
       const depoed = compPositions.positions.find((i: { id: string }) => i.id == position.id)
       if (depoed != undefined) {
