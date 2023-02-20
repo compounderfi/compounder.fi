@@ -11,6 +11,7 @@ export default function HomePageGrid({
   ids,
   showAddPositionCard,
 }: HomePageGridProps) {
+  
   const positions = ids.map((id) => (
     <Link key={id} href={"/position/" + id}>
       <ActivePositionCard id={id}></ActivePositionCard>

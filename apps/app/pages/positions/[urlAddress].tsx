@@ -1,9 +1,7 @@
-import { useAccount, useContractRead } from "wagmi";
+import { useAccount } from "wagmi";
 import HomePageGrid from "../../components/grids/homePageGrid";
 import { useIsMounted } from "../../hooks/useIsMounted";
-import abi from "../../utils/abi.json";
 import { useEffect, useState } from "react";
-import { CONTRACT_ADDRESS } from "../../utils/constants";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import useSWR from "swr";
@@ -26,7 +24,7 @@ function Index() {
 
   const { address, isConnected } = useAccount();
   const isMounted = useIsMounted();
-
+  
   const compounderSubgraphUrlGoerli = "https://api.thegraph.com/subgraphs/name/compounderfi/compounderfi"
   const fetcherComp = (variables: { address: string }) =>
     request(compounderSubgraphUrlGoerli, grabAlreadyDepoedQuery, variables);

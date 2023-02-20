@@ -95,6 +95,7 @@ function Add() {
 
   const { address, isConnected } = useAccount();
   const { data: addressPositions } = useSWR({ address: address }, fetcherUni);
+
   //needs to be lowercased for some fucking reason
   const { data: compPositions } = useSWR({ address: address?.toLowerCase() }, fetcherComp);
 
