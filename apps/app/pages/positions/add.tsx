@@ -56,7 +56,7 @@ const abi = [
 ];
 const abiInterface = new Interface(abi);
 
-const query = gql`
+const grabAllPosQuery = gql`
   query GetPositions($address: Bytes!) {
     positions(where: { owner: $address }) {
       id
@@ -64,14 +64,29 @@ const query = gql`
   }
 `;
 
+const grabAlreadyDepoedQuery = gql`
+  query GetPositions($address: Bytes!) {
+    positions(where: { owner: $address, tokenWithdraw: null }) {
+      id
+      tokenWithdraw {
+        id
+      }
+    }
+  }
+`;
+
 function Add() {
   const { chain } = useNetwork();
-  const subgraphURL =
+  const uniswapSubgraphURL =
     chain?.id == 5
       ? "https://api.thegraph.com/subgraphs/name/compositelabs/uniswap-v3-goerli"
       : "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3";
-  const fetcher = (variables: { address: string }) =>
-    request(subgraphURL, query, variables);
+  const fetcherUni = (variables: { address: string }) =>
+    request(uniswapSubgraphURL, grabAllPosQuery, variables);
+
+  const compounderSubgraphUrlGoerli = "https://api.thegraph.com/subgraphs/name/compounderfi/compounderfi"
+  const fetcherComp = (variables: { address: string }) =>
+    request(compounderSubgraphUrlGoerli, grabAlreadyDepoedQuery, variables);
 
   const isMounted = useIsMounted();
   const [ids, setIds] = useState<string[]>([]);
@@ -82,7 +97,9 @@ function Add() {
   const debouncedSelection = useDebounce(selection, 500);
 
   const { address, isConnected } = useAccount();
-  const { data: addressPositions } = useSWR({ address: address }, fetcher);
+  const { data: addressPositions } = useSWR({ address: address }, fetcherUni);
+  //needs to be lowercased for some fucking reason
+  const { data: compPositions } = useSWR({ address: address?.toLowerCase() }, fetcherComp);
 
   const { config } = usePrepareContractWrite({
     address: "0xc36442b4a4522e871399cd717abdd847ab11fe88",
@@ -146,22 +163,24 @@ function Add() {
   useEffect(() => {
     const ids: string[] = [];
 
-    if (addressPositions == undefined) {
+    if (addressPositions == undefined || compPositions == undefined) {
       return;
     }
-
+    console.log(compPositions)
     addressPositions.positions.forEach((position: { id: string }) => {
-      ids.push(position.id);
+      const depoed = compPositions.positions.find((i: { id: string }) => i.id == position.id)
+      if (depoed != undefined) {
+        ids.push(depoed.id);
+      }
     });
 
     setIds(ids);
-  }, [addressPositions]);
+  }, [addressPositions, compPositions]);
 
   useEffect(() => {
-    console.log(selection.length)
+
     if (selection.length == 1) {
       setFunctionName("approve");
-      console.log([CONTRACT_ADDRESS, selection[0]])
       setFunctionArgs([CONTRACT_ADDRESS, selection[0]]);
     } else {
       setFunctionName("multicall");
