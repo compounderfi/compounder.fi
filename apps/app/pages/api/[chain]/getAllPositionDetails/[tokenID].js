@@ -197,7 +197,7 @@ async function calculateAPYPercentage(chainId, APR, principalInUSD) {
   const numberOfCompoundsPerYear = 1 / yearsToGetPercentageNeeded
 
   const apy = aprToApy(APR, numberOfCompoundsPerYear)
-  console.log(daysUntilNextCompound)
+  //console.log(daysUntilNextCompound)
   return [apy, daysUntilNextCompound]
 }
 

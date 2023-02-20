@@ -20,50 +20,6 @@ const abi = [
     inputs: [
       {
         internalType: "address",
-        name: "from",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "to",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "tokenId",
-        type: "uint256",
-      },
-    ],
-    name: "safeTransferFrom",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bytes[]",
-        name: "data",
-        type: "bytes[]",
-      },
-    ],
-    name: "multicall",
-    outputs: [
-      {
-        internalType: "bytes[]",
-        name: "results",
-        type: "bytes[]",
-      },
-    ],
-    stateMutability: "payable",
-    type: "function",
-  },
-];
-const abiInterface = new Interface([
-  {
-    inputs: [
-      {
-        internalType: "address",
         name: "to",
         type: "address",
       },
@@ -97,7 +53,8 @@ const abiInterface = new Interface([
     stateMutability: "payable",
     type: "function",
   },
-]);
+];
+const abiInterface = new Interface(abi);
 
 const query = gql`
   query GetPositions($address: Bytes!) {
@@ -201,8 +158,10 @@ function Add() {
   }, [addressPositions]);
 
   useEffect(() => {
+    console.log(selection.length)
     if (selection.length == 1) {
       setFunctionName("approve");
+      console.log([CONTRACT_ADDRESS, selection[0]])
       setFunctionArgs([CONTRACT_ADDRESS, selection[0]]);
     } else {
       setFunctionName("multicall");
@@ -229,6 +188,7 @@ function Add() {
           {ids.length > 0 && (
             <>
               <p className="px-4 text-xl ">select positions to add</p>
+              <p className="px-4 text-s border-2">compounder can only collect fees and increase liquidity, and never transfer or remove liquidity from your position</p>
               <div className="mt-2">
                 <SelectableGrid
                   ids={ids}
