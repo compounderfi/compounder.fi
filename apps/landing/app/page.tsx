@@ -3,6 +3,7 @@ import Hero from "./components/hero";
 import Supporter from "./components/supporters";
 import Card from "./components/card";
 import FeaturesBlocks from "./components/featureBlocks";
+import Footer from "./components/footer";
 export default function Index() {
   return (
     <>
@@ -19,7 +20,7 @@ export default function Index() {
       <Supporter/>
       <hr className="h-5px"></hr>
       <FeaturesBlocks/>
-
+      <Footer/>
     </>
   );
 }
