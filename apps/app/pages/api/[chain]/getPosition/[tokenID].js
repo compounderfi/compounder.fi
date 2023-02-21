@@ -4,7 +4,7 @@ import { tickMath, getAmountsForLiquidityRange } from "@thanpolas/univ3prices";
 import { tokenToSignificant } from "@thanpolas/crypto-utils";
 import { request, gql } from "graphql-request";
 import { getAddress } from "ethers/lib/utils";
-import { NFPM_ADDRESS } from "../../utils/constants";
+import { NFPM_ADDRESS } from "../../../../utils/constants";
 
 const GetPositionQuery = gql`
   query getPosition($id: String!) {
