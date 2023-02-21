@@ -27,7 +27,7 @@ export default function Supporter() {
             <div className="col-span-2 flex items-center justify-center py-2 md:col-auto">
             <Image
                 alt="uniswap"
-                src="/uniswapgrants.png"
+                src="/uniswapGrants.png"
                 width="300"
                 height="5"
             ></Image>
