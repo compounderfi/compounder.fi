@@ -5,7 +5,7 @@ export default function Hero() {
     return (
     <>
       <section className="max-w-screen-xl mx-auto">
-        <div className="h-[61vh] px-16 grid-flow-col-dense grid items-center gap-2 grid py-8 mx-auto max-w-screen-xl lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12">
+        <div className="h-[61vh] min-h-[600px] px-16 grid-flow-col-dense grid items-center gap-2 grid py-8 mx-auto max-w-screen-xl lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12">
             <div className="col-start-1 col-end-9 place-self-center mr-auto lg:col-span-8">
                 <h1 className="mb-4 max-w-2xl text-4xl font-extrabold leading-none md:text-5xl xl:text-6xl">Simple interest-{">"} compound interest</h1>
                 <p className=" max-w-2xl font-light text-gray-500 mb-4 md:text-lg lg:text-xl dark:text-gray-500">Compounder collects your uniswapv3 fees and reinvests them back into your position. Automatically, efficiently, and at a low fee.</p>
