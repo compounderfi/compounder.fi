@@ -3,7 +3,7 @@ import Image from "next/image";
 export default function Footer() {
   return (
     <footer aria-label="Site Footer">
-      <div className="relative mx-auto max-w-[1024px] px-4 py-16 sm:px-6 lg:px-8 lg:pt-24">
+      <div className="relative mx-auto max-w-screen-xl  px-4 py-16 sm:px-6 lg:px-8 lg:pt-24">
         <div className="absolute top-4 right-4 sm:top-6 sm:right-6 lg:top-8 lg:right-8">
           <a
             className="inline-block rounded-full bg-[#81e291] p-2 text-white shadow transition sm:p-3 lg:p-4"

@@ -2,12 +2,12 @@ import Image from "next/image";
 
 export default function Supporter() {
     return (
-        <div className="mx-auto  max-w-6xl px-4 sm:px-6">
+        <div className="mx-auto max-w-screen-xl  px-4 sm:px-6">
         <div className="py-7 md:py-10">
         {/* Section header */}
         <div className="mx-auto max-w-3xl pb-5 text-center md:pb-7">
             <p className="text-2xl text-gray-700" data-aos="zoom-y-out">
-            Awarded a grant by the Uniswap Grants Team
+            Compounder.fi is a Uniswap Grants Recipient
             </p>
         </div>
 
