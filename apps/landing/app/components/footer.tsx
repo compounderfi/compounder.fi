@@ -4,27 +4,7 @@ export default function Footer() {
   return (
     <footer aria-label="Site Footer">
       <div className="relative mx-auto max-w-screen-xl  px-4 py-16 sm:px-6 lg:px-8 lg:pt-24">
-        <div className="absolute top-4 right-4 sm:top-6 sm:right-6 lg:top-8 lg:right-8">
-          <a
-            className="inline-block rounded-full bg-[#81e291] p-2 text-white shadow transition sm:p-3 lg:p-4"
-            href="#top"
-          >
-            <span className="sr-only">Back to top</span>
-
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </a>
-        </div>
+        
 
         <div className="lg:flex lg:items-end lg:justify-between">
           <div>

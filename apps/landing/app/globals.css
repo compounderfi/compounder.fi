@@ -7,3 +7,14 @@ html, body {
     max-width: 100%;
     overflow-x: hidden;
 }
+
+.mesh {
+    background-color:hsla(129,62%,69%,1);
+    background-image:
+    radial-gradient(at 36% 75%, hsla(0,0%,100%,1) 0px, transparent 50%), 
+    radial-gradient(at 80% 20%, hsla(0,0%,100%,1) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, hsla(0,0%,100%,1) 0px, transparent 50%),
+    radial-gradient(at 0% 0%, hsla(0,0%,100%,1) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, hsla(331,100%,49%,1) 0px, transparent 50%),
+    radial-gradient(at 0% 0%, hsla(331,100%,49%,1) 0px, transparent 50%);
+}

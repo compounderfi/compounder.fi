@@ -18,7 +18,7 @@ export default function Header() {
       <div className="flex-grow"></div>
       <div className="hidden sm:block">
         <Link href={"https://app.compounder.fi"}>
-          <div className="rounded-full bg-gray-200 py-2 px-4">launch app</div>
+          <div className="rounded-full bg-[#81e291] py-2 px-4">launch app</div>
         </Link>
       </div>
     </header>

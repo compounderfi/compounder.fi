@@ -7,7 +7,7 @@ export default function Supporter() {
         {/* Section header */}
         <div className="mx-auto max-w-3xl pb-5 text-center md:pb-7">
             <p className="text-2xl text-gray-700" data-aos="zoom-y-out">
-            Compounder.fi is a Uniswap Grants Recipient
+            Compounder.fi is a Uniswap Grants recipient
             </p>
         </div>
 
