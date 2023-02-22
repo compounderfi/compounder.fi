@@ -9,32 +9,14 @@ import { CONTRACT_ADDRESS } from "../utils/constants";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import Link from "next/link";
-
+import AllPositions from "./positions/all";
 const provider = new InfuraProvider();
 
 function Index() {
   const { address, isConnected } = useAccount();
   const isMounted = useIsMounted();
 
-  const { data } = useContractRead({
-    address: CONTRACT_ADDRESS,
-    abi: abi,
-    functionName: "addressToTokens",
-    args: [address],
-  });
-
   const [ids, setIds] = useState<string[]>([]);
-
-  useEffect(() => {
-    if (data) {
-      const newIds: string[] = [];
-      (data as Array<number>).forEach((element) => {
-        newIds.push(element.toString());
-      });
-
-      setIds(newIds);
-    }
-  }, [data]);
 
   const router = useRouter();
 
@@ -54,18 +36,8 @@ function Index() {
             earnings
           </p>
 
-          <div className="my-4 px-4">
-            <PublicStats />
-          </div>
-
-          <p className="mt-4 px-4 text-xl">
-            connect wallet to continue or{" "}
-            <Link href="/positions/all">
-              <span className="cursor-pointer underline	decoration-1 underline-offset-4">
-                view all deposited positions
-              </span>
-            </Link>
-          </p>
+          <br/>
+          <AllPositions/>
         </>
       )}
 
