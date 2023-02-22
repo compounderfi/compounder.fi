@@ -7,6 +7,7 @@ import Footer from "./components/footer";
 export default function Index() {
   return (
     <>
+ 
       <div
         style={{
           background:
@@ -21,6 +22,7 @@ export default function Index() {
       <hr className="h-5px"></hr>
       <FeaturesBlocks/>
       <Footer/>
+
     </>
   );
 }

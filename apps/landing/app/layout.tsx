@@ -12,6 +12,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="bg-[#EEF1EF] text-[#1C2321]">
+      
       {/* <html lang="en" className={workSans.className + " bg-black text-white"}> */}
       {/*
         <head /> will contain the components returned by the nearest parent

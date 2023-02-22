@@ -19,6 +19,7 @@ export default function Head() {
         href="/faviconlightmode.ico"
         media="(prefers-color-scheme: light"
         />
+        
     </>
   );
 }
