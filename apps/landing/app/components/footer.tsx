@@ -60,7 +60,7 @@ export default function Footer() {
               <li>
                 <a
                   className="transition hover:text-gray-700/75"
-                  href="/"
+                  href="https://compounder-fi.gitbook.io/compounder.fi/"
                 >
                   Docs
                 </a>

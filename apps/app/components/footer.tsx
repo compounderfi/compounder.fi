@@ -6,7 +6,7 @@ export default function Footer() {
       <p className="flex-grow"></p>
       <Link href="/about">about</Link>
       <Link href="/contact">contact</Link>
-      <Link href="/docs">docs</Link>
+      <Link href="https://compounder-fi.gitbook.io/compounder.fi/">docs</Link>
       <Link href="/positions/all">view all positions</Link>
     </div>
   );
