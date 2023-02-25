@@ -1,18 +1,17 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import { createClient, WagmiConfig, chain } from "wagmi";
+import { createClient, WagmiConfig, chain, configureChains } from "wagmi";
 import { ConnectKitProvider, getDefaultClient } from "connectkit";
 import Layout from "../components/layout";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-const alchemyId = "IoryLeAYX67s6RH1qGGtPidVIMf_PILG";
-const chains = [chain.goerli];
+const chains = [chain.goerli, chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum];
 
 const wagmiClient = createClient(
   getDefaultClient({
     appName: "compounder.fi",
-    alchemyId,
     chains,
+    autoConnect: true,
   })
 );
 

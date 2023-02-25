@@ -7,7 +7,7 @@ const nextConfig = {
       "raw.githubusercontent.com",
       "upload.wikimedia.org",
     ],
-  },
+  }
 };
 
 module.exports = nextConfig;

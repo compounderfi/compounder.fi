@@ -42,6 +42,7 @@ export default function CompoundNowModal({
     abi: abi,
     functionName: "AutoCompound25a502142c1769f58abaabfe4f9f4e8b89d24513",
     args: [parseInt(positionId), form.rewardConversion],
+    chainId: chain?.id
   });
 
   const { data, isLoading, isSuccess, write } = useContractWrite(config);

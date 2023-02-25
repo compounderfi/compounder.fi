@@ -11,8 +11,8 @@ export default function APStats({ tokenID }: { tokenID: string }) {
 
   return (
     <div>
-      <div className="text-xl">apr: {data?.apr || "?.??"}%</div>
-      <div className="text-xl">apy: {data?.apy || "?.??"}%</div>
+      <div className="text-xl">apr: {Number(data?.apr).toFixed(2) || "?.??"}%</div>
+      <div className="text-xl">apy: {Number(data?.apy).toFixed(2)|| "?.??"}%</div>
     </div>
   );
 }

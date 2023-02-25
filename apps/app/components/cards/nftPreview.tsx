@@ -2,6 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import { useContractRead } from "wagmi";
 import Image from "next/image";
 import { NFPM_ADDRESS } from "../../utils/constants";
+import { useNetwork } from "wagmi";
 const uniswapAbi = [
   "function tokenURI(uint256 tokenId) public view returns (string memory)",
 ];
@@ -42,12 +43,14 @@ export default function NFTPreviewProps({ id }: NFTPreviewProps) {
   const [animate, setAnimate] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
+  const {chain} = useNetwork();
 
   const { data } = useContractRead({
     address: NFPM_ADDRESS,
     abi: uniswapAbi,
     functionName: "tokenURI",
     args: [id],
+    chainId: chain?.id,
   });
 
   useEffect(() => {

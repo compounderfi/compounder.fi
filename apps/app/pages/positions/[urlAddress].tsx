@@ -6,6 +6,11 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import { request, gql } from "graphql-request";
+import getNetworkConfigs from "../../utils/getNetworkConfigs";
+
+import {
+  useNetwork
+} from "wagmi";
 
 const grabAlreadyDepoedQuery = gql`
   query GetPositions($address: Bytes!) {
@@ -19,17 +24,21 @@ const grabAlreadyDepoedQuery = gql`
 `;
 
 function Index() {
+
   const router = useRouter();
   const { urlAddress } = router.query;
 
   const { address, isConnected } = useAccount();
   const isMounted = useIsMounted();
   
-  const compounderSubgraphUrlGoerli = "https://api.thegraph.com/subgraphs/name/compounderfi/compounderfi"
-  const fetcherComp = (variables: { address: string }) =>
-    request(compounderSubgraphUrlGoerli, grabAlreadyDepoedQuery, variables);
+  const { chain } = useNetwork();
 
-  const { data: compPositions } = useSWR({ address: address?.toLowerCase() }, fetcherComp);
+  const subgraphURL = chain ? getNetworkConfigs(chain!.id).graphUrl : getNetworkConfigs(1).graphUrl;
+
+  const fetcherComp = (variables: { address: string }) =>
+    request(subgraphURL, grabAlreadyDepoedQuery, variables);
+
+  let { data: compPositions } = useSWR({ address: address?.toLowerCase() }, fetcherComp);
 
   const [ids, setIds] = useState<string[]>([]);
   useEffect(() => {
@@ -46,16 +55,9 @@ function Index() {
     setIds(newIds);
   }, [compPositions]);
 
-/*   useEffect(() => {
-    if (!data)
-      return
-    const newIds: string[] = [];
-    (data as Array<number>).forEach((element) => {
-      newIds.push(element.toString());
-    });
+  useEffect(() => {
 
-    setIds(newIds);
-  }, [data]); */
+  }, [chain])
 
   if (!isConnected && isMounted) {
     router.push("/");

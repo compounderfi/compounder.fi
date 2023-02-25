@@ -4,71 +4,77 @@ import axios from "axios";
 import { ethers } from "ethers";
 import abi from "../../../../utils/uniswapABI.json";
 import { NFPM_ADDRESS } from "../../../../utils/constants";
-async function makeRequest(tokenID, chain) {
-  const graphURL =
-    chain == "1"
-      ? "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3"
-      : "https://api.thegraph.com/subgraphs/name/compositelabs/uniswap-v3-goerli";
+import getNetworkConfigs from "../../../../utils/getNetworkConfigs";
 
-  const resp = await axios.post(graphURL, {
-    query: `
-      {
-        position(id: ${tokenID}) {
-          collectedFeesToken0
-          collectedFeesToken1
-          transaction {
-            timestamp
-          }
-          token0 {
-            id
-            decimals
-            symbol
-            name
-            derivedETH
-          }
-          token1 {
-            id
-            decimals
-            symbol
-            name
-            derivedETH
-          }
-          pool {
-            feeTier
-            sqrtPrice
-            liquidity
-            feeGrowthGlobal0X128
-            tick
-            poolDayData(skip: 1, first: 7, orderBy: date, orderDirection: desc) {
-              feesUSD
-            }
-          }
-          
-          tickLower {
-            tickIdx
-            feeGrowthOutside0X128
-          }
-          tickUpper {
-            tickIdx
-            feeGrowthOutside0X128
-          }
-          liquidity
-          feeGrowthInside0LastX128
-          owner
-        }
-        bundle(id:1) {
-          ethPriceUSD
-        }
+async function makeRequest(tokenID, chain) {
+  let graphURL;
+
+  switch (chain) {
+    case "1":
+      graphURL = "https://api.thegraph.com/subgraphs/name/revert-finance/uniswap-v3-mainnet"
+      break;
+    case "137":
+      graphURL = "https://api.thegraph.com/subgraphs/name/revert-finance/uniswap-v3-polygon"
+      break;
+    case "42161":
+      graphURL = "https://api.thegraph.com/subgraphs/name/revert-finance/uniswap-v3-arbitrum"
+      break;
+    case "10":
+      graphURL = "https://api.thegraph.com/subgraphs/name/revert-finance/uniswap-v3-optimism"
+      break;
+  }
+
+  const query = `
+  {
+    position(id: ${tokenID}) {
+      collectedFeesToken0
+      collectedFeesToken1
+      transaction {
+        timestamp
       }
-              `,
+      token0 {
+        id
+        decimals
+        symbol
+        name
+        derivedETH
+      }
+      token1 {
+        id
+        decimals
+        symbol
+        name
+        derivedETH
+      }
+      pool {
+        feeTier
+        sqrtPrice
+        liquidity
+        feeGrowthGlobal0X128
+        tick
+      }
+      tickLower
+      tickUpper
+      liquidity
+      feeGrowthInside0LastX128
+      owner
+    }
+    bundle(id:1) {
+      ethPriceUSD
+    }
+  }
+
+  `
+  const resp = await axios.post(graphURL, {
+    query: query,
     variables: null,
   });
   return resp.data;
 }
 
 async function calculateAmount0Amount1(resp) {
-  const tickLower = Number(resp["tickLower"]["tickIdx"]);
-  const tickUpper = Number(resp["tickUpper"]["tickIdx"]);
+  const tickLower = Number(resp["tickLower"]);
+  const tickUpper = Number(resp["tickUpper"]);
 
   const sqrtPrice = resp["pool"]["sqrtPrice"];
   const sqrtRatioAX96 = tickMath.getSqrtRatioAtTick(tickLower);
@@ -116,10 +122,7 @@ async function calculateClaimedFeesUSD(claimed0, claimed1, ethPriceUSD, token0ET
 
 
 async function calculateUnclaimedFees(chain, tokenID, owner, decimals0, decimals1) {
-  const rpcURL =
-    chain == "1"
-      ? "https://eth-mainnet.g.alchemy.com/v2/jDYE9Sr-LXOSHwB9rqVRPoGd2OQSn7mK"
-      : "https://eth-goerli.g.alchemy.com/v2/pRQeyvDG-HCuf5xLTV-N3ads5vnbkvgt";
+  const rpcURL = getNetworkConfigs(Number(chain)).rpcUrl;
 
   const provider = new ethers.providers.JsonRpcBatchProvider(rpcURL);
   const contract = new ethers.Contract(

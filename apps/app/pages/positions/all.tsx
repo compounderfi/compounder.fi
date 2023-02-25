@@ -3,6 +3,10 @@ import PositionsTable, { Position } from "../../components/tables/positions";
 import { request, gql } from "graphql-request";
 import useSWR from "swr";
 import { useEffect, useState } from "react";
+import getNetworkConfigs from "../../utils/getNetworkConfigs";
+import {
+  useNetwork
+} from "wagmi";
 
 const query = gql`
   query GetAllPositions {
@@ -13,8 +17,10 @@ const query = gql`
 `;
 
 function AllPositions() {
-  const subgraphURL =
-    "https://api.thegraph.com/subgraphs/name/compounderfi/test1";
+  const { chain } = useNetwork();
+
+  const subgraphURL = chain ? getNetworkConfigs(chain!.id).graphUrl : getNetworkConfigs(1).graphUrl;
+
   // @ts-ignore
   const fetcher = (query) => request(subgraphURL, query);
 

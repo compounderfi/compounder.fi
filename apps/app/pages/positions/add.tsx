@@ -14,7 +14,7 @@ import { useDebounce } from "../../hooks/useDebounce";
 import { CONTRACT_ADDRESS, NFPM_ADDRESS } from "../../utils/constants";
 import Head from "next/head";
 import { request, gql } from "graphql-request";
-
+import getNetworkConfigs from "../../utils/getNetworkConfigs";
 const abi = [
   {
     inputs: [
@@ -66,7 +66,7 @@ const grabAllPosQuery = gql`
 
 const grabNotDepoedAlreadyQuery = gql`
   query GetPositions($address: Bytes!) {
-    positions(where: { owner: $address, tokenWithdraw_not: null }) {
+    positions(where: { owner: $address, tokenWithdraw: null }) {
       id
     }
   }
@@ -74,17 +74,32 @@ const grabNotDepoedAlreadyQuery = gql`
 
 function Add() {
   const { chain } = useNetwork();
-  const uniswapSubgraphURL =
-    chain?.id == 5
-      ? "https://api.thegraph.com/subgraphs/name/compositelabs/uniswap-v3-goerli"
-      : "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3";
+  let uniswapSubgraphURL: string;
+
+  switch (chain?.id) {
+    case 1:
+      uniswapSubgraphURL = "https://api.thegraph.com/subgraphs/name/revert-finance/uniswap-v3-mainnet"
+      break;
+    case 137:
+      uniswapSubgraphURL = "https://api.thegraph.com/subgraphs/name/revert-finance/uniswap-v3-polygon"
+      break;
+    case 42161:
+      uniswapSubgraphURL = "https://api.thegraph.com/subgraphs/name/revert-finance/uniswap-v3-arbitrum"
+      break;
+    case 10:
+      uniswapSubgraphURL = "https://api.thegraph.com/subgraphs/name/revert-finance/uniswap-v3-optimism"
+      break;
+    default:
+      uniswapSubgraphURL = "https://api.thegraph.com/subgraphs/name/revert-finance/uniswap-v3-mainnet"
+      break;
+  }
   const fetcherUni = (variables: { address: string }) =>
     request(uniswapSubgraphURL, grabAllPosQuery, variables);
 
-  const compounderSubgraphUrlGoerli = "https://api.thegraph.com/subgraphs/name/compounderfi/compounderfi"
+  const compounderSubgraphUrl = chain ? getNetworkConfigs(chain!.id).graphUrl : getNetworkConfigs(1).graphUrl;
   const fetcherComp = (variables: { address: string }) =>
-    request(compounderSubgraphUrlGoerli, grabNotDepoedAlreadyQuery, variables);
-
+    request(compounderSubgraphUrl, grabNotDepoedAlreadyQuery, variables);
+  console.log(compounderSubgraphUrl)
   const isMounted = useIsMounted();
   const [ids, setIds] = useState<string[]>([]);
   const [selection, setSelection] = useState<string[]>([]);
@@ -98,12 +113,13 @@ function Add() {
 
   //needs to be lowercased for some fucking reason
   const { data: compPositions } = useSWR({ address: address?.toLowerCase() }, fetcherComp);
-
+  console.log(address?.toLowerCase())
   const { config } = usePrepareContractWrite({
     address: NFPM_ADDRESS,
     abi: abi,
     functionName: functionName,
     args: functionArgs,
+    chainId: chain?.id
   });
 
   const { data, isLoading, isSuccess, write } = useContractWrite(config);
@@ -164,11 +180,12 @@ function Add() {
     if (addressPositions == undefined || compPositions == undefined) {
       return;
     }
-
+    console.log(addressPositions)
+    console.log(compPositions)
     addressPositions.positions.forEach((position: { id: string }) => {
       const depoed = compPositions.positions.find((i: { id: string }) => i.id == position.id)
-      if (depoed != undefined) {
-        ids.push(depoed.id);
+      if (depoed == undefined) {
+        ids.push(position.id);
       }
     });
 

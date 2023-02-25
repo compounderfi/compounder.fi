@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import PositionInformation from "../../components/cards/positionInformation";
 import CompoundNowModal from "../../components/compoundNowModal";
 import useSWR from "swr";
-import { useNetwork } from "wagmi";
+import { chain, useNetwork } from "wagmi";
 import Head from "next/head";
 import CompoundHistoryTable, {
   Compound,
@@ -12,18 +12,34 @@ import CompoundHistoryTable, {
 import { request, gql } from "graphql-request";
 // @ts-ignore
 import { tokenToSignificant } from "@thanpolas/crypto-utils";
-import next from "next";
+import getNetworkConfigs from "../../utils/getNetworkConfigs";
+import { ethers } from "ethers";
 
-function getImage(tokenAddress: string | undefined) {
+function getImage(chainId: number, tokenAddress: string | undefined) {
   //wont work on goerli
   if (tokenAddress == undefined) return "";
-
-  if (tokenAddress == "0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6")
-    return "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png";
-
+  let chainName;
+  switch (chainId) {
+    case 1:
+      chainName = "ethereum";
+      break;
+    case 42161:
+      chainName = "arbitrum";
+      break;
+    case 137:
+      chainName = "polygon";
+      break;
+    case 10:
+      chainName = "optimism";
+      break;
+    default:
+      chainName = "ethereum";
+      break;
+  }
+  const tokenAddyChecksum = ethers.utils.getAddress(tokenAddress);
   return (
-    "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/" +
-    tokenAddress +
+    "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/" + chainName + "/assets/" +
+    tokenAddyChecksum +
     "/logo.png"
   );
 }
@@ -69,6 +85,7 @@ export default function Position() {
   const router = useRouter();
   const { id } = router.query;
   const { chain } = useNetwork();
+  const chainName = chain?.name;
 
   const [tokenID, setTokenID] = useState("");
   const { data } = useSWR("/api/" + chain?.id + "/getAllPositionDetails/" + id, fetcher);
@@ -82,7 +99,7 @@ export default function Position() {
 
   const graphFetcher = (variables: { tokenId: string }) =>
     request(
-      "https://api.thegraph.com/subgraphs/name/compounderfi/test1",
+      getNetworkConfigs(Number(chain!.id)).graphUrl,
       query,
       variables
     );
@@ -198,22 +215,22 @@ export default function Position() {
           <div className="grid flex-grow gap-6">
             <PositionInformation
               title="liquidity"
-              dollarValue={liquidityUSD == "???" ? "-" : liquidityUSD}
+              dollarValue={liquidityUSD == "???" ? "-" : Number(liquidityUSD).toFixed(2)}
               token0Name={data?.symbol0 || "loading..."}
-              token0Image={getImage(data?.tokenAddress0)}
+              token0Image={getImage(chain ? chain?.id: 1, data?.tokenAddress0)}
               token0Qt={data?.amount0}
               token1Name={data?.symbol1 || "loading..."}
-              token1Image={getImage(data?.tokenAddress1)}
+              token1Image={getImage(chain ? chain?.id: 1, data?.tokenAddress1)}
               token1Qt={data?.amount1}
             ></PositionInformation>
             <PositionInformation
               title="unclaimed fees"
-              dollarValue={unclaimedUSD == "???" ? "-" : unclaimedUSD}
+              dollarValue={unclaimedUSD == "???" ? "-" : Number(unclaimedUSD).toFixed(2)}
               token0Name={data?.symbol0 || "loading..."}
-              token0Image={getImage(data?.tokenAddress0)}
+              token0Image={getImage(chain ? chain?.id: 1, data?.tokenAddress0)}
               token0Qt={data?.unclaimed0}
               token1Name={data?.symbol1 || "loading..."}
-              token1Image={getImage(data?.tokenAddress1)}
+              token1Image={getImage(chain ? chain?.id: 1, data?.tokenAddress1)}
               token1Qt={data?.unclaimed1}
             ></PositionInformation>
           </div>
@@ -227,7 +244,7 @@ export default function Position() {
                 disabled={true}
                 className="mt-4 rounded-lg bg-gray-200 px-2 text-base"
               >
-                next compound: {nextCompound ? nextCompound + " days" : "???"}
+                next compound: {nextCompound ? Number(nextCompound).toFixed(4) + " days" : "???"}
               </button>
               <button
                 onClick={() => setDialogIsOpen(true)}
