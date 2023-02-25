@@ -18,21 +18,24 @@ const query = gql`
 
 function AllPositions() {
   const { chain } = useNetwork();
-
+  
   const subgraphURL = chain ? getNetworkConfigs(chain!.id).graphUrl : getNetworkConfigs(1).graphUrl;
 
-  // @ts-ignore
-  const fetcher = (query) => request(subgraphURL, query);
+  const fetcher = (query: string) => request(subgraphURL, query);
 
   const { data } = useSWR(query, fetcher);
 
   const [positions, setPositions] = useState<Position[]>([]);
-
+  const [chainName, setChainName] = useState<string>("ethereum");
   
   useEffect(() => {
     if (!data) {
       return;
     }
+    if (chain) {
+      setChainName(chain?.name)
+    }
+
 
     const newPositions: Position[] = [];
 
@@ -53,7 +56,7 @@ function AllPositions() {
         <title>all positions | compounder.fi</title>
       </Head>
 
-      <p className="px-4 text-xl">viewing all compounder.fi positions</p>
+      <p className="px-4 text-xl">viewing all compounder.fi positions on {chainName}</p>
 
       <PositionsTable data={positions}></PositionsTable>
     </>

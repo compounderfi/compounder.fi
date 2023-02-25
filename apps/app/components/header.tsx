@@ -1,7 +1,7 @@
-import { ConnectKitButton } from "connectkit";
 import Link from "next/link";
 import { useAccount } from "wagmi";
 import Image from "next/image";
+import ConnectKitButton from "../components/cards/ConnectWalletButton";
 
 export default function Header() {
   const { address } = useAccount();

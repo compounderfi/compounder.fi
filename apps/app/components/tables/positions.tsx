@@ -49,7 +49,7 @@ export default function PositionsTable({ data }: PositionsTableProps) {
         ),
       }),
       columnHelper.accessor("feesID", {
-        header: "estimated fees",
+        header: "compounding fees",
         cell: (info) => (
           <PositionFees tokenID={info.getValue()} updater={UpdatePosition}></PositionFees>
         ),

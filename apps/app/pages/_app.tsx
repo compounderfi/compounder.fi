@@ -5,7 +5,7 @@ import { ConnectKitProvider, getDefaultClient } from "connectkit";
 import Layout from "../components/layout";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-const chains = [chain.goerli, chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum];
+const chains = [chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum];
 
 const wagmiClient = createClient(
   getDefaultClient({
