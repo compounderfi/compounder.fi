@@ -14,6 +14,7 @@ import { request, gql } from "graphql-request";
 import { tokenToSignificant } from "@thanpolas/crypto-utils";
 import getNetworkConfigs from "../../utils/getNetworkConfigs";
 import { ethers } from "ethers";
+import ago from "s-ago";
 
 function getImage(chainId: number, tokenAddress: string | undefined) {
   //wont work on goerli
@@ -114,7 +115,7 @@ export default function Position() {
     compoundHistory.autoCompoundeds.forEach((compound: any) => {
       tableData.push({
         transactionHash: compound.transaction.id,
-        time: new Date(compound.transaction.timestamp * 1000).toLocaleString(),
+        time: ago(new Date(Number(compound.transaction.timestamp) * 1000)),
         token0Compounded: tokenToSignificant(
           compound.amountAdded0,
           compound.token0.decimals,
@@ -147,11 +148,10 @@ export default function Position() {
     }
 
     if (compoundHistory.positions.length > 0) {
+
       tableData.push({
         transactionHash: compoundHistory.positions[0].tokenDeposit.id,
-        time: new Date(
-          compoundHistory.positions[0].tokenDeposit.timestamp * 1000
-        ).toLocaleString(),
+        time: ago(new Date(Number(compoundHistory.positions[0].tokenDeposit.timestamp) * 1000)),
         token0Compounded: "inital deposit",
         token1Compounded: "",
         callerReward: "",
@@ -192,9 +192,6 @@ export default function Position() {
     if (unclaimedUSD == "???") {
       setunclaimedUSD(data?.unclaimedInUSD);
     }
-
-
-    console.log(data);
   }, [data]);
 
   const [dialogIsOpen, setDialogIsOpen] = useState(false);

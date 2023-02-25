@@ -7,6 +7,8 @@ import CompoundHistoryTable, {
   } from "../components/tables/compoundHistory";
 // @ts-ignore
 import { tokenToSignificant } from "@thanpolas/crypto-utils";
+import ago from "s-ago";
+
 const query = gql`
 {
     autoCompoundeds(
@@ -67,12 +69,11 @@ function Compounds() {
         for (let i = 0; i < data.length; i++) {
             const compoundHistory = data[i];
             
-            
-
             compoundHistory.autoCompoundeds.forEach((compound: any) => {
+                
                 tableData.push({
                   transactionHash: compound.transaction.id,
-                  time: new Date(compound.transaction.timestamp * 1000).toLocaleString(),
+                  time: ago(new Date(Number(compound.transaction.timestamp) * 1000)),
                   token0Compounded: tokenToSignificant(
                     compound.amountAdded0,
                     compound.token0.decimals,
@@ -98,7 +99,6 @@ function Compounds() {
                 });
               });
         }
-        console.log(tableData)
         setTableData(tableData);
     }, [data])
     return (
