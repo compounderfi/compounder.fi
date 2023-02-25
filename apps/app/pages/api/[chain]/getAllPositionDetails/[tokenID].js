@@ -22,6 +22,9 @@ async function makeRequest(tokenID, chain) {
     case "10":
       graphURL = "https://api.thegraph.com/subgraphs/name/revert-finance/uniswap-v3-optimism"
       break;
+    default:
+      graphURL = "https://api.thegraph.com/subgraphs/name/revert-finance/uniswap-v3-mainnet"
+      break; 
   }
 
   const query = `

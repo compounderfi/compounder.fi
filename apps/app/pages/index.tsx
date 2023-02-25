@@ -1,14 +1,10 @@
-import PublicStats from "../components/publicStats";
-import { useAccount, useContractRead } from "wagmi";
+import { useAccount } from "wagmi";
 import HomePageGrid from "../components/grids/homePageGrid";
 import { useIsMounted } from "../hooks/useIsMounted";
-import { InfuraProvider } from "@ethersproject/providers";
 import { useState } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import Link from "next/link";
 import AllPositions from "./positions/all";
-const provider = new InfuraProvider();
 
 function Index() {
   const { address, isConnected } = useAccount();

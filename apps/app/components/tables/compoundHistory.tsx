@@ -5,6 +5,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import Link from "next/link";
+import { useEffect } from "react";
 import { useNetwork } from "wagmi";
 
 export type Compound = {
@@ -28,15 +29,14 @@ export default function CompoundHistoryTable({
 }: TableProps) {
   const columnHelper = createColumnHelper<Compound>();
   const { chain } = useNetwork();
+
   const columns = [
     columnHelper.accessor("transactionHash", {
       header: "txn",
       cell: (val) => (
         <Link
           href={
-            chain?.id == 1
-              ? "https://etherscan.io/tx/" + val.getValue()
-              : "https://goerli.etherscan.io/tx/" + val.getValue()
+            chain?.blockExplorers?.etherscan?.url + "/tx/" + val.getValue()
           }
         >
           <span className="cursor-pointer">
@@ -52,10 +52,10 @@ export default function CompoundHistoryTable({
     }),
     columnHelper.accessor("time", {}),
     columnHelper.accessor("token0Compounded", {
-      header: token0 + " compounded",
+      header: token0 && token0 && "token0" + " compounded",
     }),
     columnHelper.accessor("token1Compounded", {
-      header: token1 + " compounded",
+      header: token1 && token1 && "token1" + " compounded",
     }),
     columnHelper.accessor("callerReward", {
       header: "caller reward",

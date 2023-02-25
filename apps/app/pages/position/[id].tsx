@@ -85,7 +85,6 @@ export default function Position() {
   const router = useRouter();
   const { id } = router.query;
   const { chain } = useNetwork();
-  const chainName = chain?.name;
 
   const [tokenID, setTokenID] = useState("");
   const { data } = useSWR("/api/" + chain?.id + "/getAllPositionDetails/" + id, fetcher);
@@ -158,7 +157,7 @@ export default function Position() {
         callerReward: "",
       });
     }
-  }, [compoundHistory]);
+  }, [compoundHistory, chain]);
 
   useEffect(() => {
     if (!id) {

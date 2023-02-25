@@ -4,7 +4,7 @@ export default function getNetworkConfigs(networkId: number) {
       return {
         name: 'Mainnet',
         chainId: 1,
-        rpcUrl: process.env.NEXT_PUBLIC_ALCHEMY_MAINNET_KEY,
+        rpcUrl: "https://eth-mainnet.g.alchemy.com/v2/C2NvLk_LZDwrBdh9lvCMwqqU7AHWjKYO",
         explorerUrl: 'https://etherscan.io',
         graphUrl: 'https://api.thegraph.com/subgraphs/name/compounderfi/compounderfi-mainnet'
       };
@@ -12,7 +12,7 @@ export default function getNetworkConfigs(networkId: number) {
       return {
         name: 'Polygon',
         chainId: 137,
-        rpcUrl: process.env.NEXT_PUBLIC_ALCHEMY_POLYGON_KEY,
+        rpcUrl: "https://polygon-mainnet.g.alchemy.com/v2/xdyZGzPCV9V7Tk7cyeMBunqq02S6e3j1",
         explorerUrl: 'https://polygonscan.com',
         graphUrl: 'https://api.thegraph.com/subgraphs/name/compounderfi/compounderfi-polygon'
       };
@@ -20,7 +20,7 @@ export default function getNetworkConfigs(networkId: number) {
       return {
         name: "Arbitrum",
         chainId: 42161,
-        rpcUrl: process.env.NEXT_PUBLIC_ALCHEMY_ARBITRUM_KEY,
+        rpcUrl: "https://arb-mainnet.g.alchemy.com/v2/o0U7yt_riOpJ4Jk38AyVy3MqlxfSpXlC",
         explorerUrl: 'https://arbiscan.io',
         graphUrl: 'https://api.thegraph.com/subgraphs/name/compounderfi/compounderfi-arbitrium'
       };
@@ -36,7 +36,7 @@ export default function getNetworkConfigs(networkId: number) {
       return {
         name: 'Optimism',
         chainId: 10,
-        rpcUrl: process.env.NEXT_PUBLIC_ALCHEMY_OPTIMISM_KEY,
+        rpcUrl: "https://opt-mainnet.g.alchemy.com/v2/sW3gbWnN9dD6vShz4bqQ_i_JAkBLUVrP",
         explorerUrl: 'https://optimistic.etherscan.io',
         graphUrl: 'https://api.thegraph.com/subgraphs/name/compounderfi/compounderfi-optimism'
       };
@@ -44,7 +44,7 @@ export default function getNetworkConfigs(networkId: number) {
       return {
         name: 'Mainnet',
         chainId: 1,
-        rpcUrl: process.env.NEXT_PUBLIC_ALCHEMY_MAINNET_KEY,
+        rpcUrl: "https://eth-mainnet.g.alchemy.com/v2/C2NvLk_LZDwrBdh9lvCMwqqU7AHWjKYO",
         explorerUrl: 'https://etherscan.io',
         graphUrl: 'https://api.thegraph.com/subgraphs/name/compounderfi/compounderfi-mainnet'
       };
