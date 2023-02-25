@@ -13,7 +13,7 @@ export default function CompoundButton({ tokenID, row, apiRequest }: CompoundBut
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
   const response = apiRequest["apiResponse"]
   const bgColor = row.index % 2 === 0 ? "bg-gray-200" : "bg-gray-200";
-  
+
   return (
     <>
     <button
@@ -25,8 +25,8 @@ export default function CompoundButton({ tokenID, row, apiRequest }: CompoundBut
     <CompoundNowModal
         token0={response.symbol0}
         token1={response.symbol1}
-        token0Fees={Number(response.unclaimed0)}
-        token1Fees={Number(response.unclaimed1)}
+        token0UnclaimedInUSD={Number(response.token0UnclaimedInUSD)}
+        token1UnclaimedInUSD={Number(response.token1UnclaimedInUSD)}
         positionId={tokenID}
         setIsOpen={setDialogIsOpen}
         isOpen={dialogIsOpen}

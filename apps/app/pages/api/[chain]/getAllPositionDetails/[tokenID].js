@@ -109,10 +109,11 @@ async function calculatePrincipalUSD(amount0, amount1, ethPriceUSD, token0ETH, t
 }
 
 async function calculateUnclaimedFeesUSD(unclaimed0, unclaimed1, ethPriceUSD, token0ETH, token1ETH) {
-  const token0InUSD = token0ETH * ethPriceUSD;
-  const token1InUSD = token1ETH * ethPriceUSD;
+  const token0UnclaimedInUSD = token0ETH * ethPriceUSD * unclaimed0;
+  const token1UnclaimedInUSD = token1ETH * ethPriceUSD * unclaimed1;
+  const total = token0UnclaimedInUSD + token1UnclaimedInUSD
 
-  return unclaimed0 * token0InUSD + unclaimed1 * token1InUSD;
+  return [total, token0UnclaimedInUSD, token1UnclaimedInUSD];
 }
 
 async function calculateClaimedFeesUSD(claimed0, claimed1, ethPriceUSD, token0ETH, token1ETH) {
@@ -173,31 +174,31 @@ async function calculateAPRPercentage(transactionTimestamp, principalInUSD, uncl
 
 const aprToApy = (interest, frequency) => ((1 + (interest / 100) / frequency) ** frequency - 1) * 100;
 
-async function calculateAPYPercentage(chainId, APR, principalInUSD) {
+async function calculateAPYPercentage(chainId, APR, principalInUSD, unclaimedFeesUSD) {
   let gasFee;
   switch(chainId) {
-    case 1: //ethereum
+    case "1": //ethereum
       gasFee = 5
       break;
-    case 42161: //arbitrium
+    case "42161": //arbitrium
       gasFee = 0.1
       break;
-    case 10: //optimism
+    case "10": //optimism
       gasFee = 0.1
       break;
-    case 5: //goerli
-      gasFee = 5
-      break
-    case 137: //polygon
+    case "137": //polygon
       gasFee = 0.1
       break
     default:
       // code block
       gasFee = 5
+      break;
   }
 
-  const requiredToCompoundUSD = gasFee * 50; //2% fee
-  const percentageNeeded = requiredToCompoundUSD / principalInUSD
+  const requiredToCompoundUSD = (gasFee * 35) - unclaimedFeesUSD; //2% fee but also account for that they only claim 1 of the two tokens 
+  
+  const percentageNeeded = requiredToCompoundUSD * 100 / principalInUSD
+
   const yearsToGetPercentageNeeded = percentageNeeded / APR;
   const daysUntilNextCompound = yearsToGetPercentageNeeded * 365;
   const numberOfCompoundsPerYear = 1 / yearsToGetPercentageNeeded
@@ -244,11 +245,12 @@ export default async function handler(req, res) {
   const [unclaimed0, unclaimed1] = await calculateUnclaimedFees(chain, tokenID, owner, decimals0, decimals1)
 
   const principalInUSD = await calculatePrincipalUSD(amount0, amount1, ethPriceUSD, token0ETH, token1ETH);
-  const unclaimedInUSD = await calculateUnclaimedFeesUSD(unclaimed0, unclaimed1, ethPriceUSD, token0ETH, token1ETH);
+  const [unclaimedInUSD, token0UnclaimedInUSD, token1UnclaimedInUSD]= await calculateUnclaimedFeesUSD(unclaimed0, unclaimed1, ethPriceUSD, token0ETH, token1ETH);
+  console.log(token0UnclaimedInUSD, token1UnclaimedInUSD, unclaimedInUSD)
   const claimedInUSD = await calculateClaimedFeesUSD(claimed0, claimed1, ethPriceUSD, token0ETH, token1ETH)
 
   const APRpercentage = await calculateAPRPercentage(timestamp, principalInUSD, unclaimedInUSD, claimedInUSD)
-  const [APYpercentage, daysUntilNextCompound] = await calculateAPYPercentage(chain, APRpercentage, principalInUSD)
+  const [APYpercentage, daysUntilNextCompound] = await calculateAPYPercentage(chain, APRpercentage, principalInUSD, unclaimedInUSD)
 
 
   res.status(200).json({
@@ -267,6 +269,8 @@ export default async function handler(req, res) {
     name1: name1,
     principalInUSD: principalInUSD,
     unclaimedInUSD: unclaimedInUSD,
+    token0UnclaimedInUSD: token0UnclaimedInUSD,
+    token1UnclaimedInUSD: token1UnclaimedInUSD,
     claimedInUSD: claimedInUSD,
     token0USD: token0ETH * ethPriceUSD,
     token1USD: token1ETH * ethPriceUSD,

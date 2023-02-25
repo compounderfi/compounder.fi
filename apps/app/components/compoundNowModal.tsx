@@ -16,8 +16,8 @@ export interface CompoundNowModalProps {
   isOpen: boolean;
   token0: string;
   token1: string;
-  token0Fees: number;
-  token1Fees: number;
+  token0UnclaimedInUSD: number,
+  token1UnclaimedInUSD: number,
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   positionId: string;
 }
@@ -25,14 +25,15 @@ export interface CompoundNowModalProps {
 export default function CompoundNowModal({
   isOpen,
   setIsOpen,
-  token0Fees,
-  token1Fees,
+  token0UnclaimedInUSD,
+  token1UnclaimedInUSD,
   token0,
   token1,
   positionId,
 }: CompoundNowModalProps) {
   const { chain } = useNetwork();
-
+  console.log(token0UnclaimedInUSD,
+    token1UnclaimedInUSD,)
   const [form, setForm] = useState({
     rewardConversion: false,
   });
@@ -54,10 +55,7 @@ export default function CompoundNowModal({
 
   function openWallet() {
     if (data?.hash) {
-      const explorerURI =
-        chain?.id == 1
-          ? `https://etherscan.io/tx/${data.hash}`
-          : `https://${chain?.name}.etherscan.io/tx/${data.hash}`;
+      const explorerURI = chain?.blockExplorers?.etherscan?.url + "/tx/" + data.hash;
       window.open(explorerURI, "_blank");
       return;
     }
@@ -182,7 +180,7 @@ export default function CompoundNowModal({
                           ? tokenToSignificant(token1Fees * 0.016, 5)
                           : tokenToSignificant(token0Fees * 0.016, 5)}{" "} */}
 
-                        {form.rewardConversion ? tokenToSignificant(token0Fees * 0.02, 5) : tokenToSignificant(token1Fees * 0.02, 5)}{" "}
+                        {form.rewardConversion ? `\$${(token0UnclaimedInUSD * 0.02).toFixed(2)} ` : `\$${(token1UnclaimedInUSD * 0.02).toFixed(2)} `}
                         {form.rewardConversion ? token0 : token1}{" "}
                       </span>
                     </div>

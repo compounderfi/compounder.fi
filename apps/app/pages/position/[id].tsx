@@ -261,8 +261,8 @@ export default function Position() {
       <CompoundNowModal
         token0={data?.symbol0}
         token1={data?.symbol1}
-        token0Fees={Number(data?.unclaimed0)}
-        token1Fees={Number(data?.unclaimed1)}
+        token0UnclaimedInUSD={Number(data?.token0UnclaimedInUSD)}
+        token1UnclaimedInUSD={Number(data?.token1UnclaimedInUSD)}
         positionId={tokenID}
         setIsOpen={setDialogIsOpen}
         isOpen={dialogIsOpen}

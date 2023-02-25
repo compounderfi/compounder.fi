@@ -131,10 +131,7 @@ function Add() {
 
   function deposit() {
     if (data?.hash) {
-      const explorerURI =
-        chain?.id == 1
-          ? `https://etherscan.io/tx/${data.hash}`
-          : `https://${chain?.name}.etherscan.io/tx/${data.hash}`;
+      const explorerURI = chain?.blockExplorers?.etherscan?.url + "/tx/" + data.hash;
       window.open(explorerURI, "_blank");
       return;
     }
