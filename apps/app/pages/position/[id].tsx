@@ -61,6 +61,8 @@ const query = gql`
       transaction {
         timestamp
         id
+        gasUsed
+        gasPrice
       }
       token0 {
         decimals
@@ -72,6 +74,7 @@ const query = gql`
         id
         symbol
       }
+      liquidityPercentIncrease
       amountAdded0
       amountAdded1
       fee0
@@ -118,16 +121,9 @@ export default function Position() {
         chain: chain ? chain?.id : 1,
         transactionHash: chain ? chain?.blockExplorers?.etherscan?.url + "/tx/" + compound.transaction.id : "",
         time: ago(new Date(Number(compound.transaction.timestamp) * 1000), "hour"),
-        token0Compounded: tokenToSignificant(
-          compound.amountAdded0,
-          compound.token0.decimals,
-          { decimalPlaces: 3 }
-        ),
-        token1Compounded: tokenToSignificant(
-          compound.amountAdded1,
-          compound.token1.decimals,
-          { decimalPlaces: 3 }
-        ),
+        percentLiquidityAdded: compound.liquidityPercentIncrease,
+        gasPrice: compound.transaction.gasPrice,
+        gasUsed: compound.transaction.gasUsed,
         callerReward:
           compound.fee0 == "0"
             ? tokenToSignificant(compound.fee1, compound.token1.decimals, {
@@ -152,12 +148,13 @@ export default function Position() {
     if (compoundHistory.positions.length > 0) {
 
       tableData.push({
-        chain: 0,
+        chain: chain ? chain?.id : 0,
         transactionHash: chain ? chain?.blockExplorers?.etherscan?.url + "/tx/" + compoundHistory.positions[0].tokenDeposit.id : "",
         time: ago(new Date(Number(compoundHistory.positions[0].tokenDeposit.timestamp) * 1000), "hour"),
-        token0Compounded: "inital deposit",
-        token1Compounded: "",
-        callerReward: "",
+        percentLiquidityAdded: "",
+        gasPrice: "",
+        gasUsed: "",
+        callerReward: "Inital Deposit",
       });
     }
   }, [compoundHistory, chain]);

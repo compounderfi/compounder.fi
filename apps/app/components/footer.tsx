@@ -8,6 +8,7 @@ export default function Footer() {
       <Link href="/contact">contact</Link>
       <Link href="https://compounder-fi.gitbook.io/compounder.fi/">docs</Link>
       <Link href="/positions/all">view all positions</Link>
+      <Link href="/compounds">view recent compounds</Link>
     </div>
   );
 }

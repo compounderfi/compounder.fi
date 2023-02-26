@@ -7,13 +7,17 @@ import {
 import Link from "next/link";
 import { useEffect } from "react";
 import { useNetwork } from "wagmi";
+import Image from "next/image";
+// @ts-ignore
+import { tokenToSignificant } from "@thanpolas/crypto-utils";
 
 export type Compound = {
   chain: number;
   transactionHash: string;
   time: string;
-  token0Compounded: string;
-  token1Compounded: string;
+  percentLiquidityAdded: string;
+  gasPrice: string;
+  gasUsed: string;
   callerReward: string;
 };
 
@@ -36,10 +40,10 @@ export default function CompoundHistoryTable({
       cell: (val) => (
         (()=>{
           switch (val.getValue()) {
-            case 1 : return <img className="pl-2" src="/ethereum.svg"></img>;
-            case 10 : return <img className="pl-2" src="/optimism.svg"></img>;
-            case 42161 : return <img className="pl-2" src="/arbitrum.svg"></img>;
-            case 137 : return <img className="pl-2" src="/polygon.svg"></img>;
+            case 1 : return <Image alt="ethereum logo" width={30} height={30} className="pl-2" src="/ethereum.svg"></Image>;
+            case 10 : return <Image alt="optimism logo" width={30} height={30}  className="pl-2" src="/optimism.svg"></Image>;
+            case 42161 : return <Image alt="arbitrum logo" width={30} height={30}  className="pl-2" src="/arbitrum.svg"></Image>;
+            case 137 : return <Image alt="polygon logo"width={30} height={30}  className="pl-2" src="/polygon.svg"></Image>;
             default: return <></>
           }
         })()
@@ -57,17 +61,27 @@ export default function CompoundHistoryTable({
             {val.getValue().substring(val.getValue().search("/tx/") + 4, val.getValue().search("/tx/") + 9)}
           </span>
         </Link>
-      ),
-      meta: {
-        width: 200,
-      },
+      )
     }),
     columnHelper.accessor("time", {}),
-    columnHelper.accessor("token0Compounded", {
-      header: token0 && token0 && "token0" + " compounded",
+    columnHelper.accessor("percentLiquidityAdded", {
+      header: "liq add",
+      cell: (val) => (
+        <div>
+          {val.getValue() && (Number(val.getValue()) * 100).toFixed(2) + "%"}
+        </div>
+      )
     }),
-    columnHelper.accessor("token1Compounded", {
-      header: token1 && token1 && "token1" + " compounded",
+    columnHelper.accessor("gasPrice", {
+      header: "gas price",
+      cell: (val) => (
+        <div>
+          {val.getValue() && tokenToSignificant(Number(val.getValue()), 9) + " gwei"}
+        </div>
+      )
+    }),
+    columnHelper.accessor("gasUsed", {
+      header: "gas used",
     }),
     columnHelper.accessor("callerReward", {
       header: "caller reward",
