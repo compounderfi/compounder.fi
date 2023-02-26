@@ -4,7 +4,7 @@ import { useIsMounted } from "../hooks/useIsMounted";
 import { useState } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import AllPositions from "./positions/all";
+import Compounds from "./compounds";
 
 function Index() {
   const { address, isConnected } = useAccount();
@@ -31,7 +31,7 @@ function Index() {
           </p>
 
           <br/>
-          <AllPositions/>
+          <Compounds/>
         </>
       )}
 

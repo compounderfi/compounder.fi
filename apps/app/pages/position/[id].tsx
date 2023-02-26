@@ -118,9 +118,10 @@ export default function Position() {
 
     compoundHistory.autoCompoundeds.forEach((compound: any) => {
       tableData.push({
+        tokenId: tokenID,
         chain: chain ? chain?.id : 1,
         transactionHash: chain ? chain?.blockExplorers?.etherscan?.url + "/tx/" + compound.transaction.id : "",
-        time: ago(new Date(Number(compound.transaction.timestamp) * 1000), "hour"),
+        time: Number(compound.transaction.timestamp) * 1000,
         percentLiquidityAdded: compound.liquidityPercentIncrease,
         gasPrice: compound.transaction.gasPrice,
         gasUsed: compound.transaction.gasUsed,
@@ -148,9 +149,10 @@ export default function Position() {
     if (compoundHistory.positions.length > 0) {
 
       tableData.push({
+        tokenId: tokenID,
         chain: chain ? chain?.id : 0,
         transactionHash: chain ? chain?.blockExplorers?.etherscan?.url + "/tx/" + compoundHistory.positions[0].tokenDeposit.id : "",
-        time: ago(new Date(Number(compoundHistory.positions[0].tokenDeposit.timestamp) * 1000), "hour"),
+        time: Number(compoundHistory.positions[0].tokenDeposit.timestamp) * 1000,
         percentLiquidityAdded: "",
         gasPrice: "",
         gasUsed: "",
@@ -211,7 +213,7 @@ export default function Position() {
           <div className="grid flex-grow gap-6">
             <PositionInformation
               title="liquidity"
-              dollarValue={liquidityUSD == "???" ? "-" : Number(liquidityUSD).toFixed(2)}
+              dollarValue={Number(data?.principalInUSD).toFixed(2) || "???"}
               token0Name={data?.symbol0 || "loading..."}
               token0Image={getImage(chain ? chain?.id: 1, data?.tokenAddress0)}
               token0Qt={data?.amount0}
@@ -221,7 +223,7 @@ export default function Position() {
             ></PositionInformation>
             <PositionInformation
               title="unclaimed fees"
-              dollarValue={unclaimedUSD == "???" ? "-" : Number(unclaimedUSD).toFixed(2)}
+              dollarValue={Number(data?.unclaimedInUSD).toFixed(2) || "???"}
               token0Name={data?.symbol0 || "loading..."}
               token0Image={getImage(chain ? chain?.id: 1, data?.tokenAddress0)}
               token0Qt={data?.unclaimed0}

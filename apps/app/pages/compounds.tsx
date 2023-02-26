@@ -1,5 +1,4 @@
 import useSWR from "swr";
-import type { NextApiRequest, NextApiResponse } from 'next'
 import { request, gql } from "graphql-request";
 import { useEffect, useState } from "react";
 import CompoundHistoryTable, {
@@ -7,7 +6,6 @@ import CompoundHistoryTable, {
   } from "../components/tables/compoundHistory";
 // @ts-ignore
 import { tokenToSignificant } from "@thanpolas/crypto-utils";
-import ago from "s-ago";
 
 const query = gql`
 {
@@ -36,6 +34,7 @@ const query = gql`
         amountAdded1
         fee0
         fee1
+        tokenId
       }
 }
 `;
@@ -75,6 +74,7 @@ function Compounds() {
             compoundHistory.autoCompoundeds.forEach((compound: any) => {
                 
                 tableData.push({
+                  tokenId: compound.tokenId,
                   chain: (() => {
                     switch (i) {
                       case 0:
@@ -103,7 +103,7 @@ function Compounds() {
                         return "https://etherscan.io/tx/" + compound.transaction.id;
                     }
                   })(),
-                  time: ago(new Date(Number(compound.transaction.timestamp) * 1000)),
+                  time: Number(compound.transaction.timestamp) * 1000,
                   percentLiquidityAdded: compound.liquidityPercentIncrease,
                   gasPrice: compound.transaction.gasPrice,
                   gasUsed: compound.transaction.gasUsed,

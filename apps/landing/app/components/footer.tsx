@@ -70,7 +70,7 @@ export default function Footer() {
           <ul className="mt-12 flex justify-center gap-6 md:gap-8">
             <li>
               <a
-                href="/"
+                href="https://discord.gg/UcbM8w4uVK"
                 rel="noreferrer"
                 target="_blank"
                 className="text-gray-700 transition hover:text-gray-700/75"
