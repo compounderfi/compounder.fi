@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { useNetwork } from "wagmi";
 
 export type Compound = {
+  chain: number;
   transactionHash: string;
   time: string;
   token0Compounded: string;
@@ -31,18 +32,29 @@ export default function CompoundHistoryTable({
   const { chain } = useNetwork();
 
   const columns = [
+    columnHelper.accessor("chain", {
+      cell: (val) => (
+        (()=>{
+          switch (val.getValue()) {
+            case 1 : return <img className="pl-2" src="/ethereum.svg"></img>;
+            case 10 : return <img className="pl-2" src="/optimism.svg"></img>;
+            case 42161 : return <img className="pl-2" src="/arbitrum.svg"></img>;
+            case 137 : return <img className="pl-2" src="/polygon.svg"></img>;
+            default: return <></>
+          }
+        })()
+      )
+    }),
     columnHelper.accessor("transactionHash", {
       header: "txn",
       cell: (val) => (
         <Link
           href={
-            chain?.blockExplorers?.etherscan?.url + "/tx/" + val.getValue()
+            val.getValue()
           }
         >
           <span className="cursor-pointer">
-            {val.getValue().substring(0, 5) +
-              "..." +
-              val.getValue().substring(val.getValue().length - 5)}
+            {val.getValue().substring(val.getValue().search("/tx/") + 4, val.getValue().search("/tx/") + 9)}
           </span>
         </Link>
       ),

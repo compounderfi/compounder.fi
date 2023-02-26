@@ -72,7 +72,34 @@ function Compounds() {
             compoundHistory.autoCompoundeds.forEach((compound: any) => {
                 
                 tableData.push({
-                  transactionHash: compound.transaction.id,
+                  chain: (() => {
+                    switch (i) {
+                      case 0:
+                        return 1;
+                      case 1:
+                        return 137;
+                      case 2:
+                        return 10;
+                      case 3:
+                        return 42161;
+                      default:
+                        return 1;
+                    }
+                  })(), //compound.transaction.id
+                  transactionHash: (() => {
+                    switch (i) {
+                      case 0:
+                        return "https://etherscan.io/tx/" + compound.transaction.id;
+                      case 1:
+                        return "https://polygonscan.com/tx/" + compound.transaction.id;
+                      case 2:
+                        return "https://optimistic.etherscan.io/tx/" + compound.transaction.id;
+                      case 3:
+                        return "https://arbiscan.io/tx/" + compound.transaction.id;
+                      default:
+                        return "https://etherscan.io/tx/" + compound.transaction.id;
+                    }
+                  })(),
                   time: ago(new Date(Number(compound.transaction.timestamp) * 1000)),
                   token0Compounded: tokenToSignificant(
                     compound.amountAdded0,

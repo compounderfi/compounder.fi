@@ -96,7 +96,8 @@ export default function Position() {
   const [nextCompound, setNextCompound] = useState("???");
   const [liquidityUSD, setliquidityUSD] = useState("???");
   const [unclaimedUSD, setunclaimedUSD] = useState("???");
-
+  const now = new Date();
+  
   const graphFetcher = (variables: { tokenId: string }) =>
     request(
       getNetworkConfigs(Number(chain!.id)).graphUrl,
@@ -114,8 +115,9 @@ export default function Position() {
 
     compoundHistory.autoCompoundeds.forEach((compound: any) => {
       tableData.push({
-        transactionHash: compound.transaction.id,
-        time: ago(new Date(Number(compound.transaction.timestamp) * 1000)),
+        chain: chain ? chain?.id : 1,
+        transactionHash: chain ? chain?.blockExplorers?.etherscan?.url + "/tx/" + compound.transaction.id : "",
+        time: ago(new Date(Number(compound.transaction.timestamp) * 1000), "hour"),
         token0Compounded: tokenToSignificant(
           compound.amountAdded0,
           compound.token0.decimals,
@@ -150,8 +152,9 @@ export default function Position() {
     if (compoundHistory.positions.length > 0) {
 
       tableData.push({
-        transactionHash: compoundHistory.positions[0].tokenDeposit.id,
-        time: ago(new Date(Number(compoundHistory.positions[0].tokenDeposit.timestamp) * 1000)),
+        chain: 0,
+        transactionHash: chain ? chain?.blockExplorers?.etherscan?.url + "/tx/" + compoundHistory.positions[0].tokenDeposit.id : "",
+        time: ago(new Date(Number(compoundHistory.positions[0].tokenDeposit.timestamp) * 1000), "hour"),
         token0Compounded: "inital deposit",
         token1Compounded: "",
         callerReward: "",
@@ -240,7 +243,7 @@ export default function Position() {
                 disabled={true}
                 className="mt-4 rounded-lg bg-gray-200 px-2 text-base"
               >
-                next compound: {nextCompound ? Number(nextCompound).toFixed(4) + " days" : "???"}
+                next compound: {nextCompound ? ago(new Date(now.getTime() + Number(data?.daysUntilNextCompound) * 24 * 60 * 60 * 1000), "day") : "???"}
               </button>
               <button
                 onClick={() => setDialogIsOpen(true)}

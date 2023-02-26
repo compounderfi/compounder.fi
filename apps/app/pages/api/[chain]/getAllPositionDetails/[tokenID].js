@@ -204,7 +204,7 @@ async function calculateAPYPercentage(chainId, APR, principalInUSD, unclaimedFee
   const numberOfCompoundsPerYear = 1 / yearsToGetPercentageNeeded
 
   const apy = aprToApy(APR, numberOfCompoundsPerYear)
-  //console.log(daysUntilNextCompound)
+
   return [apy, daysUntilNextCompound]
 }
 
@@ -246,7 +246,7 @@ export default async function handler(req, res) {
 
   const principalInUSD = await calculatePrincipalUSD(amount0, amount1, ethPriceUSD, token0ETH, token1ETH);
   const [unclaimedInUSD, token0UnclaimedInUSD, token1UnclaimedInUSD]= await calculateUnclaimedFeesUSD(unclaimed0, unclaimed1, ethPriceUSD, token0ETH, token1ETH);
-  console.log(token0UnclaimedInUSD, token1UnclaimedInUSD, unclaimedInUSD)
+
   const claimedInUSD = await calculateClaimedFeesUSD(claimed0, claimed1, ethPriceUSD, token0ETH, token1ETH)
 
   const APRpercentage = await calculateAPRPercentage(timestamp, principalInUSD, unclaimedInUSD, claimedInUSD)
