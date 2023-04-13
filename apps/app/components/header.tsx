@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useAccount } from "wagmi";
 import Image from "next/image";
 import ConnectKitButton from "../components/cards/ConnectWalletButton";
+import NetworkSwitcher from "./networkSwitcher";
 
 export default function Header() {
   const { address } = useAccount();
@@ -20,7 +21,7 @@ export default function Header() {
         </div>
       </Link>
       <div className="flex-grow"></div>
-
+      <NetworkSwitcher />
       <ConnectKitButton />
     </div>
   );
