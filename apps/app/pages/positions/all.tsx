@@ -23,12 +23,13 @@ function AllPositions() {
 
   const fetcher = (query: string) => request(subgraphURL, query);
 
-  const { data } = useSWR(query, fetcher);
+  const { data } = useSWR([query, chain], fetcher);
 
   const [positions, setPositions] = useState<Position[]>([]);
   const [chainName, setChainName] = useState<string>("ethereum");
   
   useEffect(() => {
+    console.log(chain)
     if (!data) {
       return;
     }
@@ -48,7 +49,7 @@ function AllPositions() {
     });
 
     setPositions(newPositions);
-  }, [data]);
+  }, [data, chain]);
 
   return (
     <>

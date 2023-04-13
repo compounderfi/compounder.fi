@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import PositionInformation from "../../components/cards/positionInformation";
 import CompoundNowModal from "../../components/compoundNowModal";
 import useSWR from "swr";
-import { chain, useNetwork } from "wagmi";
+import { chain, useNetwork, useContractRead } from "wagmi";
 import Head from "next/head";
 import CompoundHistoryTable, {
   Compound,
@@ -15,6 +15,8 @@ import { tokenToSignificant } from "@thanpolas/crypto-utils";
 import getNetworkConfigs from "../../utils/getNetworkConfigs";
 import { ethers } from "ethers";
 import ago from "s-ago";
+//import constants
+import { CONTRACT_ADDRESS, NFPM_ABI, NFPM_ADDRESS } from "../../utils/constants";
 
 function getImage(chainId: number, tokenAddress: string | undefined) {
   //wont work on goerli
@@ -100,7 +102,33 @@ export default function Position() {
   const [liquidityUSD, setliquidityUSD] = useState("???");
   const [unclaimedUSD, setunclaimedUSD] = useState("???");
   const now = new Date();
+  const [isCompounding, setIsCompounding] = useState(false);
+
+  const approvedData = useContractRead({
+    address: NFPM_ADDRESS,
+    abi: NFPM_ABI,
+    functionName: "getApproved",
+    args: [id],
+    chainId: chain?.id,
+  });
+
+  useEffect(() => {
+    console.log(approvedData.data)
+    if (!approvedData.data) {
+      return;
+    }
+
+    if (approvedData.data == CONTRACT_ADDRESS) {
+      setIsCompounding(true);
+    } else {
+      setIsCompounding(false);
+    }
+    console.log(isCompounding)
+
+  }, 
+  [approvedData.data]);
   
+
   const graphFetcher = (variables: { tokenId: string }) =>
     request(
       getNetworkConfigs(Number(chain!.id)).graphUrl,
@@ -209,6 +237,7 @@ export default function Position() {
           <ActivePositionCard
             showPointer={false}
             id={tokenID}
+            isCompounding = {isCompounding}
           ></ActivePositionCard>
           <div className="grid flex-grow gap-6">
             <PositionInformation
@@ -245,10 +274,10 @@ export default function Position() {
                 next compound: {nextCompound ? ago(new Date(now.getTime() + Number(data?.daysUntilNextCompound) * 24 * 60 * 60 * 1000), "day") : "???"}
               </button>
               <button
-                onClick={() => setDialogIsOpen(true)}
-                className="mt-4 rounded-lg bg-[#81e291] px-2 text-base transition-colors duration-300 hover:bg-[#92D5E6]"
+                onClick={isCompounding ? () => setDialogIsOpen(true) : () => {}}
+                className={`${!isCompounding && "cursor-not-allowed"} mt-4 rounded-lg bg-[#81e291] px-2 text-base transition-colors duration-300 hover:bg-[#92D5E6]`}
               >
-                compound now
+                {isCompounding ? "compound now" : "compound not enabled"}
               </button>
             </div>
           </div>
@@ -268,7 +297,9 @@ export default function Position() {
         positionId={tokenID}
         setIsOpen={setDialogIsOpen}
         isOpen={dialogIsOpen}
+        isCompounding = {isCompounding}
       ></CompoundNowModal>
+      
     </>
   );
 }

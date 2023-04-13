@@ -18,6 +18,7 @@ export interface CompoundNowModalProps {
   token1UnclaimedInUSD: number,
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   positionId: string;
+  isCompounding: boolean;
 }
 
 export default function CompoundNowModal({
@@ -28,10 +29,10 @@ export default function CompoundNowModal({
   token0,
   token1,
   positionId,
+  isCompounding
 }: CompoundNowModalProps) {
   const { chain } = useNetwork();
-  console.log(token0UnclaimedInUSD,
-    token1UnclaimedInUSD,)
+
   const [form, setForm] = useState({
     rewardConversion: false,
   });
@@ -157,8 +158,8 @@ export default function CompoundNowModal({
                     <div className="mt-4 flex">
                       <button
                         type="button"
-                        className="inline-flex justify-center rounded-md border border-transparent bg-[#81e291] px-4 py-2 text-sm font-medium transition-colors duration-300 hover:bg-[#92D5E6] "
-                        onClick={openWallet}
+                        className= {`${isCompounding && "cursor-not-allowed"} inline-flex justify-center rounded-md border border-transparent bg-[#81e291] px-4 py-2 text-sm font-medium transition-colors duration-300 hover:bg-[#92D5E6] `}
+                        onClick={isCompounding ? openWallet : () => {} }
                       >
                         {buttonText}
                       </button>

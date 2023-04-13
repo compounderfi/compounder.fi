@@ -5,6 +5,7 @@ export interface PositionCardProps {
   children?: React.ReactNode;
   href?: string;
   showPointer?: boolean;
+  isCompounding?: boolean;
 }
 
 export default function PositionCard({
@@ -12,10 +13,12 @@ export default function PositionCard({
   href,
   selected = false,
   showPointer = true,
+  isCompounding = false
 }: PositionCardProps) {
+  const borderColor = isCompounding ? "border-[#81e291]" : "border-gray-200";
   const borderClasses = selected
     ? " border-2 border-[#f0f2f5] outline outline-2 outline-blue-500"
-    : " border-2 border-gray-200";
+    : " border-2 " + borderColor;
 
   const cursorClasses = showPointer ? " cursor-pointer" : "";
 

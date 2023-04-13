@@ -22,11 +22,13 @@ import APStats from "./APStats";
 export interface ActivePositionProps {
   id: string;
   showPointer?: boolean;
+  isCompounding?: boolean;
 }
 
 export default function ActivePositionCard({
   id,
   showPointer,
+  isCompounding
 }: ActivePositionProps) {
   const { address } = useAccount();
 
@@ -81,7 +83,7 @@ export default function ActivePositionCard({
   }
 
   return (
-    <PositionCard showPointer={showPointer} href={"/position/" + id}>
+    <PositionCard showPointer={showPointer} isCompounding = {isCompounding} href={"/position/" + id}>
       <div>
         <NFTPreview id={id}></NFTPreview>
         <div className="flex pt-2">

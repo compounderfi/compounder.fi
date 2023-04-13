@@ -157,7 +157,7 @@ async function getTimestampInSeconds () {
 }
 
 async function calculateAPRPercentage(transactionTimestamp, principalInUSD, unclaimedInUSD, claimedInUSD) {
-  console.log(transactionTimestamp, principalInUSD, unclaimedInUSD, claimedInUSD)
+
   const totalFeesUSD = unclaimedInUSD + claimedInUSD
   const now = await getTimestampInSeconds();
 
