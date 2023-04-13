@@ -11,7 +11,7 @@ export interface PositionFeesProps {
 export default function PositionFees({tokenID, updater}: PositionFeesProps) {
     const fetcher = (url: RequestInfo | URL) => fetch(url).then((r) => r.json());
     const { chain } = useNetwork();
-    const { data } = useSWR("/api/" + chain?.id + "/getAllPositionDetails/" + tokenID, fetcher);
+    const { data } = useSWR(["/api/" + chain?.id + "/getAllPositionDetails/" + tokenID, chain], fetcher);
     const [ unclaimed0Value, setUnclaimed0Value] = useState("")
     const [ unclaimed1Value, setUnclaimed1Value] = useState("")
     const [ symbol0, setSymbol0] = useState("")

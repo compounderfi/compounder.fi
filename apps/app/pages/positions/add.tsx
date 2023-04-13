@@ -99,7 +99,7 @@ function Add() {
   const compounderSubgraphUrl = chain ? getNetworkConfigs(chain!.id).graphUrl : getNetworkConfigs(1).graphUrl;
   const fetcherComp = (variables: { address: string }) =>
     request(compounderSubgraphUrl, grabNotDepoedAlreadyQuery, variables);
-  console.log(compounderSubgraphUrl)
+
   const isMounted = useIsMounted();
   const [ids, setIds] = useState<string[]>([]);
   const [selection, setSelection] = useState<string[]>([]);
@@ -109,11 +109,11 @@ function Add() {
   const debouncedSelection = useDebounce(selection, 500);
 
   const { address, isConnected } = useAccount();
-  const { data: addressPositions } = useSWR({ address: address }, fetcherUni);
+  const { data: addressPositions } = useSWR([{ address: address }, chain], fetcherUni);
 
   //needs to be lowercased for some fucking reason
-  const { data: compPositions } = useSWR({ address: address?.toLowerCase() }, fetcherComp);
-  console.log(address?.toLowerCase())
+  const { data: compPositions } = useSWR([{ address: address?.toLowerCase(), chain }], fetcherComp);
+
   const { config } = usePrepareContractWrite({
     address: NFPM_ADDRESS,
     abi: abi,

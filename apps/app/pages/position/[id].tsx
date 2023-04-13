@@ -93,7 +93,7 @@ export default function Position() {
   const { chain } = useNetwork();
 
   const [tokenID, setTokenID] = useState("");
-  const { data } = useSWR("/api/" + chain?.id + "/getAllPositionDetails/" + id, fetcher);
+  const { data } = useSWR(["/api/" + chain?.id + "/getAllPositionDetails/" + id, chain], fetcher);
 
   const [tableData, setTableData] = useState<Compound[]>([]);
   const [token0, setToken0] = useState("???");
@@ -135,7 +135,7 @@ export default function Position() {
       query,
       variables
     );
-  const { data: compoundHistory } = useSWR({ tokenId: tokenID }, graphFetcher);
+  const { data: compoundHistory } = useSWR([{ tokenId: tokenID }, chain], graphFetcher);
 
   useEffect(() => {
     if (!compoundHistory) {

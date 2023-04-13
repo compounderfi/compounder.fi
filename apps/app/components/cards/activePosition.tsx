@@ -30,7 +30,6 @@ export default function ActivePositionCard({
   showPointer,
   isCompounding
 }: ActivePositionProps) {
-  const { address } = useAccount();
 
   const { config } = usePrepareContractWrite({
     address: NFPM_ADDRESS,

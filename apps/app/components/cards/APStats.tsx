@@ -7,7 +7,7 @@ export default function APStats({ tokenID }: { tokenID: string }) {
 
   const fetcher = (url: RequestInfo | URL) => fetch(url).then((r) => r.json());
   const { chain } = useNetwork();
-  const { data } = useSWR("/api/" + chain?.id + "/getAllPositionDetails/" + tokenID, fetcher);
+  const { data } = useSWR(["/api/" + chain?.id + "/getAllPositionDetails/" + tokenID, chain], fetcher);
 
   return (
     <div>

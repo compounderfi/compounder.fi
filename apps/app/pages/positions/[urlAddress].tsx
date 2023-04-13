@@ -38,7 +38,7 @@ function Index() {
   const fetcherComp = (variables: { address: string }) =>
     request(subgraphURL, grabAlreadyDepoedQuery, variables);
 
-  let { data: compPositions } = useSWR({ address: address?.toLowerCase() }, fetcherComp);
+  let { data: compPositions } = useSWR([{ address: address?.toLowerCase() }, chain], fetcherComp);
 
   const [ids, setIds] = useState<string[]>([]);
   useEffect(() => {
@@ -51,7 +51,7 @@ function Index() {
       console.log(position.id)
       newIds.push(position.id);
     });
-
+    newIds.reverse()
     setIds(newIds);
   }, [compPositions]);
 
