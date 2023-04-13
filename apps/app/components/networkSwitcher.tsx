@@ -1,6 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useNetwork, useSwitchNetwork, useAccount } from 'wagmi';
-import ReactSelect, { ActionMeta, SingleValue } from 'react-select';
+import ReactSelect, {
+  ActionMeta,
+  SingleValue,
+  StylesConfig,
+  OptionProps,
+  SingleValueProps,
+  components,
+} from 'react-select';
 
 // Define the Option type
 interface Option {
@@ -29,13 +36,6 @@ const NetworkSwitcher = () => {
     }
   };
 
-  const formatOptionLabel = (option: Option) => (
-    <div>
-      <img src={option.logo} alt={option.label} style={{ width: '24px', marginRight: '8px', display: 'inline-block' }} />
-      {option.label}
-    </div>
-  );
-
   const formattedChains: Option[] = chains.map((chain) => ({
     value: chain.id,
     label: chain.name,
@@ -44,22 +44,64 @@ const NetworkSwitcher = () => {
 
   const selectedOption = chain ? formattedChains.find((option) => option.value === chain.id) : null;
 
+  const customStyles: StylesConfig<Option, false> = {
+    control: (provided) => ({
+      ...provided,
+      border: 'none',
+      boxShadow: 'none',
+    }),
+    dropdownIndicator: (provided) => ({
+      ...provided,
+      borderTop: 'none',
+    }),
+    option: (provided) => ({
+      ...provided,
+      display: 'flex',
+      alignItems: 'center',
+      paddingRight: '10px',
+    }),
+    menu: (provided) => ({
+      ...provided,
+      minWidth: '180px',
+    }),
+  };
+
+  const CustomSingleValue = (props: SingleValueProps<Option, false>) => (
+    <components.SingleValue {...props}>
+      <img
+        src={props.data.logo}
+        alt={props.data.label}
+        style={{ width: '24px', display: 'inline-block', verticalAlign: 'middle' }}
+      />
+    </components.SingleValue>
+  );
+
+  const CustomOption = (props: OptionProps<Option, false>) => (
+    <components.Option {...props}>
+      <img
+        src={props.data.logo}
+        alt={props.data.label}
+        style={{ width: '24px', marginRight: '8px', display: 'inline-block', verticalAlign: 'middle' }}
+      />
+      {props.data.label}
+    </components.Option>
+  );
+
   return (
     <>
       {isDefinitelyConnected && (
         <>
-        <div className='mr-4'>
-        <ReactSelect
+          <ReactSelect
             name="networks"
             value={selectedOption}
             options={formattedChains}
             onChange={handleChange}
             isOptionDisabled={(option: Option) => option.value === chain?.id}
             isLoading={isLoading}
-            formatOptionLabel={formatOptionLabel}
+            styles={customStyles}
+            components={{ SingleValue: CustomSingleValue, Option: CustomOption }}
+            isSearchable={false} // Disable search feature
           />
-        </div>
-          
         </>
       )}
     </>
