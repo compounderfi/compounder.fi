@@ -32,6 +32,10 @@ async function makeRequest(tokenID, chain) {
     position(id: ${tokenID}) {
       collectedFeesToken0
       collectedFeesToken1
+      depositedToken0
+      depositedToken1
+      withdrawnToken0
+      withdrawnToken1
       transaction {
         timestamp
       }
@@ -241,6 +245,14 @@ export default async function handler(req, res) {
 
   const timestamp = resp["transaction"]["timestamp"]
 
+  const depositedToken0 = resp["depositedToken0"]
+  const depositedToken1 = resp["depositedToken1"]
+  const withdrawnToken0 = resp["withdrawnToken0"]
+  const withdrawnToken1 = resp["withdrawnToken1"]
+  const diffs0 = depositedToken0 - withdrawnToken0
+  const diffs1 = depositedToken1 - withdrawnToken1
+  
+  
   const [amount0, amount1] = await calculateAmount0Amount1(resp);
 
   const [unclaimed0, unclaimed1] = await calculateUnclaimedFees(chain, tokenID, owner, decimals0, decimals1)
@@ -252,6 +264,9 @@ export default async function handler(req, res) {
 
   const APRpercentage = await calculateAPRPercentage(timestamp, principalInUSD, unclaimedInUSD, claimedInUSD)
   const [APYpercentage, daysUntilNextCompound] = await calculateAPYPercentage(chain, APRpercentage, principalInUSD, unclaimedInUSD)
+
+  const diffsInUSD = principalInUSD - await calculatePrincipalUSD(diffs0, diffs1, ethPriceUSD, token0ETH, token1ETH);
+  const profit = diffsInUSD + unclaimedInUSD + claimedInUSD
 
 
   res.status(200).json({
@@ -275,6 +290,7 @@ export default async function handler(req, res) {
     claimedInUSD: claimedInUSD,
     token0USD: token0ETH * ethPriceUSD,
     token1USD: token1ETH * ethPriceUSD,
-    ethPriceUSD: ethPriceUSD
+    ethPriceUSD: ethPriceUSD,
+    profit: profit
   });
 }

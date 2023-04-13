@@ -30,6 +30,7 @@ export default function CompoundButton({ tokenID, row, apiRequest }: CompoundBut
         positionId={tokenID}
         setIsOpen={setDialogIsOpen}
         isOpen={dialogIsOpen}
+        isCompounding = {true}
       ></CompoundNowModal>
     </>
     

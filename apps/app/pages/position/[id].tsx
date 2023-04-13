@@ -3,6 +3,7 @@ import ActivePositionCard from "../../components/cards/activePosition";
 import { useEffect, useState } from "react";
 import PositionInformation from "../../components/cards/positionInformation";
 import CompoundNowModal from "../../components/compoundNowModal";
+import TopBar from '../../components/TopBar';
 import useSWR from "swr";
 import { chain, useNetwork, useContractRead } from "wagmi";
 import Head from "next/head";
@@ -101,6 +102,7 @@ export default function Position() {
   const [nextCompound, setNextCompound] = useState("???");
   const [liquidityUSD, setliquidityUSD] = useState("???");
   const [unclaimedUSD, setunclaimedUSD] = useState("???");
+  const [profit, setProfit] = useState("???");
   const now = new Date();
   const [isCompounding, setIsCompounding] = useState(false);
 
@@ -222,6 +224,9 @@ export default function Position() {
     if (unclaimedUSD == "???") {
       setunclaimedUSD(data?.unclaimedInUSD);
     }
+    if (profit == "???") {
+      setProfit(data?.profit);
+    }
   }, [data]);
 
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
@@ -231,8 +236,9 @@ export default function Position() {
       <Head>
         <title>position {tokenID} | compounder.fi</title>
       </Head>
-
+      
       <div className="px-4 text-xl">
+      <TopBar tokenId={Number(tokenID)} isCompounding={isCompounding} profitLoss={Number(profit)} />
         <div className="mt-2 flex gap-6 ">
           <ActivePositionCard
             showPointer={false}
@@ -267,18 +273,23 @@ export default function Position() {
           <div className="flex">
             <div className="mt-4 flex-grow font-bold">compound history</div>
             <div className="flex gap-4">
-              <button
+              
+              {isCompounding && (<>
+                <button
                 disabled={true}
                 className="mt-4 rounded-lg bg-gray-200 px-2 text-base"
               >
                 next compound: {nextCompound ? ago(new Date(now.getTime() + Number(data?.daysUntilNextCompound) * 24 * 60 * 60 * 1000), "day") : "???"}
               </button>
-              <button
+                <button
                 onClick={isCompounding ? () => setDialogIsOpen(true) : () => {}}
-                className={`${!isCompounding && "cursor-not-allowed"} mt-4 rounded-lg bg-[#81e291] px-2 text-base transition-colors duration-300 hover:bg-[#92D5E6]`}
-              >
-                {isCompounding ? "compound now" : "compound not enabled"}
-              </button>
+                className={`mt-4 rounded-lg bg-[#81e291] px-2 text-base transition-colors duration-300 hover:bg-[#92D5E6]`}
+                >
+                  {isCompounding ? "compound now" : "compounding not enabled"}
+                </button>
+                </>
+              )}
+              
             </div>
           </div>
           <CompoundHistoryTable
