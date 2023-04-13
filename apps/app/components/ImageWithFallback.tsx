@@ -24,20 +24,23 @@ export default function ImageWithFallback({
   }, [src]);
 
   return (
-    <Image
-      alt={alt}
-      width={width}
-      height={height}
-      src={imgSrc}
-      onLoadingComplete={(result) => {
-        if (result.naturalWidth === 0) {
-          // Broken image
+    <div className="rounded-full overflow-hidden">
+      <Image
+        
+        alt={alt}
+        width={width}
+        height={height}
+        src={imgSrc}
+        onLoadingComplete={(result) => {
+          if (result.naturalWidth === 0) {
+            // Broken image
+            set_imgSrc(fallbackSrc);
+          }
+        }}
+        onError={() => {
           set_imgSrc(fallbackSrc);
-        }
-      }}
-      onError={() => {
-        set_imgSrc(fallbackSrc);
-      }}
-    />
+        }}
+      />
+    </div>
   );
 }
