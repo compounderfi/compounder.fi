@@ -264,6 +264,8 @@ export default function Position() {
               token1Name={data?.symbol1 || "loading..."}
               token1Image={getImage(chain ? chain?.id: 1, data?.tokenAddress1)}
               token1Qt={data?.amount1}
+              token0Percentage={data?.principalInUSD ? "" + Math.floor(data?.amount0 * data?.token0USD * 100 / data?.principalInUSD) : ""}
+              token1Percentage={data?.principalInUSD ? "" + Math.ceil(data?.amount1 * data?.token1USD * 100 / data?.principalInUSD) : ""}
             ></PositionInformation>
             <PositionInformation
               title="unclaimed fees"
@@ -274,6 +276,8 @@ export default function Position() {
               token1Name={data?.symbol1 || "loading..."}
               token1Image={getImage(chain ? chain?.id: 1, data?.tokenAddress1)}
               token1Qt={data?.unclaimed1}
+              token0Percentage=""
+              token1Percentage=""
             ></PositionInformation>
           </div>
         </div>

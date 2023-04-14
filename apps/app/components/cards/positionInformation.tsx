@@ -9,6 +9,8 @@ export interface PositionInformationProps {
   token1Name: string;
   token1Image: string;
   token1Qt: string;
+  token0Percentage: string;
+  token1Percentage: string;
 }
 
 export default function PositionInformation({
@@ -20,6 +22,8 @@ export default function PositionInformation({
   token1Name,
   token1Image,
   token1Qt,
+  token0Percentage,
+  token1Percentage,
 }: PositionInformationProps) {
   return (
     <>
@@ -41,6 +45,10 @@ export default function PositionInformation({
               <div className="">{token0Name}</div>
               <div className="flex-grow"></div>
               <div className="">{token0Qt}</div>
+              {token0Percentage &&
+                <div className="rounded-lg bg-gray-400 text-gray-100 p-1 text-sm">{token0Percentage}%</div>
+              }
+            
             </div>
             <div className="flex gap-4">
               <ImageWithFallback
@@ -55,6 +63,10 @@ export default function PositionInformation({
               <div className="">{token1Name}</div>
               <div className="flex-grow"></div>
               <div className="">{token1Qt}</div>
+              {token1Percentage &&
+                <div className="rounded-lg bg-gray-400 text-gray-100 p-1 text-sm">{token1Percentage}%</div>
+              }
+              
             </div>
           </div>
         </div>

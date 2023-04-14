@@ -265,6 +265,7 @@ export default async function handler(req, res) {
   const APRpercentage = await calculateAPRPercentage(timestamp, principalInUSD, unclaimedInUSD, claimedInUSD)
   const [APYpercentage, daysUntilNextCompound] = await calculateAPYPercentage(chain, APRpercentage, principalInUSD, unclaimedInUSD)
 
+
   const diffsInUSD = principalInUSD - await calculatePrincipalUSD(diffs0, diffs1, ethPriceUSD, token0ETH, token1ETH);
   const profit = diffsInUSD + unclaimedInUSD + claimedInUSD
 
