@@ -95,7 +95,7 @@ export default function TopBarDropdown({
               <tr>
                 <td className="border-t border-gray-300 pt-1">{title}:</td>
                 <td className={`${titleNumber >= 0 ? "text-[#81e291]" : "text-[#fa0079]"} border-t border-gray-300 pt-1 text-right`}>
-                {!isPercents && "$"}{(topNumber - bottomNumber).toFixed(2)}{isPercents && "%"}
+                {topNumber - bottomNumber > 0 ? "+" : "-"}{!isPercents && "$"}{(Math.abs(topNumber - bottomNumber)).toFixed(2)}{isPercents && "%"}
                 </td>
               </tr>
             </tbody>

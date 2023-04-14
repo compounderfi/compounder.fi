@@ -293,7 +293,7 @@ export default async function handler(req, res) {
     token1USD: token1ETH * ethPriceUSD,
     ethPriceUSD: ethPriceUSD,
     profit: profit,
-    impermanentLoss: diffsInUSD * -1,
+    impermanentLoss: diffsInUSD < 0 ? diffsInUSD * -1 : diffsInUSD,
     totalFees: unclaimedInUSD + claimedInUSD,
     APRpercentageOfIL: APRpercentageOfIL * -1
   });
