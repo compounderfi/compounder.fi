@@ -21,6 +21,8 @@
   },
   "packageManager": "npm@8.19.2",
   "dependencies": {
+    "@popperjs/core": "^2.11.7",
+    "react-popper": "^2.3.0",
     "react-select": "^5.7.2"
   }
 }

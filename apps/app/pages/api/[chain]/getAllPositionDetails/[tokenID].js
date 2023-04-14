@@ -291,6 +291,8 @@ export default async function handler(req, res) {
     token0USD: token0ETH * ethPriceUSD,
     token1USD: token1ETH * ethPriceUSD,
     ethPriceUSD: ethPriceUSD,
-    profit: profit
+    profit: profit,
+    impermanentLoss: diffsInUSD * -1,
+    totalFees: unclaimedInUSD + claimedInUSD
   });
 }

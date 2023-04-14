@@ -158,8 +158,8 @@ export default function CompoundNowModal({
                     <div className="mt-4 flex">
                       <button
                         type="button"
-                        className= {`${isCompounding && "cursor-not-allowed"} inline-flex justify-center rounded-md border border-transparent bg-[#81e291] px-4 py-2 text-sm font-medium transition-colors duration-300 hover:bg-[#92D5E6] `}
-                        onClick={isCompounding ? openWallet : () => {} }
+                        className= "inline-flex justify-center rounded-md border border-transparent bg-[#81e291] px-4 py-2 text-sm font-medium transition-colors duration-300 hover:bg-[#92D5E6]"
+                        onClick={openWallet}
                       >
                         {buttonText}
                       </button>

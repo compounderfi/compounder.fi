@@ -105,6 +105,8 @@ export default function Position() {
   const [profit, setProfit] = useState("???");
   const now = new Date();
   const [isCompounding, setIsCompounding] = useState(false);
+  const [impermanentLoss, setImpermanentLoss] = useState("???");
+  const [totalFees, setTotalFees] = useState("???");
 
   const approvedData = useContractRead({
     address: NFPM_ADDRESS,
@@ -227,6 +229,13 @@ export default function Position() {
     if (profit == "???") {
       setProfit(data?.profit);
     }
+
+    if (impermanentLoss == "???") {
+      setImpermanentLoss(data?.impermanentLoss);
+    }
+    if (totalFees == "???") {
+      setTotalFees(data?.totalFees);
+    }
   }, [data]);
 
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
@@ -238,7 +247,7 @@ export default function Position() {
       </Head>
       
       <div className="px-4 text-xl">
-      <TopBar tokenId={Number(tokenID)} isCompounding={isCompounding} profitLoss={Number(profit)} />
+      <TopBar tokenId={Number(tokenID)} isCompounding={isCompounding} profitLoss={Number(profit)} impermanentLoss={Number(impermanentLoss)} totalFees={Number(totalFees)}/>
         <div className="mt-2 flex gap-6 ">
           <ActivePositionCard
             showPointer={false}
