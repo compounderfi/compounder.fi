@@ -185,28 +185,22 @@ function Add() {
         ids.push(position.id);
       }
     });
-
+    ids.reverse()
     setIds(ids);
   }, [addressPositions, compPositions]);
 
   useEffect(() => {
-
-    if (selection.length == 1) {
-      setFunctionName("approve");
-      setFunctionArgs([CONTRACT_ADDRESS, selection[0]]);
-    } else {
-      setFunctionName("multicall");
-      let data: string[] = [];
-      selection.map((i) => {
-        data.push(
-          abiInterface.encodeFunctionData("approve", [
-            CONTRACT_ADDRESS,
-            i,
-          ])
-        );
-      });
-      setFunctionArgs([data]);
-    }
+    setFunctionName("multicall");
+    let data: string[] = [];
+    selection.map((i) => {
+      data.push(
+        abiInterface.encodeFunctionData("approve", [
+          CONTRACT_ADDRESS,
+          i,
+        ])
+      );
+    });
+    setFunctionArgs([data]);
   }, [debouncedSelection]);
 
   return (
