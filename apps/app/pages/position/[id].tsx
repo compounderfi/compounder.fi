@@ -3,7 +3,7 @@ import ActivePositionCard from "../../components/cards/activePosition";
 import { useEffect, useState } from "react";
 import PositionInformation from "../../components/cards/positionInformation";
 import CompoundNowModal from "../../components/compoundNowModal";
-import TopBar from '../../components/TopBar';
+import TopBar from "../../components/TopBar";
 import useSWR from "swr";
 import { chain, useNetwork, useContractRead } from "wagmi";
 import Head from "next/head";
@@ -17,7 +17,11 @@ import getNetworkConfigs from "../../utils/getNetworkConfigs";
 import { ethers } from "ethers";
 import ago from "s-ago";
 //import constants
-import { CONTRACT_ADDRESS, NFPM_ABI, NFPM_ADDRESS } from "../../utils/constants";
+import {
+  CONTRACT_ADDRESS,
+  NFPM_ABI,
+  NFPM_ADDRESS,
+} from "../../utils/constants";
 
 function getImage(chainId: number, tokenAddress: string | undefined) {
   //wont work on goerli
@@ -42,7 +46,9 @@ function getImage(chainId: number, tokenAddress: string | undefined) {
   }
   const tokenAddyChecksum = ethers.utils.getAddress(tokenAddress);
   return (
-    "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/" + chainName + "/assets/" +
+    "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/" +
+    chainName +
+    "/assets/" +
     tokenAddyChecksum +
     "/logo.png"
   );
@@ -94,19 +100,18 @@ export default function Position() {
   const { chain } = useNetwork();
 
   const [tokenID, setTokenID] = useState("");
-  const { data } = useSWR(["/api/" + chain?.id + "/getAllPositionDetails/" + id, chain], fetcher);
+  const { data } = useSWR(
+    ["/api/" + chain?.id + "/getAllPositionDetails/" + id, chain],
+    fetcher
+  );
 
   const [tableData, setTableData] = useState<Compound[]>([]);
   const [token0, setToken0] = useState("???");
   const [token1, setToken1] = useState("???");
   const [nextCompound, setNextCompound] = useState("???");
-  const [liquidityUSD, setliquidityUSD] = useState("???");
-  const [unclaimedUSD, setunclaimedUSD] = useState("???");
-  const [profit, setProfit] = useState("???");
   const now = new Date();
   const [isCompounding, setIsCompounding] = useState(false);
-  const [impermanentLoss, setImpermanentLoss] = useState("???");
-  const [totalFees, setTotalFees] = useState("???");
+
 
   const approvedData = useContractRead({
     address: NFPM_ADDRESS,
@@ -117,7 +122,7 @@ export default function Position() {
   });
 
   useEffect(() => {
-    console.log(approvedData.data)
+    console.log(approvedData.data);
     if (!approvedData.data) {
       return;
     }
@@ -127,19 +132,15 @@ export default function Position() {
     } else {
       setIsCompounding(false);
     }
-    console.log(isCompounding)
-
-  }, 
-  [approvedData.data]);
-  
+    console.log(isCompounding);
+  }, [approvedData.data]);
 
   const graphFetcher = (variables: { tokenId: string }) =>
-    request(
-      getNetworkConfigs(Number(chain!.id)).graphUrl,
-      query,
-      variables
-    );
-  const { data: compoundHistory } = useSWR([{ tokenId: tokenID }, chain], graphFetcher);
+    request(getNetworkConfigs(Number(chain!.id)).graphUrl, query, variables);
+  const { data: compoundHistory } = useSWR(
+    [{ tokenId: tokenID }, chain],
+    graphFetcher
+  );
 
   useEffect(() => {
     if (!compoundHistory) {
@@ -152,21 +153,33 @@ export default function Position() {
       tableData.push({
         tokenId: tokenID,
         chain: chain ? chain?.id : 1,
-        transactionHash: chain ? chain?.blockExplorers?.etherscan?.url + "/tx/" + compound.transaction.id : "",
+        transactionHash: chain
+          ? chain?.blockExplorers?.etherscan?.url +
+            "/tx/" +
+            compound.transaction.id
+          : "",
         time: Number(compound.transaction.timestamp) * 1000,
         percentLiquidityAdded: "" + compound.liquidityPercentIncrease / 100,
         gasPrice: compound.transaction.gasPrice,
         gasUsed: compound.transaction.gasUsed,
         callerReward:
-        compound.fee0Caller == "0"
-            ? tokenToSignificant(compound.fee1Caller, compound.token1.decimals, {
-                decimalPlaces: 3,
-              }) +
+          compound.fee0Caller == "0"
+            ? tokenToSignificant(
+                compound.fee1Caller,
+                compound.token1.decimals,
+                {
+                  decimalPlaces: 3,
+                }
+              ) +
               " " +
               compound.token1.symbol
-            : tokenToSignificant(compound.fee0Caller, compound.token0.decimals, {
-                decimalPlaces: 3,
-              }) +
+            : tokenToSignificant(
+                compound.fee0Caller,
+                compound.token0.decimals,
+                {
+                  decimalPlaces: 3,
+                }
+              ) +
               " " +
               compound.token0.symbol,
       });
@@ -179,12 +192,16 @@ export default function Position() {
     }
 
     if (compoundHistory.positions.length > 0) {
-
       tableData.push({
         tokenId: tokenID,
         chain: chain ? chain?.id : 0,
-        transactionHash: chain ? chain?.blockExplorers?.etherscan?.url + "/tx/" + compoundHistory.positions[0].tokenDeposit.id : "",
-        time: Number(compoundHistory.positions[0].tokenDeposit.timestamp) * 1000,
+        transactionHash: chain
+          ? chain?.blockExplorers?.etherscan?.url +
+            "/tx/" +
+            compoundHistory.positions[0].tokenDeposit.id
+          : "",
+        time:
+          Number(compoundHistory.positions[0].tokenDeposit.timestamp) * 1000,
         percentLiquidityAdded: "",
         gasPrice: "",
         gasUsed: "",
@@ -220,22 +237,7 @@ export default function Position() {
     if (nextCompound == "???") {
       setNextCompound(data?.daysUntilNextCompound);
     }
-    if (liquidityUSD == "???") {
-      setliquidityUSD(data?.principalInUSD);
-    }
-    if (unclaimedUSD == "???") {
-      setunclaimedUSD(data?.unclaimedInUSD);
-    }
-    if (profit == "???") {
-      setProfit(data?.profit);
-    }
 
-    if (impermanentLoss == "???") {
-      setImpermanentLoss(data?.impermanentLoss);
-    }
-    if (totalFees == "???") {
-      setTotalFees(data?.totalFees);
-    }
   }, [data]);
 
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
@@ -245,36 +247,58 @@ export default function Position() {
       <Head>
         <title>position {tokenID} | compounder.fi</title>
       </Head>
-      
+
       <div className="px-4 text-xl">
-      <TopBar tokenId={Number(tokenID)} isCompounding={isCompounding} profitLoss={Number(profit)} impermanentLoss={Number(impermanentLoss)} totalFees={Number(totalFees)}/>
+        <TopBar
+          tokenId={Number(tokenID)}
+          isCompounding={isCompounding}
+          profitLoss={Number(data?.profit)}
+          impermanentLoss={Number(data?.impermanentLoss)}
+          totalFees={Number(data?.totalFees)}
+        />
         <div className="mt-2 flex gap-6 ">
           <ActivePositionCard
             showPointer={false}
             id={tokenID}
-            isCompounding = {isCompounding}
+            isCompounding={isCompounding}
           ></ActivePositionCard>
           <div className="grid flex-grow gap-6">
             <PositionInformation
               title="liquidity"
               dollarValue={Number(data?.principalInUSD).toFixed(2) || "???"}
               token0Name={data?.symbol0 || "loading..."}
-              token0Image={getImage(chain ? chain?.id: 1, data?.tokenAddress0)}
+              token0Image={getImage(chain ? chain?.id : 1, data?.tokenAddress0)}
               token0Qt={data?.amount0}
               token1Name={data?.symbol1 || "loading..."}
-              token1Image={getImage(chain ? chain?.id: 1, data?.tokenAddress1)}
+              token1Image={getImage(chain ? chain?.id : 1, data?.tokenAddress1)}
               token1Qt={data?.amount1}
-              token0Percentage={data?.principalInUSD ? "" + Math.floor(data?.amount0 * data?.token0USD * 100 / data?.principalInUSD) : ""}
-              token1Percentage={data?.principalInUSD ? "" + Math.ceil(data?.amount1 * data?.token1USD * 100 / data?.principalInUSD) : ""}
+              token0Percentage={
+                data?.principalInUSD
+                  ? "" +
+                    Math.floor(
+                      (data?.amount0 * data?.token0USD * 100) /
+                        data?.principalInUSD
+                    )
+                  : ""
+              }
+              token1Percentage={
+                data?.principalInUSD
+                  ? "" +
+                    Math.ceil(
+                      (data?.amount1 * data?.token1USD * 100) /
+                        data?.principalInUSD
+                    )
+                  : ""
+              }
             ></PositionInformation>
             <PositionInformation
               title="unclaimed fees"
               dollarValue={Number(data?.unclaimedInUSD).toFixed(2) || "???"}
               token0Name={data?.symbol0 || "loading..."}
-              token0Image={getImage(chain ? chain?.id: 1, data?.tokenAddress0)}
+              token0Image={getImage(chain ? chain?.id : 1, data?.tokenAddress0)}
               token0Qt={data?.unclaimed0}
               token1Name={data?.symbol1 || "loading..."}
-              token1Image={getImage(chain ? chain?.id: 1, data?.tokenAddress1)}
+              token1Image={getImage(chain ? chain?.id : 1, data?.tokenAddress1)}
               token1Qt={data?.unclaimed1}
               token0Percentage=""
               token1Percentage=""
@@ -286,23 +310,37 @@ export default function Position() {
           <div className="flex">
             <div className="mt-4 flex-grow font-bold">compound history</div>
             <div className="flex gap-4">
-              
-              {isCompounding && (<>
-                <button
-                disabled={true}
-                className="mt-4 rounded-lg bg-gray-200 px-2 text-base"
-              >
-                next compound: {nextCompound ? ago(new Date(now.getTime() + Number(data?.daysUntilNextCompound) * 24 * 60 * 60 * 1000), "day") : "???"}
-              </button>
-                <button
-                onClick={isCompounding ? () => setDialogIsOpen(true) : () => {}}
-                className={`mt-4 rounded-lg bg-[#81e291] px-2 text-base transition-colors duration-300 hover:bg-[#92D5E6]`}
-                >
-                  {isCompounding ? "compound now" : "compounding not enabled"}
-                </button>
+              {isCompounding && (
+                <>
+                  <button
+                    disabled={true}
+                    className="mt-4 rounded-lg bg-gray-200 px-2 text-base"
+                  >
+                    next compound:{" "}
+                    {nextCompound
+                      ? ago(
+                          new Date(
+                            now.getTime() +
+                              Number(data?.daysUntilNextCompound) *
+                                24 *
+                                60 *
+                                60 *
+                                1000
+                          ),
+                          "day"
+                        )
+                      : "???"}
+                  </button>
+                  <button
+                    onClick={
+                      isCompounding ? () => setDialogIsOpen(true) : () => {}
+                    }
+                    className={`mt-4 rounded-lg bg-[#81e291] px-2 text-base transition-colors duration-300 hover:bg-[#92D5E6]`}
+                  >
+                    {isCompounding ? "compound now" : "compounding not enabled"}
+                  </button>
                 </>
               )}
-              
             </div>
           </div>
           <CompoundHistoryTable
@@ -321,9 +359,8 @@ export default function Position() {
         positionId={tokenID}
         setIsOpen={setDialogIsOpen}
         isOpen={dialogIsOpen}
-        isCompounding = {isCompounding}
+        isCompounding={isCompounding}
       ></CompoundNowModal>
-      
     </>
   );
 }

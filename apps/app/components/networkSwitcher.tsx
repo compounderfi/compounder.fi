@@ -60,13 +60,12 @@ const NetworkSwitcher = () => {
       ...provided,
       display: 'flex',
       alignItems: 'center',
-      justifyContent: 'space-between',
       paddingRight: '10px',
       cursor: 'pointer',
     }),
     menu: (provided) => ({
       ...provided,
-      minWidth: '180px',
+      minWidth: '170px',
     }),
     singleValue: (provided) => ({
       ...provided,
