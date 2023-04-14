@@ -255,6 +255,8 @@ export default function Position() {
           profitLoss={Number(data?.profit)}
           impermanentLoss={Number(data?.impermanentLoss)}
           totalFees={Number(data?.totalFees)}
+          feesAPR = {Number(data?.apr)}
+          ILAPR= {Number(data?.APRpercentageOfIL)}
         />
         <div className="mt-2 flex gap-6 ">
           <ActivePositionCard

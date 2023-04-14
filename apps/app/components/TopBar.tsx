@@ -1,16 +1,18 @@
 // src/components/TopBar.tsx
 import React, { useState } from 'react';
 import { usePopper } from 'react-popper';
-
+import TopBarDropdown from './topBarDropdown';
 interface TopBarProps {
   tokenId: number;
   isCompounding: boolean;
   profitLoss: number;
   totalFees: number;
   impermanentLoss: number;
+  feesAPR: number;
+  ILAPR: number;
 }
 
-export default function TopBar({ tokenId, isCompounding, profitLoss, totalFees, impermanentLoss }: TopBarProps) {
+export default function TopBar({ tokenId, isCompounding, profitLoss, totalFees, impermanentLoss, feesAPR, ILAPR}: TopBarProps) {
   const [showMenu, setShowMenu] = React.useState(false);
   const [referenceElement, setReferenceElement] = useState<HTMLButtonElement | null>(null)
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(null)
@@ -46,67 +48,11 @@ export default function TopBar({ tokenId, isCompounding, profitLoss, totalFees, 
               {isCompounding ? 'Compounding' : 'Not compounding'}
             </span>
           </div>
-          <div className="text-lg font-semibold flex items-center">
-            <span>P/L: </span>
-            <button
-              ref={setReferenceElement}
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-              className="flex items-center"
-            >
-              {
-                profitLoss ?
-                <>
-                  <span className={`text-${profitLoss >= 0 ? 'green' : 'red'}-600 ml-1 cursor-pointer`}>
-                    {profitLoss >= 0 ? '+' : '-'}${Math.abs(profitLoss).toFixed(2)}
-                  </span>
-                  <svg
-                    className="w-4 h-4 ml-1 cursor-pointer"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
+          <div className='flex justify-between w-72'>
+            <TopBarDropdown title='ROI' titleNumber={feesAPR - ILAPR} topTitle = "Fees" topNumber = {feesAPR} bottomTitle = "IL" bottomNumber= {ILAPR} isPercents={true} />
+            <TopBarDropdown title='P/L' titleNumber={profitLoss} topTitle = "Fees" topNumber = {totalFees} bottomTitle = "IL" bottomNumber= {impermanentLoss} isPercents={false}/>
+          </div>
           
-              
-                <path d="M10 12.59l3.3-3.3a1 1 0 1 1 1.4 1.42l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 1.4-1.42l3.3 3.3z" />
-              </svg>
-              </> :
-              <span className="ml-1">Loading...</span>
-              }
-            </button>
-            {showMenu && (
-              
-              <div
-                ref={setPopperElement}
-                style={styles.popper}
-                {...attributes.popper}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-                className="bg-white border border-gray-300 rounded shadow-xl px-4 py-2"
-                >
-                  
-                  <table className="w-full text-sm">
-                    <tbody>
-                      <tr>
-                        <td className="pb-1">Fees:</td>
-                        <td className="pb-1 text-right">${totalFees.toFixed(2)}</td>
-                      </tr>
-                      <tr>
-                        <td className="pb-1">IL:</td>
-                        <td className="pb-1 text-right">-${impermanentLoss.toFixed(2)}</td>
-                      </tr>
-                      <tr>
-                        <td className="border-t border-gray-300 pt-1">P/L:</td>
-                        <td className="border-t border-gray-300 pt-1 text-right">
-                          ${(totalFees - impermanentLoss).toFixed(2)}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div ref={setArrowElement} style={styles.arrow} className="popper__arrow" />
-                </div>
-              )}
-            </div>
           </div>
         </div>
       </div>);

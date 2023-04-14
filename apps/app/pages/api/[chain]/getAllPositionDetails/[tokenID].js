@@ -264,11 +264,11 @@ export default async function handler(req, res) {
 
   const APRpercentage = await calculateAPRPercentage(timestamp, principalInUSD, unclaimedInUSD, claimedInUSD)
   const [APYpercentage, daysUntilNextCompound] = await calculateAPYPercentage(chain, APRpercentage, principalInUSD, unclaimedInUSD)
-
+ 
 
   const diffsInUSD = principalInUSD - await calculatePrincipalUSD(diffs0, diffs1, ethPriceUSD, token0ETH, token1ETH);
   const profit = diffsInUSD + unclaimedInUSD + claimedInUSD
-
+  const APRpercentageOfIL = await calculateAPRPercentage(timestamp, principalInUSD, diffsInUSD, 0)
 
   res.status(200).json({
     apr: APRpercentage,
@@ -294,6 +294,7 @@ export default async function handler(req, res) {
     ethPriceUSD: ethPriceUSD,
     profit: profit,
     impermanentLoss: diffsInUSD * -1,
-    totalFees: unclaimedInUSD + claimedInUSD
+    totalFees: unclaimedInUSD + claimedInUSD,
+    APRpercentageOfIL: APRpercentageOfIL * -1
   });
 }
