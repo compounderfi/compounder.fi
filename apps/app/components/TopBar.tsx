@@ -1,5 +1,5 @@
 // src/components/TopBar.tsx
-import React, { useRef } from 'react';
+import React, { useState } from 'react';
 import { usePopper } from 'react-popper';
 
 interface TopBarProps {
@@ -12,16 +12,17 @@ interface TopBarProps {
 
 export default function TopBar({ tokenId, isCompounding, profitLoss, totalFees, impermanentLoss }: TopBarProps) {
   const [showMenu, setShowMenu] = React.useState(false);
-  const referenceElement = useRef(null);
-  const popperElement = useRef(null);
-  const arrowElement = useRef(null);
-  const { styles, attributes } = usePopper(referenceElement.current, popperElement.current, {
+  const [referenceElement, setReferenceElement] = useState<HTMLButtonElement | null>(null)
+  const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(null)
+  const [arrowElement, setArrowElement] = useState<HTMLDivElement | null>(null)
+  const { styles, attributes } = usePopper(referenceElement, popperElement, {
     placement: 'bottom-end',
     modifiers: [
-      { name: 'arrow', options: { element: arrowElement.current } },
+      { name: 'arrow', options: { element: arrowElement } },
       { name: 'offset', options: { offset: [0, 10] } },
     ],
-  });
+  })
+
 
   const handleMouseEnter = () => {
     setShowMenu(true);
@@ -47,33 +48,43 @@ export default function TopBar({ tokenId, isCompounding, profitLoss, totalFees, 
           </div>
           <div className="text-lg font-semibold flex items-center">
             <span>P/L: </span>
-            <span
-              ref={referenceElement}
+            <button
+              ref={setReferenceElement}
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               className="flex items-center"
             >
-              <span className={`text-${profitLoss >= 0 ? 'green' : 'red'}-600 ml-1 underline-dotted cursor-pointer`}>
-                {profitLoss >= 0 ? '+' : '-'}${Math.abs(profitLoss).toFixed(2)}
-              </span>
-              <svg
-                className="w-4 h-4 ml-1 cursor-pointer"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
+              {
+                profitLoss ?
+                <>
+                  <span className={`text-${profitLoss >= 0 ? 'green' : 'red'}-600 ml-1 cursor-pointer`}>
+                    {profitLoss >= 0 ? '+' : '-'}${Math.abs(profitLoss).toFixed(2)}
+                  </span>
+                  <svg
+                    className="w-4 h-4 ml-1 cursor-pointer"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+          
+              
                 <path d="M10 12.59l3.3-3.3a1 1 0 1 1 1.4 1.42l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 1.4-1.42l3.3 3.3z" />
               </svg>
-            </span>
+              </> :
+              <span className="ml-1">Loading...</span>
+              }
+            </button>
             {showMenu && (
+              
               <div
-                ref={popperElement}
+                ref={setPopperElement}
                 style={styles.popper}
                 {...attributes.popper}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
                 className="bg-white border border-gray-300 rounded shadow-xl px-4 py-2"
                 >
+                  
                   <table className="w-full text-sm">
                     <tbody>
                       <tr>
@@ -92,7 +103,7 @@ export default function TopBar({ tokenId, isCompounding, profitLoss, totalFees, 
                       </tr>
                     </tbody>
                   </table>
-                  <div ref={arrowElement} style={styles.arrow} className="popper__arrow" />
+                  <div ref={setArrowElement} style={styles.arrow} className="popper__arrow" />
                 </div>
               )}
             </div>

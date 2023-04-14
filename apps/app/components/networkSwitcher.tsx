@@ -49,20 +49,28 @@ const NetworkSwitcher = () => {
       ...provided,
       border: 'none',
       boxShadow: 'none',
+      cursor: 'pointer',
     }),
     dropdownIndicator: (provided) => ({
       ...provided,
       borderTop: 'none',
+      cursor: 'pointer',
     }),
     option: (provided) => ({
       ...provided,
       display: 'flex',
       alignItems: 'center',
+      justifyContent: 'space-between',
       paddingRight: '10px',
+      cursor: 'pointer',
     }),
     menu: (provided) => ({
       ...provided,
       minWidth: '180px',
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      cursor: 'pointer',
     }),
   };
 
