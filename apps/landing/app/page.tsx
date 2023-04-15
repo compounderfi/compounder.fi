@@ -19,7 +19,6 @@ export default function Index() {
       <hr className="h-5px"></hr>
       <FeaturesBlocks/>
       <Footer/>
-      <script src="animation.js"></script>
     </>
   );
 }
