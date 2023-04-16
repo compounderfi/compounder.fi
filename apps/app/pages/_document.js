@@ -12,7 +12,6 @@ export default function Document() {
       <meta name="author" content="Compounder.fi" />
       <meta name="keywords" content="uniswap, compound, interest, reinvest, ethereum, polygon, arbitrum, optimism, blockchain, crypto, currency" />
       <meta name="format-detection" content="telephone=no"/>
-      <meta name="theme-color" content="#81e291" />
 
       {/* Open Graph / Facebook */}
       <meta property="og:type" content="website" />
