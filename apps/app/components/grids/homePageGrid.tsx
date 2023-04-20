@@ -1,6 +1,7 @@
 import Link from "next/link";
 import AddPositionCard from "../cards/addPosition";
 import ActivePositionCard from "../cards/activePosition";
+import { useNetwork } from "wagmi";
 
 export interface HomePageGridProps {
   ids: string[];
@@ -11,10 +12,10 @@ export default function HomePageGrid({
   ids,
   showAddPositionCard,
 }: HomePageGridProps) {
-  
+  const {chain} = useNetwork();
   const positions = ids.map((id) => (
-    <Link key={id} href={"/position/" + id}>
-      <ActivePositionCard id={id}></ActivePositionCard>
+    <Link key={id} href={"/position/" + chain?.id + "/" + id}>
+      <ActivePositionCard id={id} chainId={chain?.id || 1}></ActivePositionCard>
     </Link>
   ));
 

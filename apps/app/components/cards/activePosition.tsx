@@ -84,7 +84,7 @@ export default function ActivePositionCard({
   }
 
   return (
-    <PositionCard showPointer={showPointer} isCompounding = {isCompounding} href={"/position/" + id}>
+    <PositionCard showPointer={showPointer} isCompounding = {isCompounding} href={"/position/" + chainId + "/" + id}>
       <div>
         <NFTPreview id={id} chainId={chainId}></NFTPreview>
         <div className="flex pt-2">

@@ -39,7 +39,7 @@ const NetworkSwitcher = () => {
   const formattedChains: Option[] = chains.map((chain) => ({
     value: chain.id,
     label: chain.name,
-    logo: chain.name.toLowerCase() != "arbitrum one" ? `/${chain.name.toLowerCase()}.svg` : `../arbitrum.svg`,
+    logo: chain.name.toLowerCase() != "arbitrum one" ? `/${chain.name.toLowerCase()}.svg` : `/arbitrum.svg`,
   }));
 
   const selectedOption = chain ? formattedChains.find((option) => option.value === chain.id) : null;

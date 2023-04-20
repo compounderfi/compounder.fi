@@ -28,6 +28,8 @@ export interface PositionsTableProps {
 }
 
 export default function PositionsTable({ data }: PositionsTableProps) {
+  const { chain } = useNetwork();
+
   type PositionToDataTypes = {[key: string]: {}}
   const [positionToData, setPositionToData] = useState<PositionToDataTypes>({})
   const [columns, setColumns] = useState<ColumnDef<Position, string>[]>([])
@@ -37,15 +39,12 @@ export default function PositionsTable({ data }: PositionsTableProps) {
     
   }
 
-  //usenetwork hook
-  const {chain} = useNetwork();
-
   useEffect(() => {
     const columns = [
       columnHelper.accessor("tokenID", {
         header: "token id",
         cell: (info) => (
-          <Link href={"/position/" + info.getValue()}>
+          <Link href={"/position/" + chain?.id + "/" + info.getValue()}>
             <span className="cursor-pointer underline	decoration-1 underline-offset-4">
               {info.getValue()}
             </span>
