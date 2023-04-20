@@ -36,21 +36,21 @@ function getSnapshot(
 
 export interface NFTPreviewProps {
   id: string;
+  chainId: number;
 }
 
-export default function NFTPreviewProps({ id }: NFTPreviewProps) {
+export default function NFTPreviewProps({ id, chainId}: NFTPreviewProps) {
   const [tokenImage, setTokenImage] = useState("");
   const [animate, setAnimate] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
-  const {chain} = useNetwork();
 
   const { data } = useContractRead({
     address: NFPM_ADDRESS,
     abi: uniswapAbi,
     functionName: "tokenURI",
     args: [id],
-    chainId: chain?.id,
+    chainId: chainId,
   });
 
   useEffect(() => {

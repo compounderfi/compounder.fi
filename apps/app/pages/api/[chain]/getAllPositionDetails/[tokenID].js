@@ -8,7 +8,7 @@ import getNetworkConfigs from "../../../../utils/getNetworkConfigs";
 
 async function makeRequest(tokenID, chain) {
   let graphURL;
-
+  chain = "" + chain;
   switch (chain) {
     case "1":
       graphURL = "https://api.thegraph.com/subgraphs/name/revert-finance/uniswap-v3-mainnet"
@@ -72,6 +72,7 @@ async function makeRequest(tokenID, chain) {
   }
 
   `
+
   const resp = await axios.post(graphURL, {
     query: query,
     variables: null,
@@ -173,7 +174,6 @@ async function calculateAPRPercentage(transactionTimestamp, principalInUSD, uncl
   }
 
   const feesPercentage = totalFeesUSD / principalInUSD
-  
   return (feesPercentage / yearsPassed) * 100;
 }
 

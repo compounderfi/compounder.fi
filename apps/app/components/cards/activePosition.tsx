@@ -7,6 +7,7 @@ import {
   useContractWrite,
   useWaitForTransaction,
   useNetwork,
+  chain,
 } from "wagmi";
 import { MouseEvent } from "react";
 import { CONTRACT_ADDRESS, NFPM_ADDRESS } from "../../utils/constants";
@@ -18,17 +19,20 @@ import {
   CheckCircleIcon,
 } from "@heroicons/react/24/outline";
 import APStats from "./APStats";
+import getNetworkConfigs from "../../utils/getNetworkConfigs";
 
 export interface ActivePositionProps {
   id: string;
   showPointer?: boolean;
   isCompounding?: boolean;
+  chainId : number;
 }
 
 export default function ActivePositionCard({
   id,
   showPointer,
-  isCompounding
+  isCompounding,
+  chainId
 }: ActivePositionProps) {
 
   const { config } = usePrepareContractWrite({
@@ -47,13 +51,11 @@ export default function ActivePositionCard({
 
   let withdrawButtonDisabled = false;
 
-  const { chain } = useNetwork();
-
   function withdraw(e: MouseEvent) {
     e.preventDefault();
 
     if (data?.hash) {
-      const explorerURI = chain?.blockExplorers?.etherscan?.url + "/tx/" + data.hash;
+      const explorerURI = getNetworkConfigs(chainId).explorerUrl + "/tx/" + data.hash;
       window.open(explorerURI, "_blank");
       return;
     }
@@ -84,9 +86,9 @@ export default function ActivePositionCard({
   return (
     <PositionCard showPointer={showPointer} isCompounding = {isCompounding} href={"/position/" + id}>
       <div>
-        <NFTPreview id={id}></NFTPreview>
+        <NFTPreview id={id} chainId={chainId}></NFTPreview>
         <div className="flex pt-2">
-          <APStats tokenID={id}></APStats>
+          <APStats tokenID={id} chainId={chainId}></APStats>
           <div className="flex-grow"> </div>
           <div>
             <Tooltip arrow title={tooltipMessage}>

@@ -1,27 +1,28 @@
 import { useRouter } from "next/router";
-import ActivePositionCard from "../../components/cards/activePosition";
+import ActivePositionCard from "../../../components/cards/activePosition";
 import { useEffect, useState } from "react";
-import PositionInformation from "../../components/cards/positionInformation";
-import CompoundNowModal from "../../components/compoundNowModal";
-import TopBar from "../../components/TopBar";
+import PositionInformation from "../../../components/cards/positionInformation";
+import CompoundNowModal from "../../../components/compoundNowModal";
+import TopBar from "../../../components/TopBar";
 import useSWR from "swr";
-import { chain, useNetwork, useContractRead } from "wagmi";
+import { useNetwork, useContractRead, useSwitchNetwork } from "wagmi";
 import Head from "next/head";
 import CompoundHistoryTable, {
   Compound,
-} from "../../components/tables/compoundHistory";
+} from "../../../components/tables/compoundHistory";
 import { request, gql } from "graphql-request";
 // @ts-ignore
 import { tokenToSignificant } from "@thanpolas/crypto-utils";
-import getNetworkConfigs from "../../utils/getNetworkConfigs";
+import getNetworkConfigs from "../../../utils/getNetworkConfigs";
 import { ethers } from "ethers";
 import ago from "s-ago";
+
 //import constants
 import {
   CONTRACT_ADDRESS,
   NFPM_ABI,
   NFPM_ADDRESS,
-} from "../../utils/constants";
+} from "../../../utils/constants";
 
 function getImage(chainId: number, tokenAddress: string | undefined) {
   //wont work on goerli
@@ -93,15 +94,14 @@ const query = gql`
 `;
 
 export default function Position() {
-  const fetcher = (url: RequestInfo | URL) => fetch(url).then((r) => r.json());
+  const router = useRouter()
+  const {id, chainId} = router.query
 
-  const router = useRouter();
-  const { id } = router.query;
-  const { chain } = useNetwork();
+  const fetcher = (url: RequestInfo | URL) => fetch(url).then((r) => r.json());
 
   const [tokenID, setTokenID] = useState("");
   const { data } = useSWR(
-    ["/api/" + chain?.id + "/getAllPositionDetails/" + id, chain],
+    ["/api/" + chainId + "/getAllPositionDetails/" + id, chainId],
     fetcher
   );
 
@@ -118,7 +118,7 @@ export default function Position() {
     abi: NFPM_ABI,
     functionName: "getApproved",
     args: [id],
-    chainId: chain?.id,
+    chainId: Number(chainId),
   });
 
   useEffect(() => {
@@ -136,9 +136,9 @@ export default function Position() {
   }, [approvedData.data]);
 
   const graphFetcher = (variables: { tokenId: string }) =>
-    request(getNetworkConfigs(Number(chain!.id)).graphUrl, query, variables);
+    request(getNetworkConfigs(Number(chainId)).graphUrl, query, variables);
   const { data: compoundHistory } = useSWR(
-    [{ tokenId: tokenID }, chain],
+    [{ tokenId: tokenID }, chainId],
     graphFetcher
   );
 
@@ -151,13 +151,11 @@ export default function Position() {
 
     compoundHistory.compoundeds.forEach((compound: any) => {
       tableData.push({
-        tokenId: tokenID,
-        chain: chain ? chain?.id : 1,
-        transactionHash: chain
-          ? chain?.blockExplorers?.etherscan?.url +
+        tokenId: {tokenId: tokenID, chainId: Number(chainId)},
+        chain: Number(chainId),
+        transactionHash: getNetworkConfigs(Number(chainId)).explorerUrl +
             "/tx/" +
-            compound.transaction.id
-          : "",
+            compound.transaction.id,
         time: Number(compound.transaction.timestamp) * 1000,
         percentLiquidityAdded: "" + compound.liquidityPercentIncrease / 100,
         gasPrice: compound.transaction.gasPrice,
@@ -193,13 +191,11 @@ export default function Position() {
 
     if (compoundHistory.positions.length > 0) {
       tableData.push({
-        tokenId: tokenID,
-        chain: chain ? chain?.id : 0,
-        transactionHash: chain
-          ? chain?.blockExplorers?.etherscan?.url +
+        tokenId: {tokenId: tokenID, chainId: Number(chainId)},
+        chain: Number(chainId),
+        transactionHash: getNetworkConfigs(Number(chainId)).explorerUrl +
             "/tx/" +
-            compoundHistory.positions[0].tokenDeposit.id
-          : "",
+            compoundHistory.positions[0].tokenDeposit.id,
         time:
           Number(compoundHistory.positions[0].tokenDeposit.timestamp) * 1000,
         percentLiquidityAdded: "",
@@ -208,7 +204,7 @@ export default function Position() {
         callerReward: "Inital Deposit",
       });
     }
-  }, [compoundHistory, chain]);
+  }, [compoundHistory, chainId]);
 
   useEffect(() => {
     if (!id) {
@@ -251,6 +247,7 @@ export default function Position() {
       <div className="px-4 text-xl">
         <TopBar
           tokenId={Number(tokenID)}
+          chainId={Number(chainId)}
           isCompounding={isCompounding}
           profitLoss={Number(data?.profit)}
           impermanentLoss={Number(data?.impermanentLoss)}
@@ -263,16 +260,17 @@ export default function Position() {
             showPointer={false}
             id={tokenID}
             isCompounding={isCompounding}
+            chainId={Number(chainId)}
           ></ActivePositionCard>
           <div className="grid flex-grow gap-6">
             <PositionInformation
               title="liquidity"
               dollarValue={Number(data?.principalInUSD).toFixed(2) || "???"}
               token0Name={data?.symbol0 || "loading..."}
-              token0Image={getImage(chain ? chain?.id : 1, data?.tokenAddress0)}
+              token0Image={getImage(Number(chainId), data?.tokenAddress0)}
               token0Qt={data?.amount0}
               token1Name={data?.symbol1 || "loading..."}
-              token1Image={getImage(chain ? chain?.id : 1, data?.tokenAddress1)}
+              token1Image={getImage(Number(chainId), data?.tokenAddress1)}
               token1Qt={data?.amount1}
               token0Percentage={
                 data?.principalInUSD
@@ -297,10 +295,10 @@ export default function Position() {
               title="unclaimed fees"
               dollarValue={Number(data?.unclaimedInUSD).toFixed(2) || "???"}
               token0Name={data?.symbol0 || "loading..."}
-              token0Image={getImage(chain ? chain?.id : 1, data?.tokenAddress0)}
+              token0Image={getImage(Number(chainId), data?.tokenAddress0)}
               token0Qt={data?.unclaimed0}
               token1Name={data?.symbol1 || "loading..."}
-              token1Image={getImage(chain ? chain?.id : 1, data?.tokenAddress1)}
+              token1Image={getImage(Number(chainId), data?.tokenAddress1)}
               token1Qt={data?.unclaimed1}
               token0Percentage=""
               token1Percentage=""
@@ -361,7 +359,7 @@ export default function Position() {
         positionId={tokenID}
         setIsOpen={setDialogIsOpen}
         isOpen={dialogIsOpen}
-        isCompounding={isCompounding}
+        chainIdOfPosition={Number(chainId)}
       ></CompoundNowModal>
     </>
   );

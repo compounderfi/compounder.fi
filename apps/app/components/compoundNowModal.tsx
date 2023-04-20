@@ -1,5 +1,5 @@
 import { Transition, Dialog } from "@headlessui/react";
-import { Dispatch, Fragment, SetStateAction, useState } from "react";
+import { Dispatch, Fragment, SetStateAction, useEffect, useState } from "react";
 import {
   useContractWrite,
   useNetwork,
@@ -18,7 +18,7 @@ export interface CompoundNowModalProps {
   token1UnclaimedInUSD: number,
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   positionId: string;
-  isCompounding: boolean;
+  chainIdOfPosition: number | undefined;
 }
 
 export default function CompoundNowModal({
@@ -29,10 +29,11 @@ export default function CompoundNowModal({
   token0,
   token1,
   positionId,
-  isCompounding
+  chainIdOfPosition //this is different because it is the state of the token
 }: CompoundNowModalProps) {
   const { chain } = useNetwork();
 
+  const [warning, setwarning] = useState("");
   const [form, setForm] = useState({
     rewardConversion: false,
   });
@@ -51,6 +52,15 @@ export default function CompoundNowModal({
     hash: data?.hash,
     wait: data?.wait,
   });
+
+  useEffect(() => {
+    //warn users when wrong network
+    if (chainIdOfPosition !== chain?.id) {
+      setwarning("Warning: You are on the wrong network.");
+    } else {
+      setwarning("");
+    }
+  }, [chain?.id, chainIdOfPosition]);
 
   function openWallet() {
     if (data?.hash) {
@@ -101,6 +111,7 @@ export default function CompoundNowModal({
         className="relative z-10"
         onClose={() => setIsOpen(false)}
       >
+        
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -124,7 +135,10 @@ export default function CompoundNowModal({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
+              
+
               <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                {!warning ? 
                 <div className="flex">
                   <div>
                     <Dialog.Title
@@ -180,7 +194,9 @@ export default function CompoundNowModal({
                     </div>
                   </div>
                 </div>
+                : <div className="red">{warning}</div>}
               </Dialog.Panel>
+             {/* <: <div className="red">{warning}</div>*/}
             </Transition.Child>
           </div>
         </div>

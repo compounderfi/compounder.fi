@@ -14,10 +14,14 @@ import Image from "next/image";
 import { tokenToSignificant } from "@thanpolas/crypto-utils";
 import ago from "s-ago"
 
+type tokenIdWithChain = {
+  tokenId: string;
+  chainId: number;
+};
 export type Compound = {
   chain: number;
   transactionHash: string;
-  tokenId: string;
+  tokenId: tokenIdWithChain;
   time: number;
   percentLiquidityAdded: string;
   gasPrice: string;
@@ -112,11 +116,9 @@ export default function CompoundHistoryTable({
     columnHelper.accessor("tokenId", {
       header: "id",
       cell: (val) => (
-        <Link href={"/position/" + val.getValue()}>
+        <Link href={"/position/" + val.getValue().chainId + "/" + val.getValue().tokenId}>
           <span className="cursor-pointer">
-            {val
-              .getValue()
-              }
+            {val.getValue().tokenId}
           </span>
         </Link>
       ),

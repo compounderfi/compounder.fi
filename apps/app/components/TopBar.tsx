@@ -2,8 +2,11 @@
 import React, { useState } from 'react';
 import { usePopper } from 'react-popper';
 import TopBarDropdown from './topBarDropdown';
+import getNetworkConfigs from '../utils/getNetworkConfigs';
+
 interface TopBarProps {
   tokenId: number;
+  chainId: number;
   isCompounding: boolean;
   profitLoss: number;
   totalFees: number;
@@ -12,7 +15,7 @@ interface TopBarProps {
   ILAPR: number;
 }
 
-export default function TopBar({ tokenId, isCompounding, profitLoss, totalFees, impermanentLoss, feesAPR, ILAPR}: TopBarProps) {
+export default function TopBar({ tokenId, chainId, isCompounding, profitLoss, totalFees, impermanentLoss, feesAPR, ILAPR}: TopBarProps) {
   const [showMenu, setShowMenu] = React.useState(false);
   const [referenceElement, setReferenceElement] = useState<HTMLButtonElement | null>(null)
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(null)
@@ -39,9 +42,15 @@ export default function TopBar({ tokenId, isCompounding, profitLoss, totalFees, 
       <div className="container mx-auto">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
+            <img
+                src={`${getNetworkConfigs(chainId).imageUrl}`}
+                alt={`${getNetworkConfigs(chainId).name} logo`}
+                className="h-8 w-8 mr-2"
+              />
+
             <span className="text-6xl font-bold">{tokenId}</span>
             <span
-              className={`ml-2 px-2 py-1 text-sm font-semibold uppercase rounded ${
+              className={`ml-4 px-2 py-1 text-sm font-semibold uppercase rounded ${
                 isCompounding ? 'bg-[#81e291] text-white' : 'bg-[#fa0079] text-white'
               }`}
             >

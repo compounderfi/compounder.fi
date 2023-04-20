@@ -12,6 +12,7 @@ import CompoundButton from "../compoundButton";
 import PositionRow from "./positionRow";
 import PositionFees from "./positionFees";
 import { useState, useEffect } from "react";
+import { chainId, useNetwork } from "wagmi";
 
 export type Position = {
   tokenID: string;
@@ -35,6 +36,9 @@ export default function PositionsTable({ data }: PositionsTableProps) {
     setPositionToData((oldData) => ({...oldData, [tokenId]: { apiResponse }}))//write it back to state
     
   }
+
+  //usenetwork hook
+  const {chain} = useNetwork();
 
   useEffect(() => {
     const columns = [
@@ -64,7 +68,7 @@ export default function PositionsTable({ data }: PositionsTableProps) {
       const newValue = columnHelper.accessor("compoundID", {
         header: "compound",
         cell: (info) => (positionToData[info.getValue()] 
-          ? <CompoundButton tokenID={info.getValue()} row={info.row} apiRequest={positionToData[info.getValue()]}></CompoundButton>
+          ? <CompoundButton tokenID={info.getValue()} row={info.row} apiRequest={positionToData[info.getValue()]} chainIdOfPosition = {chain?.id}></CompoundButton>
           : <p>Loading...</p>)
       })
 

@@ -6,7 +6,8 @@ export default function getNetworkConfigs(networkId: number) {
         chainId: 1,
         rpcUrl: "https://eth-mainnet.g.alchemy.com/v2/C2NvLk_LZDwrBdh9lvCMwqqU7AHWjKYO",
         explorerUrl: 'https://etherscan.io',
-        graphUrl: 'https://api.thegraph.com/subgraphs/name/compounderfi/compounderfi-mainnet'
+        graphUrl: 'https://api.thegraph.com/subgraphs/name/compounderfi/compounderfi-mainnet',
+        imageUrl: "/ethereum.svg"
       };
     case 137:
       return {
@@ -14,7 +15,8 @@ export default function getNetworkConfigs(networkId: number) {
         chainId: 137,
         rpcUrl: "https://polygon-mainnet.g.alchemy.com/v2/xdyZGzPCV9V7Tk7cyeMBunqq02S6e3j1",
         explorerUrl: 'https://polygonscan.com',
-        graphUrl: 'https://api.thegraph.com/subgraphs/name/compounderfi/compounderfi-polygon'
+        graphUrl: 'https://api.thegraph.com/subgraphs/name/compounderfi/compounderfi-polygon',
+        imageUrl: "/polygon.svg"
       };
     case 42161:
       return {
@@ -22,7 +24,8 @@ export default function getNetworkConfigs(networkId: number) {
         chainId: 42161,
         rpcUrl: "https://arb-mainnet.g.alchemy.com/v2/o0U7yt_riOpJ4Jk38AyVy3MqlxfSpXlC",
         explorerUrl: 'https://arbiscan.io',
-        graphUrl: 'https://api.thegraph.com/subgraphs/name/compounderfi/compounderfi-arbitrium'
+        graphUrl: 'https://api.thegraph.com/subgraphs/name/compounderfi/compounderfi-arbitrium',
+        imageUrl: "/arbitrum.svg"
       };
     case 5:
       return {
@@ -30,7 +33,8 @@ export default function getNetworkConfigs(networkId: number) {
         chainId: 5,
         rpcUrl: 'https://eth-goerli.g.alchemy.com/v2/pRQeyvDG-HCuf5xLTV-N3ads5vnbkvgt',
         explorerUrl: 'https://goerli.etherscan.io',
-        graphUrl: 'https://api.thegraph.com/subgraphs/name/compounderfi/compounderfi'
+        graphUrl: 'https://api.thegraph.com/subgraphs/name/compounderfi/compounderfi',
+        imageUrl: "/ethereum.svg"
       };
     case 10:
       return {
@@ -38,7 +42,8 @@ export default function getNetworkConfigs(networkId: number) {
         chainId: 10,
         rpcUrl: "https://opt-mainnet.g.alchemy.com/v2/sW3gbWnN9dD6vShz4bqQ_i_JAkBLUVrP",
         explorerUrl: 'https://optimistic.etherscan.io',
-        graphUrl: 'https://api.thegraph.com/subgraphs/name/compounderfi/compounderfi-optimism'
+        graphUrl: 'https://api.thegraph.com/subgraphs/name/compounderfi/compounderfi-optimism',
+        imageUrl: "/optimism.svg"
       };
     default:
       return {
@@ -46,7 +51,8 @@ export default function getNetworkConfigs(networkId: number) {
         chainId: 1,
         rpcUrl: "https://eth-mainnet.g.alchemy.com/v2/C2NvLk_LZDwrBdh9lvCMwqqU7AHWjKYO",
         explorerUrl: 'https://etherscan.io',
-        graphUrl: 'https://api.thegraph.com/subgraphs/name/compounderfi/compounderfi-mainnet'
+        graphUrl: 'https://api.thegraph.com/subgraphs/name/compounderfi/compounderfi-mainnet',
+        imageUrl: "/ethereum.svg"
       };
   }
 }

@@ -7,9 +7,10 @@ export interface CompoundButtonProps {
   tokenID: string,
   row: Row<Position>,
   apiRequest: any
+  chainIdOfPosition: number | undefined
 }
 
-export default function CompoundButton({ tokenID, row, apiRequest }: CompoundButtonProps) {
+export default function CompoundButton({ tokenID, row, apiRequest, chainIdOfPosition }: CompoundButtonProps) {
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
   const response = apiRequest["apiResponse"]
   const bgColor = row.index % 2 === 0 ? "bg-gray-200" : "bg-gray-200";
@@ -30,7 +31,7 @@ export default function CompoundButton({ tokenID, row, apiRequest }: CompoundBut
         positionId={tokenID}
         setIsOpen={setDialogIsOpen}
         isOpen={dialogIsOpen}
-        isCompounding = {true}
+        chainIdOfPosition={chainIdOfPosition}
       ></CompoundNowModal>
     </>
     

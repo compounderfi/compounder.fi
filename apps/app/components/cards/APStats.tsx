@@ -2,12 +2,11 @@ import { useRouter } from "next/router";
 import useSWR from "swr";
 import { useNetwork } from "wagmi";
 
-export default function APStats({ tokenID }: { tokenID: string }) {
+export default function APStats({ tokenID, chainId}: { tokenID: string, chainId: number }) {
   const router = useRouter();
 
   const fetcher = (url: RequestInfo | URL) => fetch(url).then((r) => r.json());
-  const { chain } = useNetwork();
-  const { data } = useSWR(["/api/" + chain?.id + "/getAllPositionDetails/" + tokenID, chain], fetcher);
+  const { data } = useSWR(["/api/" + chainId + "/getAllPositionDetails/" + tokenID, chainId], fetcher);
 
   return (
     <div>

@@ -72,23 +72,25 @@ function Compounds() {
             const compoundHistory = data[i];
             console.log(compoundHistory)
             compoundHistory.compoundeds.forEach((compound: any) => {
-                
+            
+            const chainId = (() => {switch (i) {
+                case 0:
+                  return 1;
+                case 1:
+                  return 137;
+                case 2:
+                  return 10;
+                case 3:
+                  return 42161;
+                default:
+                  return 1;
+              }
+            })();
+          
+
                 tableData.push({
-                  tokenId: compound.tokenId,
-                  chain: (() => {
-                    switch (i) {
-                      case 0:
-                        return 1;
-                      case 1:
-                        return 137;
-                      case 2:
-                        return 10;
-                      case 3:
-                        return 42161;
-                      default:
-                        return 1;
-                    }
-                  })(), //compound.transaction.id
+                  tokenId: {tokenId: compound.tokenId, chainId: chainId},
+                  chain: chainId, //compound.transaction.id
                   transactionHash: (() => {
                     switch (i) {
                       case 0:
