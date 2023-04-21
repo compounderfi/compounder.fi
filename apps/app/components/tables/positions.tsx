@@ -59,7 +59,7 @@ export default function PositionsTable({ data }: PositionsTableProps) {
       }),
     ];
     setColumns(columns)
-  }, [])
+  }, [chain])
 
   useEffect(() => {
     if (positionToData) {
@@ -73,7 +73,7 @@ export default function PositionsTable({ data }: PositionsTableProps) {
 
       setColumns((prevValues) => [...prevValues.slice(0, 2), newValue])
     }
-  }, [positionToData])
+  }, [positionToData, chain])
 
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
