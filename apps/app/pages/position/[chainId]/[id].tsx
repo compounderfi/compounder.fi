@@ -122,18 +122,13 @@ export default function Position() {
   });
 
   useEffect(() => {
-    console.log(approvedData.data);
     if (!approvedData.data) {
       return;
     }
 
-    if (approvedData.data == CONTRACT_ADDRESS) {
-      setIsCompounding(true);
-    } else {
-      setIsCompounding(false);
-    }
-    console.log(isCompounding);
-  }, [approvedData.data]);
+    setIsCompounding(approvedData.data == CONTRACT_ADDRESS)
+
+  }, [approvedData.data, isCompounding]);
 
   const graphFetcher = (variables: { tokenId: string }) =>
     request(getNetworkConfigs(Number(chainId)).graphUrl, query, variables);
@@ -204,7 +199,7 @@ export default function Position() {
         callerReward: "Inital Deposit",
       });
     }
-  }, [compoundHistory, chainId]);
+  }, [compoundHistory, chainId, tokenID]);
 
   useEffect(() => {
     if (!id) {
@@ -217,7 +212,7 @@ export default function Position() {
     }
 
     setTokenID(id);
-  }, [id]);
+  }, [id, tokenID]);
 
   useEffect(() => {
     if (!data) {
@@ -234,7 +229,7 @@ export default function Position() {
       setNextCompound(data?.daysUntilNextCompound);
     }
 
-  }, [data]);
+  }, [data, token0, token1, nextCompound]);
 
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
 

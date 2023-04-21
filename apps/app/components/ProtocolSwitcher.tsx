@@ -1,4 +1,5 @@
 // src/components/ProtocolSwitcher.js
+import Image from 'next/image'
 import React, { useEffect } from "react";
 import { useSwapProtocol } from "../context/SwapProtocolContext";
 import ReactSelect, {
@@ -74,10 +75,12 @@ const ProtocolSwitcher = () => {
     const data = props.data || protocols[0]; // Default to the first protocol in the list
     return (
       <components.SingleValue {...props}>
-        <img
+        <Image
           src={data.logo}
           alt={data.label}
-          style={{ width: '24px', display: 'inline-block', verticalAlign: 'middle' }}
+          width={24}
+          height={24}
+          style={{display: 'inline-block', verticalAlign: 'middle' }}
         />
       </components.SingleValue>
     );
@@ -85,11 +88,12 @@ const ProtocolSwitcher = () => {
 
   const CustomOption = (props: OptionProps<Option, false>) => (
     <components.Option {...props}>
-      <img
+      <Image
         src={props.data.logo}
         alt={props.data.label}
+        width={24}
+        height={24}
         style={{
-          width: "24px",
           marginRight: "8px",
           display: "inline-block",
           verticalAlign: "middle",

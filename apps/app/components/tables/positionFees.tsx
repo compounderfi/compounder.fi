@@ -25,7 +25,7 @@ export default function PositionFees({tokenID, updater}: PositionFeesProps) {
             setSymbol0(data["symbol0"])
             setSymbol1(data["symbol1"])
         }
-    }, [data])
+    }, [data, updater, tokenID])
     return (
         <p>{unclaimed0Value > unclaimed1Value ? `$${unclaimed0Value} ${symbol0}` : `$${unclaimed1Value} ${symbol1}`}</p>
     )

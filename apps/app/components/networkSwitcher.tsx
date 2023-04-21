@@ -8,6 +8,7 @@ import ReactSelect, {
   SingleValueProps,
   components,
 } from 'react-select';
+import Image from 'next/image'
 
 // Define the Option type
 interface Option {
@@ -28,7 +29,7 @@ const NetworkSwitcher = () => {
     } else {
       setIsDefinitelyConnected(false);
     }
-  }, [address]);
+  }, [address, isConnected]);
 
   const handleChange = async (option: SingleValue<Option>, _actionMeta: ActionMeta<Option>) => {
     if (option && switchNetwork) {
@@ -75,20 +76,24 @@ const NetworkSwitcher = () => {
 
   const CustomSingleValue = (props: SingleValueProps<Option, false>) => (
     <components.SingleValue {...props}>
-      <img
+      <Image
         src={props.data.logo}
         alt={props.data.label}
-        style={{ width: '24px', display: 'inline-block', verticalAlign: 'middle' }}
+        width={24}
+        height={24}
+        style={{display: 'inline-block', verticalAlign: 'middle' }}
       />
     </components.SingleValue>
   );
 
   const CustomOption = (props: OptionProps<Option, false>) => (
     <components.Option {...props}>
-      <img
+      <Image
         src={props.data.logo}
         alt={props.data.label}
-        style={{ width: '24px', marginRight: '8px', display: 'inline-block', verticalAlign: 'middle' }}
+        width={24}
+        height={24}
+        style={{marginRight: '8px', display: 'inline-block', verticalAlign: 'middle' }}
       />
       {props.data.label}
     </components.Option>

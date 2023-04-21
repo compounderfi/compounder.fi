@@ -177,8 +177,7 @@ function Add() {
     if (addressPositions == undefined || compPositions == undefined) {
       return;
     }
-    console.log(addressPositions)
-    console.log(compPositions)
+
     addressPositions.positions.forEach((position: { id: string }) => {
       const depoed = compPositions.positions.find((i: { id: string }) => i.id == position.id)
       if (depoed == undefined) {
@@ -201,7 +200,7 @@ function Add() {
       );
     });
     setFunctionArgs([data]);
-  }, [debouncedSelection]);
+  }, [debouncedSelection, selection]);
 
   return (
     <>

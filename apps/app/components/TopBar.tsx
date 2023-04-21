@@ -1,4 +1,5 @@
 // src/components/TopBar.tsx
+import Image from 'next/image';
 import React, { useState } from 'react';
 import { usePopper } from 'react-popper';
 import TopBarDropdown from './topBarDropdown';
@@ -42,10 +43,12 @@ export default function TopBar({ tokenId, chainId, isCompounding, profitLoss, to
       <div className="container mx-auto">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
-            <img
+            <Image
                 src={`${getNetworkConfigs(chainId).imageUrl}`}
                 alt={`${getNetworkConfigs(chainId).name} logo`}
-                className="h-8 w-8 mr-2"
+                width={32}
+                height={32}
+                className="mr-2"
               />
 
             <span className="text-6xl font-bold">{tokenId}</span>
