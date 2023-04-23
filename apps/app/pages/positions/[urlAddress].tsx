@@ -84,7 +84,7 @@ function Index() {
                 </div>
                 <div className="ml-3">
                   <p className="text-sm font-semibold">
-                    It may take up to a minute for your positions to appear here.
+                    It may take up to a minute for your newly added positions to appear here.
                   </p>
                 </div>
               </div>

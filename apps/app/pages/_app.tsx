@@ -6,8 +6,9 @@ import Layout from "../components/layout";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Head from 'next/head'
 import { SwapProtocolProvider } from '../context/SwapProtocolContext';
+import BSC from "../utils/bsc";
 
-const chains = [chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum];
+const chains = [chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum, BSC];
 
 const wagmiClient = createClient(
   getDefaultClient({

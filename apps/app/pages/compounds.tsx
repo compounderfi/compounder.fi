@@ -51,7 +51,9 @@ function Compounds() {
         { urls: ["https://api.thegraph.com/subgraphs/name/compounderfi/compounderfi-mainnet",
         "https://api.thegraph.com/subgraphs/name/compounderfi/compounderfi-polygon",
         "https://api.thegraph.com/subgraphs/name/compounderfi/compounderfi-optimism",
-        "https://api.thegraph.com/subgraphs/name/compounderfi/compounderfi-arbitrium"] },
+        "https://api.thegraph.com/subgraphs/name/compounderfi/compounderfi-arbitrium",
+        "https://api.thegraph.com/subgraphs/name/compounderfi/compounderfi-bsc"
+      ] },
         ({urls}) =>
         Promise.all(
             urls.map((url) =>
@@ -82,6 +84,8 @@ function Compounds() {
                   return 10;
                 case 3:
                   return 42161;
+                case 4:
+                  return 56;
                 default:
                   return 1;
               }
@@ -101,12 +105,14 @@ function Compounds() {
                         return "https://optimistic.etherscan.io/tx/" + compound.transaction.id;
                       case 3:
                         return "https://arbiscan.io/tx/" + compound.transaction.id;
+                      case 4:
+                        return "https://bscscan.com/tx/" + compound.transaction.id;
                       default:
                         return "https://etherscan.io/tx/" + compound.transaction.id;
                     }
                   })(),
                   time: Number(compound.transaction.timestamp) * 1000,
-                  percentLiquidityAdded: "" + compound.liquidityPercentIncrease / 100,
+                  percentLiquidityAdded: "" + compound.liquidityPercentIncrease,
                   gasPrice: compound.transaction.gasPrice,
                   gasUsed: compound.transaction.gasUsed,
                   callerReward:

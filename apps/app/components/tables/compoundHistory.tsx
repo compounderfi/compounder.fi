@@ -135,7 +135,7 @@ export default function CompoundHistoryTable({
       header: "liq add",
       cell: (val) => (
         <div>
-          {val.getValue() && (Number(val.getValue()) * 100).toFixed(2) + "%"}
+          {val.getValue() && (Number(val.getValue())).toFixed(2) + "%"}
         </div>
       ),
     }),

@@ -10,7 +10,7 @@ import {
   chain,
 } from "wagmi";
 import { MouseEvent } from "react";
-import { CONTRACT_ADDRESS, NFPM_ADDRESS } from "../../utils/constants";
+import { NFPM_ADDRESS, NFPM_ADDRESS_BSC } from "../../utils/constants";
 import { Tooltip } from "@mui/material";
 import {
   ArrowRightOnRectangleIcon,
@@ -36,7 +36,7 @@ export default function ActivePositionCard({
 }: ActivePositionProps) {
 
   const { config } = usePrepareContractWrite({
-    address: NFPM_ADDRESS,
+    address: chainId != 56 ? NFPM_ADDRESS : NFPM_ADDRESS_BSC,
     abi: abi,
     functionName: "approve",
     args: ["0x0000000000000000000000000000000000000000", id],

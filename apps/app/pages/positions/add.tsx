@@ -11,7 +11,7 @@ import useSWR from "swr";
 import { Interface } from "ethers/lib/utils";
 import SelectableGrid from "../../components/grids/selectableGrid";
 import { useDebounce } from "../../hooks/useDebounce";
-import { CONTRACT_ADDRESS, NFPM_ADDRESS } from "../../utils/constants";
+import { CONTRACT_ADDRESS, CONTRACT_ADDRESS_BSC, NFPM_ADDRESS, NFPM_ADDRESS_BSC } from "../../utils/constants";
 import Head from "next/head";
 import { request, gql } from "graphql-request";
 import getNetworkConfigs from "../../utils/getNetworkConfigs";
@@ -89,6 +89,9 @@ function Add() {
     case 10:
       uniswapSubgraphURL = "https://api.thegraph.com/subgraphs/name/revert-finance/uniswap-v3-optimism"
       break;
+    case 56:
+      uniswapSubgraphURL = "https://api.thegraph.com/subgraphs/name/revert-finance/uniswap-v3-bnb"
+      break;
     default:
       uniswapSubgraphURL = "https://api.thegraph.com/subgraphs/name/revert-finance/uniswap-v3-mainnet"
       break;
@@ -115,7 +118,7 @@ function Add() {
   const { data: compPositions } = useSWR([{ address: address?.toLowerCase(), chain }], fetcherComp);
 
   const { config } = usePrepareContractWrite({
-    address: NFPM_ADDRESS,
+    address: chain?.id != 56 ? NFPM_ADDRESS : NFPM_ADDRESS_BSC,
     abi: abi,
     functionName: functionName,
     args: functionArgs,
@@ -131,7 +134,7 @@ function Add() {
 
   function deposit() {
     if (data?.hash) {
-      const explorerURI = chain?.blockExplorers?.etherscan?.url + "/tx/" + data.hash;
+      const explorerURI = chain?.id != 56 ? chain?.blockExplorers?.etherscan?.url + "/tx/" + data.hash : "https://bscscan.com" + "/tx/" + data.hash;
       window.open(explorerURI, "_blank");
       return;
     }
@@ -194,7 +197,7 @@ function Add() {
     selection.map((i) => {
       data.push(
         abiInterface.encodeFunctionData("approve", [
-          CONTRACT_ADDRESS,
+          chain?.id != 56 ? CONTRACT_ADDRESS : CONTRACT_ADDRESS_BSC,
           i,
         ])
       );

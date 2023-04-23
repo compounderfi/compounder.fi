@@ -20,8 +20,10 @@ import ago from "s-ago";
 //import constants
 import {
   CONTRACT_ADDRESS,
+  CONTRACT_ADDRESS_BSC,
   NFPM_ABI,
   NFPM_ADDRESS,
+  NFPM_ADDRESS_BSC,
 } from "../../../utils/constants";
 
 function getImage(chainId: number, tokenAddress: string | undefined) {
@@ -40,6 +42,9 @@ function getImage(chainId: number, tokenAddress: string | undefined) {
       break;
     case 10:
       chainName = "optimism";
+      break;
+    case 56:
+      chainName = "smartchain";
       break;
     default:
       chainName = "ethereum";
@@ -114,7 +119,7 @@ export default function Position() {
 
 
   const approvedData = useContractRead({
-    address: NFPM_ADDRESS,
+    address: chainId != "56" ? NFPM_ADDRESS : NFPM_ADDRESS_BSC,
     abi: NFPM_ABI,
     functionName: "getApproved",
     args: [id],
@@ -126,7 +131,7 @@ export default function Position() {
       return;
     }
 
-    setIsCompounding(approvedData.data == CONTRACT_ADDRESS)
+    setIsCompounding(chainId != "56" ? approvedData.data == CONTRACT_ADDRESS : approvedData.data == CONTRACT_ADDRESS_BSC)
 
   }, [approvedData.data, isCompounding]);
 
@@ -152,7 +157,7 @@ export default function Position() {
             "/tx/" +
             compound.transaction.id,
         time: Number(compound.transaction.timestamp) * 1000,
-        percentLiquidityAdded: "" + compound.liquidityPercentIncrease / 100,
+        percentLiquidityAdded: "" + compound.liquidityPercentIncrease,
         gasPrice: compound.transaction.gasPrice,
         gasUsed: compound.transaction.gasUsed,
         callerReward:

@@ -45,6 +45,15 @@ export default function getNetworkConfigs(networkId: number) {
         graphUrl: 'https://api.thegraph.com/subgraphs/name/compounderfi/compounderfi-optimism',
         imageUrl: "/optimism.svg"
       };
+    case 56:
+      return {
+        name: 'Binance Smart Chain',
+        chainId: 56,
+        rpcUrl: "https://rpc.ankr.com/bsc",
+        explorerUrl: 'https://bscscan.com',
+        graphUrl: 'https://api.thegraph.com/subgraphs/name/compounderfi/compounderfi-bsc',
+        imageUrl: "/bsc.svg"
+      };
     default:
       return {
         name: 'Mainnet',

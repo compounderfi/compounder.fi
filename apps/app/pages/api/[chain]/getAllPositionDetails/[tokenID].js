@@ -3,7 +3,7 @@ import { tokenToSignificant } from "@thanpolas/crypto-utils";
 import axios from "axios";
 import { ethers } from "ethers";
 import abi from "../../../../utils/uniswapABI.json";
-import { NFPM_ADDRESS } from "../../../../utils/constants";
+import { NFPM_ADDRESS, NFPM_ADDRESS_BSC } from "../../../../utils/constants";
 import getNetworkConfigs from "../../../../utils/getNetworkConfigs";
 
 async function makeRequest(tokenID, chain) {
@@ -21,6 +21,9 @@ async function makeRequest(tokenID, chain) {
       break;
     case "10":
       graphURL = "https://api.thegraph.com/subgraphs/name/revert-finance/uniswap-v3-optimism"
+      break;
+    case "56":
+      graphURL = "https://api.thegraph.com/subgraphs/name/revert-finance/uniswap-v3-bnb"
       break;
     default:
       graphURL = "https://api.thegraph.com/subgraphs/name/revert-finance/uniswap-v3-mainnet"
@@ -60,8 +63,8 @@ async function makeRequest(tokenID, chain) {
         feeGrowthGlobal0X128
         tick
       }
-      tickLower
-      tickUpper
+      ${chain == "56" ? "tickLower { tickIdx }" : "tickLower"}
+      ${chain == "56" ? "tickUpper { tickIdx }" : "tickUpper"}
       liquidity
       feeGrowthInside0LastX128
       owner
@@ -80,9 +83,18 @@ async function makeRequest(tokenID, chain) {
   return resp.data;
 }
 
-async function calculateAmount0Amount1(resp) {
-  const tickLower = Number(resp["tickLower"]);
-  const tickUpper = Number(resp["tickUpper"]);
+async function calculateAmount0Amount1(chain, resp) {
+  let tickLower;
+  let tickUpper;
+
+  if (chain != "56") {
+    tickLower = Number(resp["tickLower"]);
+    tickUpper = Number(resp["tickUpper"]);
+  } else {
+    tickLower = Number(resp["tickLower"]["tickIdx"])
+    tickUpper = Number(resp["tickUpper"]["tickIdx"])
+  }
+  
 
   const sqrtPrice = resp["pool"]["sqrtPrice"];
   const sqrtRatioAX96 = tickMath.getSqrtRatioAtTick(tickLower);
@@ -135,10 +147,12 @@ async function calculateUnclaimedFees(chain, tokenID, owner, decimals0, decimals
 
   const provider = new ethers.providers.JsonRpcBatchProvider(rpcURL);
   const contract = new ethers.Contract(
-    NFPM_ADDRESS,
+    chain != "56" ? NFPM_ADDRESS : NFPM_ADDRESS_BSC,
     abi,
     provider
   );
+
+
 
   const results = await contract.callStatic.collect(
     {
@@ -253,7 +267,7 @@ export default async function handler(req, res) {
   const diffs1 = depositedToken1 - withdrawnToken1
   
   
-  const [amount0, amount1] = await calculateAmount0Amount1(resp);
+  const [amount0, amount1] = await calculateAmount0Amount1(chain, resp);
 
   const [unclaimed0, unclaimed1] = await calculateUnclaimedFees(chain, tokenID, owner, decimals0, decimals1)
 

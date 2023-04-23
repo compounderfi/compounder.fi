@@ -6,7 +6,7 @@ import {
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
-import { CONTRACT_ADDRESS } from "../utils/constants";
+import { CONTRACT_ADDRESS, CONTRACT_ADDRESS_BSC } from "../utils/constants";
 import abi from "../utils/abi.json";
 import { Tooltip } from "@mui/material";
 
@@ -39,7 +39,7 @@ export default function CompoundNowModal({
   });
 
   const { config } = usePrepareContractWrite({
-    address: CONTRACT_ADDRESS,
+    address: chain?.id != 56 ? CONTRACT_ADDRESS : CONTRACT_ADDRESS_BSC,
     abi: abi,
     functionName: "compound",
     args: [parseInt(positionId), form.rewardConversion],
@@ -64,7 +64,7 @@ export default function CompoundNowModal({
 
   function openWallet() {
     if (data?.hash) {
-      const explorerURI = chain?.blockExplorers?.etherscan?.url + "/tx/" + data.hash;
+      const explorerURI =  chain?.id != 56 ? chain?.blockExplorers?.etherscan?.url + "/tx/" + data.hash : "https://bscscan.com" + "/tx/" + data.hash;
       window.open(explorerURI, "_blank");
       return;
     }
