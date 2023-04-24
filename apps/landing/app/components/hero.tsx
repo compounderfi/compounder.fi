@@ -15,6 +15,7 @@ export default function Hero() {
                   <Image src="/polygon.svg" width="24" height="24" alt="Polygon network"></Image>
                   <Image src="/optimism.svg" width="24" height="24" alt="Optimism network"></Image>
                   <Image src="/arbitrum.svg" width="24" height="24" alt="Arbitrum network"></Image>
+                  <Image src="/bsc.svg" width="24" height="24" alt="Binance Smart Chain"></Image>
                 </div>
                 <a href="https://compounder-fi.gitbook.io/compounder.fi/" className="inline-flex justify-center items-center py-3 mr-3 text-base font-medium text-center text-gray-700 rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900">
                     view docs
