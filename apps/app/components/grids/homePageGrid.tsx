@@ -15,7 +15,7 @@ export default function HomePageGrid({
   const {chain} = useNetwork();
   const positions = ids.map((id) => (
     <Link key={id} href={"/position/" + chain?.id + "/" + id}>
-      <ActivePositionCard id={id} chainId={chain?.id || 1}></ActivePositionCard>
+      <ActivePositionCard id={id} chainId={chain?.id || 1} isCompounding={true}></ActivePositionCard>
     </Link>
   ));
 

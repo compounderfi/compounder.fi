@@ -2,14 +2,11 @@ import PositionCard from "./positionCard";
 import NFTPreview from "./nftPreview";
 import abi from "../../utils/uniswapABI.json";
 import {
-  useAccount,
   usePrepareContractWrite,
   useContractWrite,
   useWaitForTransaction,
-  useNetwork,
-  chain,
 } from "wagmi";
-import { MouseEvent } from "react";
+import { MouseEvent, useEffect } from "react";
 import { NFPM_ADDRESS, NFPM_ADDRESS_BSC } from "../../utils/constants";
 import { Tooltip } from "@mui/material";
 import {
@@ -17,14 +14,17 @@ import {
   PaperAirplaneIcon,
   EllipsisHorizontalIcon,
   CheckCircleIcon,
+  PlusCircleIcon
 } from "@heroicons/react/24/outline";
 import APStats from "./APStats";
 import getNetworkConfigs from "../../utils/getNetworkConfigs";
+//import constants
+import { CONTRACT_ADDRESS, CONTRACT_ADDRESS_BSC } from "../../utils/constants";
 
 export interface ActivePositionProps {
   id: string;
   showPointer?: boolean;
-  isCompounding?: boolean;
+  isCompounding: boolean;
   chainId : number;
 }
 
@@ -34,12 +34,13 @@ export default function ActivePositionCard({
   isCompounding,
   chainId
 }: ActivePositionProps) {
-
+  
   const { config } = usePrepareContractWrite({
     address: chainId != 56 ? NFPM_ADDRESS : NFPM_ADDRESS_BSC,
     abi: abi,
     functionName: "approve",
-    args: ["0x0000000000000000000000000000000000000000", id],
+    args: [isCompounding ? "0x0000000000000000000000000000000000000000" : chainId != 56 ? CONTRACT_ADDRESS : CONTRACT_ADDRESS_BSC, id],
+    chainId: chainId
   });
 
   const { data, isLoading, isSuccess, write } = useContractWrite(config);
@@ -49,9 +50,9 @@ export default function ActivePositionCard({
     wait: data?.wait,
   });
 
-  let withdrawButtonDisabled = false;
-
-  function withdraw(e: MouseEvent) {
+  let buttonDisabled = false;
+  useEffect(() => {console.log(config, data)}, [data]);
+  function doDepositOrWithdraw(e: MouseEvent) {
     e.preventDefault();
 
     if (data?.hash) {
@@ -71,7 +72,7 @@ export default function ActivePositionCard({
     write?.();
   }
 
-  let tooltipMessage = "withdraw position";
+  let tooltipMessage = isCompounding ? "withdraw position" : "deposit position for compounding";
 
   if (isLoading) {
     tooltipMessage = "confirm txn in wallet";
@@ -93,13 +94,18 @@ export default function ActivePositionCard({
           <div>
             <Tooltip arrow title={tooltipMessage}>
               <button
-                disabled={withdrawButtonDisabled}
+                disabled={buttonDisabled}
                 tabIndex={-1}
-                onClick={(e) => withdraw(e)}
+                onClick={(e) => doDepositOrWithdraw(e)}
                 className="mt-1 rounded-lg bg-gray-200 py-3 px-4 transition-colors duration-300 hover:bg-gray-300"
               >
-                {!isLoading && !isSuccess && !data && (
+                
+                {!isLoading && !isSuccess && !data && isCompounding && (
                   <ArrowRightOnRectangleIcon className="h-6 w-6"></ArrowRightOnRectangleIcon>
+                )}
+
+                {!isLoading && !isSuccess && !data && !isCompounding && (
+                  <PlusCircleIcon className="h-6 w-6"></PlusCircleIcon>
                 )}
 
                 {isLoading && (

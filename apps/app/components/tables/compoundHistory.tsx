@@ -57,9 +57,9 @@ export default function CompoundHistoryTable({
               return (
                 <Image
                   alt="ethereum logo"
-                  width={30}
-                  height={30}
-                  className="pl-2"
+                  width={22}
+                  height={22}
+                  className="mx-auto"
                   src="/ethereum.svg"
                 ></Image>
               );
@@ -67,9 +67,9 @@ export default function CompoundHistoryTable({
               return (
                 <Image
                   alt="optimism logo"
-                  width={30}
-                  height={30}
-                  className="pl-2"
+                  width={22}
+                  height={22}
+                  className="mx-auto"
                   src="/optimism.svg"
                 ></Image>
               );
@@ -77,9 +77,9 @@ export default function CompoundHistoryTable({
               return (
                 <Image
                   alt="arbitrum logo"
-                  width={30}
-                  height={30}
-                  className="pl-2"
+                  width={22}
+                  height={22}
+                  className="mx-auto"
                   src="/arbitrum.svg"
                 ></Image>
               );
@@ -87,10 +87,20 @@ export default function CompoundHistoryTable({
               return (
                 <Image
                   alt="polygon logo"
-                  width={30}
-                  height={30}
-                  className="pl-2"
+                  width={22}
+                  height={22}
+                  className="mx-auto"
                   src="/polygon.svg"
+                ></Image>
+              );
+            case 56:
+              return (
+                <Image
+                  alt="bsc logo"
+                  width={22}
+                  height={22}
+                  className="mx-auto"
+                  src="/bsc.svg"
                 ></Image>
               );
             default:

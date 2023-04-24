@@ -15,7 +15,7 @@ export default function PositionCard({
   showPointer = true,
   isCompounding = false
 }: PositionCardProps) {
-  const borderColor = isCompounding ? "border-[#81e291]" : "border-gray-200";
+  const borderColor = "border-gray-200";
   const borderClasses = selected
     ? " border-2 border-[#f0f2f5] outline outline-2 outline-blue-500"
     : " border-2 " + borderColor;
