@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import ImageWithFallback from "../ImageWithFallback";
 
 export interface PositionInformationProps {
@@ -25,12 +26,13 @@ export default function PositionInformation({
   token0Percentage,
   token1Percentage,
 }: PositionInformationProps) {
+  useEffect(() => {console.log(dollarValue != "NaN")}, [dollarValue]);
   return (
     <>
       {token0Image !== "" && (
         <div className="rounded-[30px] border-2 border-gray-200 bg-[#f0f2f5] p-6 shadow-lg">
           <div>{title}</div>
-          <div className="mt-2 mb-4 text-3xl">${dollarValue}</div>
+          <div className="mt-2 mb-4 text-3xl">{dollarValue != "NaN" ? `$${dollarValue}` : "Loading..."}</div>
           <div className="rounded-[15px] bg-gray-200 py-4 px-4">
             <div className="flex gap-4 pb-2">
               <ImageWithFallback
@@ -75,7 +77,7 @@ export default function PositionInformation({
       {token0Image == "" && (
         <div className="rounded-[30px] border-2 border-gray-200 bg-[#f0f2f5] p-6 shadow-lg">
           <div>{title}</div>
-          <div className="mt-2 mb-4 text-3xl">${dollarValue}</div>
+          <div className="mt-2 mb-4 text-3xl">{dollarValue != "NaN" ? `$${dollarValue}` : "Loading..."}</div>
           <div className="rounded-[15px] bg-gray-200 py-4 px-4">
             <div className="flex items-center gap-4 pb-2">
               <div className="h-[28px] w-[28px] animate-pulse rounded-full bg-gray-300"></div>

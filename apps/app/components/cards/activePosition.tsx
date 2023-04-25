@@ -5,8 +5,10 @@ import {
   usePrepareContractWrite,
   useContractWrite,
   useWaitForTransaction,
+  useContractRead,
+  useAccount
 } from "wagmi";
-import { MouseEvent, useEffect } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 import { NFPM_ADDRESS, NFPM_ADDRESS_BSC } from "../../utils/constants";
 import { Tooltip } from "@mui/material";
 import {
@@ -19,7 +21,7 @@ import {
 import APStats from "./APStats";
 import getNetworkConfigs from "../../utils/getNetworkConfigs";
 //import constants
-import { CONTRACT_ADDRESS, CONTRACT_ADDRESS_BSC } from "../../utils/constants";
+import { CONTRACT_ADDRESS, CONTRACT_ADDRESS_BSC, NFPM_ABI } from "../../utils/constants";
 
 export interface ActivePositionProps {
   id: string;
@@ -34,7 +36,8 @@ export default function ActivePositionCard({
   isCompounding,
   chainId
 }: ActivePositionProps) {
-  
+  const { address } = useAccount();
+
   const { config } = usePrepareContractWrite({
     address: chainId != 56 ? NFPM_ADDRESS : NFPM_ADDRESS_BSC,
     abi: abi,
@@ -43,12 +46,32 @@ export default function ActivePositionCard({
     chainId: chainId
   });
 
-  const { data, isLoading, isSuccess, write } = useContractWrite(config);
+  const approveData = useContractRead({
+    address: chainId != 56 ? NFPM_ADDRESS : NFPM_ADDRESS_BSC,
+    abi: NFPM_ABI,
+    functionName: "ownerOf",
+    args: [id],
+    chainId: chainId,
+  });
 
+  const { data, isLoading, isSuccess, write } = useContractWrite(config);
+  const [viewerIsOwnerOfNft,   setViewerIsOwnerOfNft] = useState(false);
   const txnStatus = useWaitForTransaction({
     hash: data?.hash,
     wait: data?.wait,
   });
+
+  useEffect(() => {
+    if (!approveData) {
+      return;
+    }  
+    if (approveData.data == address) {
+      setViewerIsOwnerOfNft(true);
+    } else {
+      setViewerIsOwnerOfNft(false);
+    }
+  }, [approveData.data, address]);
+
 
   let buttonDisabled = false;
   useEffect(() => {console.log(config, data)}, [data]);
@@ -91,6 +114,7 @@ export default function ActivePositionCard({
         <div className="flex pt-2">
           <APStats tokenID={id} chainId={chainId}></APStats>
           <div className="flex-grow"> </div>
+          {viewerIsOwnerOfNft && (
           <div>
             <Tooltip arrow title={tooltipMessage}>
               <button
@@ -122,6 +146,7 @@ export default function ActivePositionCard({
               </button>
             </Tooltip>
           </div>
+          )}
         </div>
       </div>
     </PositionCard>

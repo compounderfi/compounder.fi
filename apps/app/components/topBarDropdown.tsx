@@ -53,7 +53,7 @@ export default function TopBarDropdown({
         onMouseLeave={handleMouseLeave}
         className="flex items-center"
       >
-        {titleNumber ? (
+        {titleNumber || titleNumber == 0 ? (
           <>
             <span
               className={`${titleNumber >= 0 ? "text-[#81e291]" : "text-[#fa0079]"} ml-1 cursor-pointer`}
